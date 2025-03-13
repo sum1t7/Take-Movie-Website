@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import {
+ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useNavigate,
-} from "react-router-dom";
+ } from "react-router-dom";
 import { Navigate } from "react-router";
-import App from "../App";
-import PlayerPage from "../Structure/PlayerPage";
+ import PlayerPage from "../Structure/PlayerPage";
 import MovieInfo from "../Structure/MovieInfo";
 import TvInfo from "../Structure/TvInfo";
 import Hero from "../Structure/Hero";

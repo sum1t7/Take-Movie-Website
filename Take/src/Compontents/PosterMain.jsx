@@ -190,7 +190,7 @@ const PosterMain = ({ trending }) => {
 
                 <a
                   className="play-button"
-                  href={`/${trend.media_type ? trend.media_type : "movie"}/${
+                  href={`/watch/${trend.media_type ? trend.media_type : "movie"}/${
                     trend.id
                   }`}
                 >
