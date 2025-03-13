@@ -7,8 +7,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import PinkLoading from "../Compontents/Loading";
-import Cast from "../Compontents/cast";
-
+import Cast  from '../Compontents/Cast';
 const MovieInfo = () => {
   const { id } = useParams();
 
