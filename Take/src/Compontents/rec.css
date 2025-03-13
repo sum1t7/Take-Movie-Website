@@ -1,0 +1,138 @@
+.recommendation-container::-webkit-scrollbar {
+  display: none;
+}
+
+.recommendation-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.bg {
+  background: linear-gradient(
+    180deg,
+    rgb(16, 24, 40) 0%,
+    hsl(317, 81%, 22%) 100%
+  );
+}
+
+.bg-nav {
+  background: rgba(16, 24, 40, 0.236);
+}
+
+@keyframes translateY {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.translate-y {
+  animation: translateY 0.7s ease-in-out;
+}
+.opacity-transition {
+  transition: opacity 0.5s ease-in-out;
+}
+.logo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.play-button {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease-in-out;
+  animation: slide-in 0.7s ease-in-out;
+}
+
+.play-button:hover {
+  :nth-child(2) {
+    color: #e91eac;
+    transition: color 0.3s ease-in-out;
+  }
+}
+
+.play-icon:hover {
+  background-color: #e91eb0;
+  color: #fff;
+}
+
+.play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 50px;
+  border: 1px solid #e91eb0;
+  background-color: transparent;
+  color: #e91ec0;
+  transition: all 0.3s ease-in-out;
+  border-radius: 100px;
+}
+.stroke {
+  color: #101828;
+  letter-spacing: -0.1em;
+  transition: all 0.3s ease-in-out;
+  filter: drop-shadow(-2px -2px 3px #e91eb0) drop-shadow(0px 2px 3px #e91eb0);
+}
+
+.play-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.select:hover {
+  border: 3px solid #e91eb0;
+  scale: 1.1;
+  :nth-child(2) {
+    opacity: 1;
+  }
+}
+.select {
+  transition: scale 0.3s ease, opacity 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
+}
+
+.appear {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hoverTop:hover .stroke {
+  color: #e91eb0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 480px) {
+  .play-text {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 640px) {
+  .play-text {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .play-text {
+    font-size: 2.5rem;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
