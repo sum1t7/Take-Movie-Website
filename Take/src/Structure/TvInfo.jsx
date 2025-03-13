@@ -6,7 +6,7 @@ import Recommendation from "../Compontents/Recommendation";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../Compontents/NavBar";
-import Cast from "../Compontents/cast";
+import Cast from "../Compontents/Cast";
 import PinkLoading from "../Compontents/Loading";
 
 const TvInfo = () => {
