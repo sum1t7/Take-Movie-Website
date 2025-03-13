@@ -17,11 +17,12 @@ const Rofees = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Hero />} />
-        <Route path="/movie/:id" element={<MovieInfo/>}  />
-         <Route path="/tv/:id" element={<TvInfo/>}  />
+        <Route path="/search" element={< Search/>} />
         <Route path="/movies" element={<Page type={1}/>} />
         <Route path="/tv" element={<Page type={0}/>} />
-        <Route path="/search" element={< Search/>} />
+        
+        <Route path="/movie/:id" element={<MovieInfo/>}  />
+         <Route path="/tv/:id" element={<TvInfo/>}  />
         <Route path="/watch/movie/:id" element={<PlayerPage type={1}/>} />
         <Route path="/watch/tv/:id" element={<PlayerPage type={0}/>} />
          <Route path="*" element={<Navigate to="/" />} />
