@@ -13,7 +13,7 @@ const NavBar = () => {
     <nav className=" fixed z-11 w-full   lg:px-8 px-6 py-3 bg-nav ">
       
       <div className="container mx-auto flex justify-evenly items-center">
-        <div className="text-4xl font-bold text-pink-500">
+        <div className="text-4xl font-bold text-fuchsia-400">
           <Link to="/">Take🎬</Link>
         </div>
 

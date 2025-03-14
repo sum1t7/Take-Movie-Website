@@ -1,21 +1,24 @@
 import React from "react";
 import PinkLoading from "./Loading";
+import "./rec.css";
 
-const PosterPage = ({ movie, images, id ,type }) => {
+const PosterPage = ({ movie, images, id, type }) => {
   const backdropBaseUrl = "https://image.tmdb.org/t/p/w1280/";
   const posterBaseUrl = "https://image.tmdb.org/t/p/w342/";
   const logoBaseUrl = "https://image.tmdb.org/t/p/w500";
 
-  const releaseDate = movie.release_date ? movie.release_date.split("-")[0] : movie.first_air_date.split("-")[0];
+  const releaseDate = movie.release_date
+    ? movie.release_date.split("-")[0]
+    : movie.first_air_date.split("-")[0];
   const runtime = movie.runtime;
   const originalLanguage = movie.original_language;
   const rating = movie.vote_average.toFixed(1);
   const Name = movie.name ? movie.name : movie.title;
-    const englogo = images.logos.filter((logo) => logo.iso_639_1 === "en");
+  const englogo = images.logos.filter((logo) => logo.iso_639_1 === "en");
   const bestLogo = englogo.sort((a, b) => b.vote_average - a.vote_average)[0];
 
   if (!movie || !images || !id) {
-    return <PinkLoading/>;
+    return <PinkLoading />;
   }
 
   return (
@@ -62,9 +65,7 @@ const PosterPage = ({ movie, images, id ,type }) => {
                   style={{ color: "transparent" }}
                 ></img>
               ) : (
-                <h1 className="text-2xl font-semibold text-white">
-                  {Name}
-                </h1>
+                <h1 className="text-2xl font-semibold text-white">{Name}</h1>
               )}
             </div>
 
@@ -73,7 +74,7 @@ const PosterPage = ({ movie, images, id ,type }) => {
                 <svg
                   strokeWidth="currentColor"
                   fill="yellow"
-                   viewBox="0 0 24 24"
+                  viewBox="0 0 24 24"
                   height="20"
                   width="20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +91,7 @@ const PosterPage = ({ movie, images, id ,type }) => {
                   <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
                   <p className="text-nowrap">{runtime} min.</p>
                 </>
-              ): null}
+              ) : null}
               <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
               <p className="font-semibold uppercase">{originalLanguage}</p>
             </div>
@@ -99,15 +100,17 @@ const PosterPage = ({ movie, images, id ,type }) => {
 
         <div className="flex items-center justify-center gap-4 md:justify-end md:gap-8 xl:col-span-3 xl:justify-start">
           <a
-            className="group max-md:btn max-md:btn-primary max-md:btn-md max-md:order-1 max-sm:text-primary-content md:flex md:min-h-16 md:items-center md:gap-6 md:px-6"
-            href={`/watch/${movie.media_type ? movie.media_type : (type ? "movie" : 'tv')}/${id}`}
+            className="play-button"
+            href={`/watch/${
+              movie.media_type ? movie.media_type : type ? "movie" : "tv"
+            }/${id}`}
           >
-            <span className="text-primary-content   text-fuchsia-200 hover:text-white bg-fuchsia-700 rounded-4xl text-[15px] border border-fuchsia-900 md:grid md:h-16 md:w-16 md:place-content-center md:rounded-full md:bg-primary md:transition-all md:ease-in-out md:group-hover:scale-105 2xl:h-20 2xl:w-20">
+            <span className="play-icon">
               <svg
                 strokeWidth="currentColor"
                 fill="currentColor"
-                 viewBox="0 0 384 512"
-                className="h-5 w-5 md:h-8 md:w-8"
+                viewBox="0 0 384 512"
+                className="h-8 w-8 play-icon-inner"
                 height="1em"
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,9 +118,7 @@ const PosterPage = ({ movie, images, id ,type }) => {
                 <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
               </svg>
             </span>
-            <span className="md:text-xl text-fuchsia-200 md:font-semibold md:uppercase md:tracking-widest lg:transition-colors  md:ease-in-out ">
-              PLAY!
-            </span>
+            <span className="play-text">PLAY!</span>
           </a>
         </div>
       </div>

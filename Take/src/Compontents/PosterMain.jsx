@@ -209,6 +209,7 @@ const PosterMain = ({ trending }) => {
                   </span>
                   <span className="play-text">WATCH NOW!</span>
                 </a>
+                
               </div>
             </div>
           </div>
