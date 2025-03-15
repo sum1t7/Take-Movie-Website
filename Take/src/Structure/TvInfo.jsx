@@ -8,6 +8,7 @@ import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import Cast from "../Compontents/Cast";
 import PinkLoading from "../Compontents/Loading";
+import Seasons from "../Compontents/Seasons";
 
 const TvInfo = () => {
   const { id } = useParams();
@@ -62,6 +63,7 @@ const TvInfo = () => {
     <>
       <NavBar />
       <PosterPage movie={tv} images={images} id={id} type={0} />
+      <Seasons tv={tv} />
       <Description movie={tv} video={video} id={id} />
       <Cast movie={tv} cast={cast} />
       <Recommendation

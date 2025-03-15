@@ -24,19 +24,19 @@ const Cast = ({ cast }) => {
     <div className="flex flex-col gap-3 px-16 bg-gray-900">
       <h1 className="font-bold text-2xl">Main Cast</h1>
 
-      <div className="relative flex items-center"></div>
+      <div className="relative flex  items-center"></div>
       <div className="overflow-x-auto recommendation-container">
-        {loading ? (
-          <PinkLoading /> // Show the Loading component while images are loading
-        ) : (
           <div className="flex gap-4 mt-4">
             {cast.cast.slice(0, 13).map((actor) => {
               return (
                 <div
-                  key={actor.id}
-                  className="flex-shrink-0 w-24 flex flex-col items-center"
-                   title={actor.name}
+                key={actor.id}
+                className="flex-shrink-0  w-24 flex flex-col items-center "
+                title={actor.name}
                 >
+                {loading ? (
+                  <PinkLoading size={24} speed={2.5} hscreen="h-full"/>  
+                ) : (
                   <div className="w-24 h-24 overflow-hidden rounded-full">
                     <img
                       loading="lazy"
@@ -45,6 +45,7 @@ const Cast = ({ cast }) => {
                       className="w-full h-full object-cover"
                     />
                   </div>
+                  )}
                   <h1 className="text-md font-bold truncate max-w-20">
                     {actor.name}
                   </h1>
@@ -55,7 +56,8 @@ const Cast = ({ cast }) => {
               );
             })}
           </div>
-        )}
+
+
       </div>
     </div>
   );

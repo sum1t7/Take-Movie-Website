@@ -95,15 +95,15 @@ const PosterPage = ({ movie, images, id, type }) => {
               <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
               <p className="font-semibold uppercase">{originalLanguage}</p>
             </div>
+            
           </div>
         </div>
 
         <div className="flex items-center justify-center gap-4 md:justify-end md:gap-8 xl:col-span-3 xl:justify-start">
           <a
             className="play-button"
-            href={`/watch/${
-              movie.media_type ? movie.media_type : type ? "movie" : "tv"
-            }/${id}`}
+            href={`/watch${type ? `/movie/${movie.id}` : `/tv/${movie.id}/1/1`}`}
+
           >
             <span className="play-icon">
               <svg

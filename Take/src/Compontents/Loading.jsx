@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PinkLoading = ({ size = 64, speed = 1.5 }) => {
+const PinkLoading = ({ size = 64, speed = 1.5 , hscreen = "min-h-screen"}) => {
   const loaderStyle = {
     width: size,
     height: size,
@@ -8,7 +8,7 @@ const PinkLoading = ({ size = 64, speed = 1.5 }) => {
   };
 
   return (
-    <div className="flex bg-gray-900 items-center justify-center min-h-screen">
+    <div className={`flex bg-gray-900 items-center justify-center  ${hscreen}`}>
       <div 
         className="relative"
         style={{ width: size, height: size }}

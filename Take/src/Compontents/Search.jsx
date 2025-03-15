@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ImSpinner8 } from "react-icons/im";
 import NavBar from "./NavBar";
 
@@ -7,8 +7,13 @@ const Search = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const inputRef = useRef(null);  
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   useEffect(() => {
     const searchMedia = async () => {
@@ -51,7 +56,7 @@ const Search = () => {
     <>
       <NavBar />
       <div className="min-h-screen pt-40 bg-gray-900 p-8">
-        <div className="max-w-4xl  mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <input
               type="text"
@@ -59,16 +64,16 @@ const Search = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="w-full h-12 p-4 text-lg rounded-4xl border-2 border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-transparent placeholder-pink-400 text-pink-900"
+              ref={inputRef}  
             />
-            <div className="p-4 m-4 align-middle text-gray-400 justify-self-center text-center  text-2xl">
+            <div className="p-4 m-4 align-middle text-gray-400 justify-self-center text-center text-2xl">
               Find your favorite movies and series easily. Type in the title or
               keyword and discover detailed information. Explore our catalog and
-              find what to watch in seconds!{" "}
+              find what to watch in seconds!
             </div>
           </div>
 
-          {/* Results */}
-          {loading && (
+           {loading && (
             <div className="flex justify-center py-8">
               <ImSpinner8 className="animate-spin text-4xl text-pink-500" />
             </div>
@@ -80,18 +85,18 @@ const Search = () => {
             </div>
           )}
 
-          <div className="flex flex-wrap lg:justify-start justify-center  gap-4">
+          <div className="flex flex-wrap lg:justify-start justify-center gap-4">
             {results.map((items) => (
               <a
                 key={items.id}
-                className={`flex-shrink-0 lg:w-48 w-50 `}
+                className={`flex-shrink-0 lg:w-48 w-50`}
                 href={`/${
                   items.media_type ? items.media_type : type ? "movie" : "tv"
                 }/${items.id}`}
                 title={items.title || items.name}
               >
                 <div
-                  className={`relative w-full lg:h-72 h-72  overflow-hidden rounded-lg select`}
+                  className={`relative w-full lg:h-72 h-72 overflow-hidden rounded-lg select`}
                 >
                   <img
                     className="w-full h-full object-cover"

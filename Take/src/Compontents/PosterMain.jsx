@@ -80,7 +80,7 @@ const PosterMain = ({ trending }) => {
   }, [currentIndex]);
 
   if (!trending || trending.length === 0) {
-    return <div>Loading...</div>;
+    return <PinkLoading size={24} speed={2.5} hscreen="h-full" />;
   }
 
   return (
@@ -134,7 +134,7 @@ const PosterMain = ({ trending }) => {
               loading="lazy"
               src={`https://image.tmdb.org/t/p/w1280/${trend.backdrop_path}`}
               alt={trend.title}
-              className="w-full h-[90vh] object-cover"
+              className="w-full h-[100vh] object-cover"
             />
 
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
@@ -190,9 +190,7 @@ const PosterMain = ({ trending }) => {
 
                 <a
                   className="play-button"
-                  href={`/watch/${trend.media_type ? trend.media_type : "movie"}/${
-                    trend.id
-                  }`}
+                  href={`${trend.media_type == "movie" ? `/watch/movie/${trend.id}` : `/tv/${trend.id}`}`}
                 >
                   <span className="play-icon">
                     <svg
@@ -209,7 +207,6 @@ const PosterMain = ({ trending }) => {
                   </span>
                   <span className="play-text">WATCH NOW!</span>
                 </a>
-                
               </div>
             </div>
           </div>
