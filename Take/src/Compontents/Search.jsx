@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { ImSpinner8 } from "react-icons/im";
 import NavBar from "./NavBar";
+import DOMPurify from "dompurify";  
+
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -26,6 +28,7 @@ const Search = () => {
       setError(null);
 
       try {
+        const sanitizedQuery = DOMPurify.sanitize(query);  
         const response = await fetch(
           `https://api.themoviedb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false&sort_by=popularity.desc`
         );
