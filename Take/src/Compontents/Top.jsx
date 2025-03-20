@@ -11,10 +11,15 @@ const Top = ({title , bit}) => {
         <h3 className=" text-8xl font-bold stroke lg:text-9xl">{title}</h3>
 
         <div className="flex flex-col gap-2 max-sm:text-center">
-          <h3 className="text-xl font-semibold  uppercase tracking-[10px]">
+         {!bit && (
+          <>
+           <h3 className="text-xl font-semibold  uppercase tracking-[10px]">
             Movies
-          </h3>
-         {!bit && <h3 className="text-xl font-semibold tracking-[10px]">TODAY</h3>}
+            </h3>
+          <h3 className="text-xl font-semibold tracking-[10px]">TODAY</h3>
+          </>
+          )
+        }
         </div>
       </div>
 

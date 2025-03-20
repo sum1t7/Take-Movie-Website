@@ -55,9 +55,7 @@ const Hero = () => {
     fetchTrending();
   }, [apikey]);
 
-  if (!trending || !action || !romance || !TOP) {
-    return <PinkLoading />;
-  }
+   
 
   return (
     <>

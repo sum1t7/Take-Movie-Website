@@ -12,6 +12,8 @@ import Hero from "../Structure/Hero";
 import Page from "../Structure/Page";
 import Search from "../Compontents/Search";
 import Seasons from "../Compontents/Seasons";
+import Genre from "../Structure/Genre";
+import Person from "../Structure/Person";
 
 const Rofees = () => {
   return (
@@ -24,6 +26,8 @@ const Rofees = () => {
         <Route path="/movie/:id" element={<MovieInfo/>}  />
          <Route path="/tv/:id" element={<TvInfo/>}  />
         <Route path="/watch/movie/:id" element={<PlayerPage type={1}/>} />
+        <Route path="/genre/:genreName" element={<Genre/>}/>
+        <Route path="/person/:id" element={<Person/>} />
         <Route path="/watch/tv/:id/:season/:episode" element={<PlayerPage type={0}/>} />
          <Route path="*" element={<Navigate to="/" />} />
        </Routes>

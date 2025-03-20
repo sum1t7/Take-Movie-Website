@@ -22,19 +22,19 @@ const PosterPage = ({ movie, images, id, type }) => {
   }
 
   return (
-    <div className="relative flex h-[70vh] max-h-[735px] w-full px-4 sm:h-[90vh] sm:px-16 items-end pb-6">
+    <div className="relative bg-gradient-to-t from-[#101828] to-transparent flex h-[70vh] max-h-[735px] w-full px-4 sm:h-[90vh] sm:px-16 items-end pb-6">
       <img
         alt={Name}
         width="1440"
         height="810"
         src={`${backdropBaseUrl}${movie.backdrop_path}`}
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 -z-10 mask-top-bottom"
+        className="absolute  inset-0 w-full h-full object-cover transition-opacity duration-300 -z-10 mask-top-bottom"
         loading="eager"
         decoding="async"
         style={{ color: "transparent" }}
       />
 
-      <div className="flex items-center gap-4 lg:justify-between overflow-hidden max-sm:w-full max-sm:flex-col sm:gap-20">
+      <div className="flex  items-center gap-4 lg:justify-between overflow-hidden max-sm:w-full max-sm:flex-col sm:gap-20">
         <div className="md:max-w-1/2 flex items-center gap-10">
           <div className="relative hidden max-w-[175px] shrink-0 sm:block">
             <img

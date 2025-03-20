@@ -8,11 +8,11 @@ const Recommendation = ({ recommendation, title , bit ,type}) => {
 
   return (
     <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-gray-900">
-      <h1 className={`lg:text-3xl font-semibold md:text-3xl text-2xl ${bit ? "text-[#e91eb0]" : ""}`}>{recommendation.results[0] ? title : ""}</h1>
+      <h1 className={`lg:text-3xl  md:text-3xl text-2xl ml-3 font-medium ${bit ? "text-[#e91eb0]" : ""}`}>{recommendation.results[0] ? title : ""}</h1>
 
-      <div className="overflow-x-auto recommendation-container mt-1">
+      <div className="overflow-x-auto recommendation-container  mt-1">
         <div className={`flex gap-4 m-4 ${bit ? "my-7" : ""}` }>
-          {recommendation.results.map((recommendation) => (
+          {recommendation.results.map((recommendation) => recommendation.poster_path && recommendation.vote_average > 3 && (
             <a
               key={recommendation.id}
               className={`flex-shrink-0 ${bit ? "lg:w-65 w-65" : "lg:w-48 w-50 "}`}

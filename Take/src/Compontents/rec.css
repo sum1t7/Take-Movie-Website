@@ -45,8 +45,7 @@
 }
 
 .bg-nav {
-  background: rgba(16, 24, 40, 0.236);
-}
+  background: linear-gradient(to bottom, #101828, transparent);}
 
 @keyframes translateY {
   from {

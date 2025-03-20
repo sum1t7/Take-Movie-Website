@@ -137,7 +137,7 @@ const PosterMain = ({ trending }) => {
               className="w-full h-[100vh] object-cover"
             />
 
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#101828]  to-transparent">
               <div className="flex pb-5  items-start lg:items-center justify-around lg:flex-row flex-col gap-4">
                 {logos[trend.id] && (
                   <div className="flex flex-col translate-y">

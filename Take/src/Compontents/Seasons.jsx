@@ -37,7 +37,9 @@ const Seasons = ({ tv }) => {
               key={s.id}
             >
               <img
-                src={`https://image.tmdb.org/t/p/w500${s.poster_path}`}
+                src={s.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${s.poster_path}`
+                  : 'https://cdn.boldomatic.com/content/post/G-aFXw/temporarily-not-available.jpg'}
                 alt={s.name}
                 className="w-40 select h-60 rounded-2xl object-contain"
                 onClick={() => setSeasonNumber(s.season_number)}
@@ -62,7 +64,7 @@ const Seasons = ({ tv }) => {
                   </div>
                   <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
                   <p className="m-0 p-0 leading-none">
-                    {s.air_date.split("-")[0]}
+                    {s.length > 0 && s.air_date.split("-")[0]}
                   </p>
                 </div>
                 <p className="font-light text-2xl">
@@ -85,7 +87,7 @@ const Seasons = ({ tv }) => {
                   <img
                     src={e.still_path != null ? `https://image.tmdb.org/t/p/w500${e.still_path}` : `https://image.tmdb.org/t/p/w500${tv.poster_path}`}
                     alt={e.name}
-                    class="rounded-xl h-full w-full object-cover"
+                    className="rounded-xl h-full w-full object-cover"
                   />
                   <h3 className="absolute bottom-2 right-4 justify-end truncate flex w-50">{e.name}</h3>
                   <h3 className="absolute font-bold text-xl top-2 left-4 ">S{SeasonNumber}-E{e.episode_number}</h3>

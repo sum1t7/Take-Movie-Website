@@ -12,22 +12,22 @@ const NavBar = () => {
   return (
     <nav className=" fixed z-11 w-full   lg:px-8 px-6 py-3 bg-nav ">
       
-      <div className="container mx-auto flex justify-evenly items-center">
-        <div className="text-4xl font-bold text-fuchsia-400">
+      <div className="container mx-auto   flex justify-evenly items-center">
+        <div className="text-4xl font-bold text-[#e91eb0]">
           <Link to="/">Take🎬</Link>
         </div>
 
         <div className="hidden md:flex space-x-4">
-          <Link to="/" className="hover:text-fuchsia-400">
+          <Link to="/" className="hover:text-fuchsia-400 text-gray-300 text-xl font-medium">
             Home
           </Link>
-          <Link to="/movies" className="hover:text-fuchsia-400">
+          <Link to="/movies" className="hover:text-fuchsia-400 text-gray-300 text-xl font-medium">
             Movies
           </Link>
-          <Link to="/tv" className="hover:text-fuchsia-400">
+          <Link to="/tv" className="hover:text-fuchsia-400 text-gray-300 text-xl font-medium">
             TV Shows
           </Link>
-          <Link to="/search" className="hover:text-fuchsia-400">
+          <Link to="/search" className="hover:text-fuchsia-400 text-gray-300 text-xl font-medium">
           Search 
           </Link>
         </div>
@@ -58,6 +58,7 @@ const NavBar = () => {
       </div>
 
       {isOpen && (
+
         <div className="md:hidden mt-6">
           <Link to="/" className="block px-4 py-2 hover:text-fuchsia-400">
             Home
