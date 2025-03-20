@@ -29,10 +29,11 @@ const Cast = ({ cast }) => {
           <div className="flex gap-4 mt-4">
             {cast.cast.slice(0, 13).map((actor) => {
               return (
-                <div
+                <a
                 key={actor.id}
                 className="flex-shrink-0  w-24 flex flex-col items-center "
                 title={actor.name}
+                href={`/person/${actor.id}`}
                 >
                 {loading ? (
                   <PinkLoading size={24} speed={2.5} hscreen="h-full"/>  
@@ -52,7 +53,7 @@ const Cast = ({ cast }) => {
                   <p className="text-sm text-gray-500 truncate max-w-20">
                     as {actor.character}
                   </p>
-                </div>
+                </a>
               );
             })}
           </div>
