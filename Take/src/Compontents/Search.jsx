@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { ImSpinner8 } from "react-icons/im";
 import NavBar from "./NavBar";
-import DOMPurify from "dompurify";  
-
+import DOMPurify from "dompurify";
 
 const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const inputRef = useRef(null);  
+  const inputRef = useRef(null);
+  const [onFocus, setOnFocus] = useState(false);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -19,16 +19,19 @@ const Search = () => {
 
   useEffect(() => {
     const searchMedia = async () => {
-      if (query.length < 2) {
+      if (query.length < 1) {
         setResults([]);
+
+        document.querySelector("#content").style.display = "block";
         return;
       }
+      document.querySelector("#content").style.display = "none";
 
       setLoading(true);
       setError(null);
 
       try {
-        const sanitizedQuery = DOMPurify.sanitize(query);  
+        const sanitizedQuery = DOMPurify.sanitize(query);
         const response = await fetch(
           `https://api.themoviedb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false&sort_by=popularity.desc`
         );
@@ -67,16 +70,19 @@ const Search = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="w-full h-12 p-4 text-lg rounded-4xl border-2 border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-transparent placeholder-pink-400 text-pink-900"
-              ref={inputRef}  
+              ref={inputRef}
             />
-            <div className="p-4 m-4 align-middle text-gray-400 justify-self-center text-center text-2xl">
+            <div
+              id="content"
+              className="p-4 m-4 align-middle  text-gray-400 justify-self-center text-center lg:text-2xl"
+            >
               Find your favorite movies and series easily. Type in the title or
               keyword and discover detailed information. Explore our catalog and
               find what to watch in seconds!
             </div>
           </div>
 
-           {loading && (
+          {loading && (
             <div className="flex justify-center py-8">
               <ImSpinner8 className="animate-spin text-4xl text-pink-500" />
             </div>
@@ -89,17 +95,17 @@ const Search = () => {
           )}
 
           <div className="flex flex-wrap lg:justify-start justify-center gap-4">
-            {results.map((items) => (
+            {results.map((items) => items.poster_path && (
               <a
                 key={items.id}
-                className={`flex-shrink-0 lg:w-48 w-50`}
+                className={`flex-shrink-0 lg:w-48 w-30`}
                 href={`/${
                   items.media_type ? items.media_type : type ? "movie" : "tv"
                 }/${items.id}`}
                 title={items.title || items.name}
               >
                 <div
-                  className={`relative w-full lg:h-72 h-72 overflow-hidden rounded-lg select`}
+                  className={`relative lg:w-full lg:h-72   overflow-hidden rounded-lg select`}
                 >
                   <img
                     className="w-full h-full object-cover"

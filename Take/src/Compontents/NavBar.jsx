@@ -59,7 +59,7 @@ const NavBar = () => {
 
       {isOpen && (
 
-        <div className="md:hidden mt-6">
+        <div className="md:hidden bg-fuchsia-800 mt-6">
           <Link to="/" className="block px-4 py-2 hover:text-fuchsia-400">
             Home
           </Link>

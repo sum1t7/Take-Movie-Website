@@ -76,6 +76,7 @@ const PosterMain = ({ trending }) => {
     const slider = sliderRef.current;
     if (slider) {
       slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      console.log(currentIndex);
     }
   }, [currentIndex]);
 
