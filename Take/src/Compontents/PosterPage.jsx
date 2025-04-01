@@ -70,6 +70,7 @@ const PosterPage = ({ movie, images, id, type }) => {
             </div>
 
             <div className="flex items-center gap-4  text-sm 2xl:text-base">
+
               <div className="flex items-center gap-1.5">
                 <svg
                   strokeWidth="currentColor"
@@ -122,6 +123,10 @@ const PosterPage = ({ movie, images, id, type }) => {
           </a>
         </div>
       </div>
+
+      <div className="cursor-pointer">
+       ⭐ add to favorites
+        </div>
     </div>
   );
 };
