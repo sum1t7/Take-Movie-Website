@@ -124,9 +124,7 @@ const PosterPage = ({ movie, images, id, type }) => {
         </div>
       </div>
 
-      <div className="cursor-pointer">
-       ⭐ add to favorites
-        </div>
+     
     </div>
   );
 };
