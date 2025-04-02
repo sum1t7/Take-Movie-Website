@@ -15,6 +15,7 @@ const Seasons = ({ tv }) => {
           `https://api.themoviedb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
         );
         setEpisode(res.data.episodes);
+        console.log( tv.id)
         setLoading(false);
       };
       fetchEpisode();
@@ -25,7 +26,7 @@ const Seasons = ({ tv }) => {
   }, [SeasonNumber, tv.id]);
 
   return (
-    <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-gray-900">
+    <div className="px-4 sm:px-16  items-end lg:py-15 py-10 bg-gray-900">
       <h1 className=" px-4 pb-3 text-5xl font-bold text-fuchsia-600">Seasons</h1>
 
       <div className="flex lg:flex-row flex-col overflow-hidden ">
