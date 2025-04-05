@@ -33,7 +33,7 @@ const Search = () => {
       try {
         const sanitizedQuery = DOMPurify.sanitize(query);
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false&sort_by=popularity.desc`
+          `https://api.themoviedb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false`
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
@@ -95,7 +95,7 @@ const Search = () => {
           )}
 
           <div className="flex flex-wrap lg:justify-start justify-center gap-4">
-            {results.map((items) => items.poster_path && (
+            {results.map((items) => items.poster_path && items.vote_average > 0 && (
               <a
                 key={items.id}
                 className={`flex-shrink-0 lg:w-48 w-30`}
@@ -107,6 +107,7 @@ const Search = () => {
                 <div
                   className={`relative lg:w-full lg:h-72   overflow-hidden rounded-lg select`}
                 >
+                  
                   <img
                     className="w-full h-full object-cover"
                     src={`https://image.tmdb.org/t/p/w500${items.poster_path}`}
@@ -114,7 +115,12 @@ const Search = () => {
                     loading="lazy"
                   />
                   <div className="absolute appear bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
-                    <h1 className="text-white text-sm mt-2 truncate">
+                 
+                  <div className="absolute top-2 right-2 text-xs font-bold px-2 bg-fuchsia-400 rounded-full text-white">{items.media_type}</div>
+                    <h1 className="text-white text-sm   truncate">
+                    ⭐ {items.vote_average.toFixed(1)}
+                    </h1>
+                    <h1 className="text-white text-sm  truncate">
                       {items.title || items.name}
                     </h1>
                   </div>

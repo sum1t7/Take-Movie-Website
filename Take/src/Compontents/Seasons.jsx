@@ -77,21 +77,23 @@ const Seasons = ({ tv }) => {
         </div>
 
         <div className="flex lg:flex-4/5  max-h-[30rem] flex-col gap-4 max-sm:min-h-[30rem]  lg:max-h-[40rem]">
-          <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
+          <div className="gap-4 overflow-y-auto  pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
             {episode &&
               episode.map((e) => (
                 <a
                   key={e.id}
                   href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
-                  className="group relative select block h-24 lg:w-70 w-50 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40"
+                  className="group  relative select block h-24 lg:w-70 w-50 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40"
                 >
                   <img
                     src={e.still_path != null ? `https://image.tmdb.org/t/p/w500${e.still_path}` : `https://image.tmdb.org/t/p/w500${tv.poster_path}`}
                     alt={e.name}
-                    className="rounded-xl h-full w-full object-cover"
+                    className="rounded-xl  h-full w-full object-cover"
                   />
-                  <h3 className="absolute bottom-2 right-4 justify-end truncate flex w-50">{e.name}</h3>
+ 
                   <h3 className="absolute font-bold text-xl top-2 left-4 ">S{SeasonNumber}-E{e.episode_number}</h3>
+                  <h3 className="absolute  bottom-2 right-4 justify-end  truncate flex w-50">{e.name}</h3>
+                  <h3 className="absolute bottom-7 text-[12px] right-4  justify-end truncate  flex w-50">⭐ {e.vote_average.toFixed(1)}</h3>
                 </a>
               ))}
           </div>
