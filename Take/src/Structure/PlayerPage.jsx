@@ -39,9 +39,9 @@ const PlayerPage = ({ type }) => {
       }
     };
     fetchtvData();
-  }, [id]);
+  }, [id ]);
 
-if(!tvData) {
+if(!tvData && !type){ 
   return <PinkLoading/>
 }
 
@@ -67,10 +67,7 @@ if(!tvData) {
 
     </div>
     {!type && <Seasons tv={tvData}/>}
-
-    
-
-
+  
         </div>
   );
 };
