@@ -19,8 +19,7 @@ const PlayerPage = ({ type }) => {
     import.meta.env.VITE_SERVER_URL_3,
     import.meta.env.VITE_SERVER_URL_4,
     import.meta.env.VITE_SERVER_URL_5,
-    import.meta.env.VITE_SERVER_URL_6,
-  ];
+   ];
 
   const movie = `${server}${
     type ? "movie/" : "tv/"
@@ -82,12 +81,11 @@ const PlayerPage = ({ type }) => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
           {[
-            { name: "Server 1", color: "cyan-500", choice: choice[5] },
-            { name: "Server 2", color: "pink-300", choice: choice[4] },
-            { name: "Server 3", color: "yellow-200", choice: choice[1] },
-            { name: "Server 4", color: "green-200", choice: choice[2] },
-            { name: "Server 5", color: "blue-200", choice: choice[3] },
-            { name: "Server 6", color: "purple-200", choice: choice[0] },
+            { name: "Server 1", color: "bg-pink-300", textColor: "text-pink-300", choice: choice[4] },
+            { name: "Server 2", color: "bg-yellow-200", textColor: "text-yellow-200", choice: choice[1] },
+            { name: "Server 3", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
+            { name: "Server 4", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
+            { name: "Server 5", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
           ].map((serverItem, index) => (
             <div
               key={index}
@@ -95,12 +93,12 @@ const PlayerPage = ({ type }) => {
               className={`p-3 rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-between
           ${
             server === serverItem.choice
-              ? `bg-${serverItem.color}/20 border-2 border-${serverItem.color} scale-105`
+              ? `${serverItem.color}/20 border-2 ${serverItem.color.replace('bg-', 'border-')} scale-105`
               : "bg-gray-700/30 hover:bg-gray-700/50 border-2 border-transparent"
           }
         `}
             >
-              <span className={`text-${serverItem.color} font-medium`}>
+              <span className={`${serverItem.textColor} font-medium`}>
                 {serverItem.name}
               </span>
               {server === serverItem.choice && (
