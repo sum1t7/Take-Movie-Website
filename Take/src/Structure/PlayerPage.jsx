@@ -19,7 +19,6 @@ const PlayerPage = ({ type }) => {
     import.meta.env.VITE_SERVER_URL_3,
     import.meta.env.VITE_SERVER_URL_4,
     import.meta.env.VITE_SERVER_URL_5,
-    import.meta.env.VITE_SERVER_URL_6,
    ];
 
   const movie = `${server}${
@@ -87,7 +86,6 @@ const PlayerPage = ({ type }) => {
             { name: "Server 3", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
             { name: "Server 4", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
             { name: "Server 5", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
-            { name: "Server 6", color: "bg-red-200", textColor: "text-red-200", choice: choice[5] },
           ].map((serverItem, index) => (
             <div
               key={index}
