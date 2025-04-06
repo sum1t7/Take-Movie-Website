@@ -10,7 +10,7 @@ import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_5);
+  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_6);
   const [tvData, setTvData] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
   const choice = [
@@ -19,6 +19,7 @@ const PlayerPage = ({ type }) => {
     import.meta.env.VITE_SERVER_URL_3,
     import.meta.env.VITE_SERVER_URL_4,
     import.meta.env.VITE_SERVER_URL_5,
+    import.meta.env.VITE_SERVER_URL_6,
    ];
 
   const movie = `${server}${
@@ -28,6 +29,9 @@ const PlayerPage = ({ type }) => {
   const tv = `${server}tv/${id}/${season}/${episode}?primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
 
   const src = type ? movie : tv;
+
+
+
 
    useEffect(() => {
     const fetchtvData = async () => {
@@ -86,6 +90,7 @@ const PlayerPage = ({ type }) => {
             { name: "Server 3", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
             { name: "Server 4", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
             { name: "Server 5", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
+            { name: "Server 6", color: "bg-red-200", textColor: "text-red-200", choice: choice[5] },
           ].map((serverItem, index) => (
             <div
               key={index}
