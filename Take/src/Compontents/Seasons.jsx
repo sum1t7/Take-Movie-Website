@@ -90,9 +90,9 @@ const Seasons = ({ tv }) => {
                     alt={e.name}
                     className="rounded-xl  h-full w-full object-cover"
                   />
- 
+ <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black to-transparent "></div>
                   <h3 className="absolute font-bold text-xl top-2 left-4 ">S{SeasonNumber}-E{e.episode_number}</h3>
-                  <h3 className="absolute  bottom-2 right-4 justify-end  truncate flex w-50">{e.name}</h3>
+                  <h3 className="absolute  bottom-2 right-4 justify-end w-60 nice-text truncate flex ">{e.name}</h3>
                   <h3 className="absolute bottom-7 text-[12px] right-4  justify-end truncate  flex w-50">⭐ {e.vote_average.toFixed(1)}</h3>
                 </a>
               ))}

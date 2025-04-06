@@ -2,6 +2,8 @@
   display: none;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 .recommendation-container {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -34,7 +36,10 @@
     background: #6b438b;
 }
 
-
+.nice-text{
+  font-family: 'Poppins', sans-serif;
+  font-size: small; 
+}
 
 .bg {
   background: linear-gradient(
