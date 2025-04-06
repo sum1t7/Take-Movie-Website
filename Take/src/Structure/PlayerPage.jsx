@@ -10,7 +10,7 @@ import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_6);
+  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_5);
   const [tvData, setTvData] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
   const choice = [
