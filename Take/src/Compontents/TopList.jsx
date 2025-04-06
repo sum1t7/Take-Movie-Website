@@ -10,8 +10,9 @@ const TopList = ({TOP}) => {
   }
 
   return (
-    <div className="overflow-x-auto recommendation-container overflow-y-hidden bg-gray-900 ">
-      <div className="flex gap-1 m-4 mx-16 ">
+    
+    <div className="overflow-x-auto recommendation-container   overflow-y-hidden bg-gray-900 ">
+      <div className="flex gap-1 m-4 mx-16 w-full  ">
         {TOP.results.slice(0, 10).map((TOP, key) => (
           <a
             key={TOP.id}
@@ -34,6 +35,7 @@ const TopList = ({TOP}) => {
         ))}
       </div>
     </div>
+
   );
 };
 

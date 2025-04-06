@@ -15,8 +15,7 @@ const Seasons = ({ tv }) => {
           `https://api.themoviedb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
         );
         setEpisode(res.data.episodes);
-        console.log( tv.id)
-        setLoading(false);
+         setLoading(false);
       };
       fetchEpisode();
     } catch (error) {
@@ -26,11 +25,13 @@ const Seasons = ({ tv }) => {
   }, [SeasonNumber, tv.id]);
 
   return (
+    
     <div className="px-4 sm:px-16  items-end lg:py-15 py-10 bg-gray-900">
-      <h1 className=" px-4 pb-3 text-5xl font-bold text-fuchsia-600">Seasons</h1>
+      <h1 className=" px-4 pb-3 text-5xl font-bold text-fuchsia-600">
+        Seasons
+      </h1>
 
       <div className="flex lg:flex-row flex-col overflow-hidden ">
-
         <div className="lg:flex-2/6 flex lg:flex-col max-h-[30rem] overflow-x-auto space-y-2 lg:overflow-y-auto py-2 pl-1 lg:max-h-[40rem]">
           {season.map((s) => (
             <div
@@ -38,9 +39,11 @@ const Seasons = ({ tv }) => {
               key={s.id}
             >
               <img
-                src={s.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${s.poster_path}`
-                  : 'https://cdn.boldomatic.com/content/post/G-aFXw/temporarily-not-available.jpg'}
+                src={
+                  s.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${s.poster_path}`
+                    : "https://cdn.boldomatic.com/content/post/G-aFXw/temporarily-not-available.jpg"
+                }
                 alt={s.name}
                 className="w-40 select h-60 rounded-2xl object-contain"
                 onClick={() => setSeasonNumber(s.season_number)}
@@ -86,19 +89,28 @@ const Seasons = ({ tv }) => {
                   className="group  relative select block h-24 lg:w-70 w-50 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40"
                 >
                   <img
-                    src={e.still_path != null ? `https://image.tmdb.org/t/p/w500${e.still_path}` : `https://image.tmdb.org/t/p/w500${tv.poster_path}`}
+                    src={
+                      e.still_path != null
+                        ? `https://image.tmdb.org/t/p/w500${e.still_path}`
+                        : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
+                    }
                     alt={e.name}
                     className="rounded-xl  h-full w-full object-cover"
                   />
- <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black to-transparent "></div>
-                  <h3 className="absolute font-bold text-xl top-2 left-4 ">S{SeasonNumber}-E{e.episode_number}</h3>
-                  <h3 className="absolute  bottom-2 right-4 justify-end w-60 nice-text truncate flex ">{e.name}</h3>
-                  <h3 className="absolute bottom-7 text-[12px] right-4  justify-end truncate  flex w-50">⭐ {e.vote_average.toFixed(1)}</h3>
+                  <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black to-transparent "></div>
+                  <h3 className="absolute font-bold text-xl top-2 left-4 ">
+                    S{SeasonNumber}-E{e.episode_number}
+                  </h3>
+                  <h3 className="absolute  bottom-2 right-4 justify-end w-60 nice-text truncate flex ">
+                    {e.name}
+                  </h3>
+                  <h3 className="absolute bottom-7 text-[12px] right-4  justify-end truncate  flex w-50">
+                    ⭐ {e.vote_average.toFixed(1)}
+                  </h3>
                 </a>
               ))}
           </div>
         </div>
-
       </div>
     </div>
   );

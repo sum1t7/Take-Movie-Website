@@ -5,31 +5,48 @@ const Recommendation = ({ recommendation, title, bit, type }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef(null);
 
+const buttonRefs = useRef([]);
+
   const handlePrev = () => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + recommendation.results.length) % recommendation.results.length);
+    console.log(currentIndex);
   };
 
-  const handleNext = () => {
-    console.log(recommendation.results.length);
-    console.log(currentIndex);
+  const handleNext = () => { 
+    if (currentIndex === 3) 
+      setCurrentIndex(-1);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % 10) ;
-    console.log(currentIndex);
-    };
+    
+     };
 
   useEffect(() => {
     const slider = sliderRef.current;
     if (slider) {
-      slider.style.transform = `translateX(-${currentIndex * 20}%)`;
+      slider.style.transform = `translateX(-${currentIndex * 80}%)`;
     }
+    if (currentIndex === 0) {
+      slider.scrollLeft = 0;
+      if (buttonRefs.current[0]) buttonRefs.current[0].style.display = "none";
+      if (buttonRefs.current[1]) buttonRefs.current[1].style.display = "block";
+    }
+    
+    if (currentIndex >= 1) {
+      slider.scrollLeft = 0;
+      if (buttonRefs.current[0]) buttonRefs.current[0].style.display = "block";
+      if (buttonRefs.current[1]) buttonRefs.current[1].style.display = "block";
+    }
+    console.log(currentIndex);
+
   }, [currentIndex ]);
 
   return (
-    <div className="relative px-4 sm:px-16 items-end lg:py-15 py-10 bg-gray-900">
+    <div className="relative items-end lg:py-15 py-10 bg-gray-900">
 
       <button
         type="button"
-        className="absolute h-full hidden lg:block opacity-50 hover:opacity-100 z-10 left-2 sm:left-3"
+        className="absolute h-[60%] toggle bottom-20 hidden bg-gradient-to-r cursor-pointer from-[#101828] to-transparent lg:block    z-10 left-0"
+        ref={(el) => (buttonRefs.current[0] = el)}
         onClick={handlePrev}
       >
         <svg
@@ -45,9 +62,9 @@ const Recommendation = ({ recommendation, title, bit, type }) => {
         </svg>{" "}
       </button>
       <button
-        type="button"
-        className="absolute hidden lg:block h-full opacity-50 hover:opacity-100 z-10 right-2 sm:right-3"
-        onClick={handleNext}
+        className="absolute hidden lg:block h-[60%] toggle  bottom-20 bg-gradient-to-l cursor-pointer from-[#101828] to-transparent  z-10 right-0 "
+        ref={(el) => (buttonRefs.current[1] = el)}
+         onClick={handleNext}
       >
         <svg
           strokeWidth="currentColor"
@@ -62,16 +79,20 @@ const Recommendation = ({ recommendation, title, bit, type }) => {
         </svg>{" "}
       </button>
       <h1
-        className={`lg:text-3xl md:text-3xl text-2xl ml-3 font-medium ${
+        className={`text-2xl md:text-3xl font-bold flex items-center gap-3 ml-20    ${
           bit ? "text-[#e91eb0]" : ""
         }`}
       >
+         
+        <div class="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
+         
+      
         {recommendation.results[0] ? title : ""}
       </h1>
 
-      <div className="overflow-x-auto recommendation-container mt-1">
+      <div className="overflow-x-auto w-full recommendation-container mt-1">
         <div
-          className={`flex transition-transform duration-500 ease-in-out gap-4 m-4 ${bit ? "my-7" : ""}`}
+          className={`flex transition-transform duration-500 mx-20 ease-in-out gap-4 m-4 ${bit ? "my-7" : ""}`}
           ref={sliderRef}
         >
           {recommendation.results.map(
