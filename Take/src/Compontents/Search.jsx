@@ -114,13 +114,13 @@ const Search = () => {
                     alt={items.title || items.name}
                     loading="lazy"
                   />
-                  <div className="absolute appear bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
+                  <div className="absolute appear h-full  bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
                  
-                  <div className="absolute top-2 right-2 text-xs font-bold px-2 bg-fuchsia-400 rounded-full text-white">{items.media_type}</div>
-                    <h1 className="text-white text-sm   truncate">
+                  <div className={`absolute top-2 right-2 text-xs font-bold  py-1 ${items.media_type == 'tv' ? 'bg-fuchsia-400 px-3' : 'bg-amber-500 px-2' } rounded-2xl text-white`}>{items.media_type}</div>
+                    <h1 className="text-white text-sm absolute bottom-7  ">
                     ⭐ {items.vote_average.toFixed(1)}
                     </h1>
-                    <h1 className="text-white text-sm  truncate">
+                    <h1 className="text-white text-sm absolute bottom-2 w-[160px] truncate">
                       {items.title || items.name}
                     </h1>
                   </div>
@@ -128,6 +128,7 @@ const Search = () => {
               </a>
             ))}
           </div>
+
 
           {!loading && results.length === 0 && query.length >= 2 && (
             <div className="text-center py-8 text-pink-500">
