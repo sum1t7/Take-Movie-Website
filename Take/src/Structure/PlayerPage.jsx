@@ -10,7 +10,7 @@ import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_6);
+  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_5);
   const [tvData, setTvData] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
   const choice = [
@@ -83,11 +83,11 @@ const PlayerPage = ({ type }) => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
           {[
             { name: "Server 1", color: "cyan-500", choice: choice[5] },
-            { name: "Server 2", color: "[#ff99c8]", choice: choice[4] },
-            { name: "Server 3", color: "[#fcf6bd]", choice: choice[1] },
-            { name: "Server 4", color: "[#d0f4de]", choice: choice[2] },
-            { name: "Server 5", color: "[#a9def9]", choice: choice[3] },
-            { name: "Server 6", color: "[#e4c1f9]", choice: choice[0] },
+            { name: "Server 2", color: "pink-300", choice: choice[4] },
+            { name: "Server 3", color: "yellow-200", choice: choice[1] },
+            { name: "Server 4", color: "green-200", choice: choice[2] },
+            { name: "Server 5", color: "blue-200", choice: choice[3] },
+            { name: "Server 6", color: "purple-200", choice: choice[0] },
           ].map((serverItem, index) => (
             <div
               key={index}
