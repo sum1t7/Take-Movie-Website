@@ -14,6 +14,7 @@ import Search from "../Compontents/Search";
 import Seasons from "../Compontents/Seasons";
 import Genre from "../Structure/Genre";
 import Person from "../Structure/Person";
+import Test from "../Structure/Test";
 
 const Rofees = () => {
   return (
@@ -30,6 +31,7 @@ const Rofees = () => {
         <Route path="/person/:id" element={<Person/>} />
         <Route path="/watch/tv/:id/:season/:episode" element={<PlayerPage type={0}/>} />
          <Route path="*" element={<Navigate to="/" />} />
+         <Route path="/test" element={<Test/>}/>
        </Routes>
     </Router>
   );
