@@ -21,7 +21,7 @@ const Cast = ({ cast }) => {
   }, [cast]);
 
   return (
-    <div className="flex flex-col gap-3 px-16 bg-gray-900">
+    <div className="flex flex-col gap-3 lg:px-22  px-10 bg-gray-900">
       <h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
         <div class="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
         <span>Cast</span>

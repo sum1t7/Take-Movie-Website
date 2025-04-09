@@ -95,40 +95,53 @@ const Search = () => {
           )}
 
           <div className="flex flex-wrap lg:justify-start justify-center gap-4">
-            {results.map((items) => items.poster_path && items.vote_average > 0 && (
-              <a
-                key={items.id}
-                className={`flex-shrink-0 lg:w-48 w-30`}
-                href={`/${
-                  items.media_type ? items.media_type : type ? "movie" : "tv"
-                }/${items.id}`}
-                title={items.title || items.name}
-              >
-                <div
-                  className={`relative lg:w-full lg:h-72   overflow-hidden rounded-lg select`}
-                >
-                  
-                  <img
-                    className="w-full h-full object-cover"
-                    src={`https://image.tmdb.org/t/p/w500${items.poster_path}`}
-                    alt={items.title || items.name}
-                    loading="lazy"
-                  />
-                  <div className="absolute appear h-full  bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
-                 
-                  <div className={`absolute top-2 right-2 text-xs font-bold  py-1 ${items.media_type == 'tv' ? 'bg-fuchsia-400 px-3' : 'bg-amber-500 px-2' } rounded-2xl text-white`}>{items.media_type}</div>
-                    <h1 className="text-white text-sm absolute bottom-7  ">
-                    ⭐ {items.vote_average.toFixed(1)}
-                    </h1>
-                    <h1 className="text-white text-sm absolute bottom-2 w-[160px] truncate">
-                      {items.title || items.name}
-                    </h1>
-                  </div>
-                </div>
-              </a>
-            ))}
+            {results.map(
+              (items) =>
+                items.poster_path &&
+                items.vote_average > 0 && (
+                  <a
+                    key={items.id}
+                    className={`flex-shrink-0 lg:w-48 w-30`}
+                    href={`/${
+                      items.media_type
+                        ? items.media_type
+                        : type
+                        ? "movie"
+                        : "tv"
+                    }/${items.id}`}
+                    title={items.title || items.name}
+                  >
+                    <div
+                      className={`relative lg:w-full lg:h-72   overflow-hidden rounded-lg select`}
+                    >
+                      <img
+                        className="w-full h-full object-cover"
+                        src={`https://image.tmdb.org/t/p/w500${items.poster_path}`}
+                        alt={items.title || items.name}
+                        loading="lazy"
+                      />
+                      <div className="absolute appear h-full  bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
+                        <div
+                          className={`absolute top-2 right-2 text-xs font-bold  py-1 ${
+                            items.media_type == "tv"
+                              ? "bg-fuchsia-400 px-3"
+                              : "bg-amber-500 px-2"
+                          } rounded-2xl text-white`}
+                        >
+                          {items.media_type}
+                        </div>
+                        <h1 className="text-white text-sm absolute bottom-7  ">
+                          ⭐ {items.vote_average.toFixed(1)}
+                        </h1>
+                        <h1 className="text-white text-sm absolute bottom-2 w-[160px] truncate">
+                          {items.title || items.name}
+                        </h1>
+                      </div>
+                    </div>
+                  </a>
+                )
+            )}
           </div>
-
 
           {!loading && results.length === 0 && query.length >= 2 && (
             <div className="text-center py-8 text-pink-500">

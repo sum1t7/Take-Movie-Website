@@ -45,7 +45,7 @@ const buttonRefs = useRef([]);
 
       <button
         type="button"
-        className="absolute h-[60%] toggle bottom-20 hidden bg-gradient-to-r cursor-pointer from-[#101828] to-transparent lg:block    z-10 left-0"
+        className="absolute lg:h-[60%] h-[67%] bottom-13 toggle lg:bottom-20 hidden bg-gradient-to-r cursor-pointer from-[#101828] to-transparent lg:block    z-10 left-0"
         ref={(el) => (buttonRefs.current[0] = el)}
         onClick={handlePrev}
       >
@@ -62,7 +62,7 @@ const buttonRefs = useRef([]);
         </svg>{" "}
       </button>
       <button
-        className="absolute hidden lg:block h-[60%] toggle  bottom-20 bg-gradient-to-l cursor-pointer from-[#101828] to-transparent  z-10 right-0 "
+        className="absolute hidden lg:h-[60%] h-[67%] bottom-13 toggle lg:bottom-20 bg-gradient-to-l cursor-pointer from-[#101828] to-transparent  z-10 right-0 "
         ref={(el) => (buttonRefs.current[1] = el)}
          onClick={handleNext}
       >
@@ -79,7 +79,7 @@ const buttonRefs = useRef([]);
         </svg>{" "}
       </button>
       <h1
-        className={`text-2xl md:text-3xl font-bold flex items-center gap-3 ml-20    ${
+        className={`text-2xl md:text-3xl font-bold flex items-center gap-3  lg:ml-20 ml-10    ${
           bit ? "text-[#e91eb0]" : ""
         }`}
       >
@@ -92,7 +92,7 @@ const buttonRefs = useRef([]);
 
       <div className="overflow-x-auto w-full recommendation-container mt-1">
         <div
-          className={`flex transition-transform duration-500 mx-20 ease-in-out gap-4 m-4 ${bit ? "my-7" : ""}`}
+          className={`flex transition-transform duration-500 lg:mx-20 mx-10 ease-in-out gap-4 m-4 ${bit ? "my-7" : ""}`}
           ref={sliderRef}
         >
           {recommendation.results.map(
@@ -102,7 +102,7 @@ const buttonRefs = useRef([]);
                 <a
                   key={recommendation.id}
                   className={`flex-shrink-0 ${
-                    bit ? "lg:w-65 w-65" : "lg:w-48 w-50 "
+                    bit ? "lg:w-65 w-65" : "lg:w-48 w-50"
                   }`}
                   href={`/${
                     recommendation.media_type

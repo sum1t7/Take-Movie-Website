@@ -118,7 +118,7 @@ const PlayerPage = ({ type }) => {
      
         
 
-      {!type && <Seasons tv={tvData} />}
+      {!type && <Seasons tv={tvData} episodenumbers={episode} seasonnumbers={season} />}
 
 
 

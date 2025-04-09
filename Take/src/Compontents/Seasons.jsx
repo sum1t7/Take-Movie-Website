@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./rec.css";
-const Seasons = ({ tv }) => {
+const Seasons = ({ tv , episodenumbers , seasonnumbers }) => {
   const [episode, setEpisode] = useState(null);
-  const [SeasonNumber, setSeasonNumber] = useState(1);
+  const [SeasonNumber, setSeasonNumber] = useState(seasonnumbers || 1);
+  const [episodeNumber, setEpisodeNumber] = useState(episodenumbers || null);
   const [loading, setLoading] = useState(true);
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
   const season = tv.seasons;
@@ -15,14 +16,14 @@ const Seasons = ({ tv }) => {
           `https://api.themoviedb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
         );
         setEpisode(res.data.episodes);
-         setLoading(false);
+        setLoading(false);
       };
       fetchEpisode();
     } catch (error) {
       console.error("Error fetching data:", error);
       return null;
     }
-  }, [SeasonNumber, tv.id]);
+  }, [SeasonNumber, episodeNumber, tv.id]);
 
   return (
     
@@ -86,7 +87,7 @@ const Seasons = ({ tv }) => {
                 <a
                   key={e.id}
                   href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
-                  className="group  relative select block h-24 lg:w-70 w-50 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40"
+                  className={`group  relative select ${e.episode_number == episodeNumber && seasonnumbers == SeasonNumber ? 'borderpink' : ''} block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
                 >
                   <img
                     src={
@@ -95,6 +96,8 @@ const Seasons = ({ tv }) => {
                         : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
                     }
                     alt={e.name}
+                    onClick={() => setEpisodeNumber(e.episode_number)}
+                    loading="lazy"
                     className="rounded-xl  h-full w-full object-cover"
                   />
                   <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black to-transparent "></div>
