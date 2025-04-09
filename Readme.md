@@ -87,6 +87,11 @@ npm run dev #start dev server at localhost:5174/
 
 If you discover any issues or have suggestions for improvement, please open an issue. Provide a clear and concise description of the problem, steps to reproduce it, and any relevant information about your environment.
 
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
 ### Support
 
 Feel Free to drop a star 🌟 if you like my project.
