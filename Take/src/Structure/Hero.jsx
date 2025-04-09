@@ -7,6 +7,7 @@ import NavBar from "../Compontents/NavBar";
 import TopList from "../Compontents/TopList";
 import Foter from "../Compontents/Foter";
 import PinkLoading from "../Compontents/Loading";
+import FullViewPreview from "../Compontents/FullViewPreview";
 
 const Hero = () => {
   const [trending, setTrending] = useState(null);
@@ -53,7 +54,7 @@ const Hero = () => {
     };
 
     fetchTrending();
-  }, [apikey]);
+  }, []);
 
    
 
@@ -104,6 +105,12 @@ const Hero = () => {
           type={1}
         />
       )}
+      {loadingAction ? (
+        <PinkLoading />
+      ) : (
+        <FullViewPreview/>
+      )}
+
       <Foter />
     </>
   );

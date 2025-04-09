@@ -124,7 +124,7 @@
 
 .select:hover {
   border: 3px solid #e91eb0;
-  scale: 1.1;
+  scale: 1.06;
   :nth-child(2) {
     opacity: 1;
   }
@@ -139,8 +139,8 @@
 }
 
 .select {
-  transition: scale 0.3s ease, opacity 0.3s ease-in-out,
-    border-color 0.3s ease-in-out;
+  transition: scale 0.2s ease-in-out, opacity 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
 }
 
 .select:hover ~ .sname:first-child {
@@ -150,13 +150,13 @@
 
 .appear {
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .hoverTop:hover .stroke {
   color: #e91eb0;
   transform: translateX(-10px);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 
