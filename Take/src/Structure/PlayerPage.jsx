@@ -20,6 +20,7 @@ const PlayerPage = ({ type }) => {
     import.meta.env.VITE_SERVER_URL_4,
     import.meta.env.VITE_SERVER_URL_5,
     import.meta.env.VITE_SERVER_URL_6,
+    import.meta.env.VITE_SERVER_URL_7,
    ];
 
   const movie = `${server}${
@@ -29,9 +30,7 @@ const PlayerPage = ({ type }) => {
   const tv = `${server}tv/${id}/${season}/${episode}?nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
 
   const src = type ? movie : tv;
-
-
-
+ 
 
    useEffect(() => {
     const fetchtvData = async () => {
