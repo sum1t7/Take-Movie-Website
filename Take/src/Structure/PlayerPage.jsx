@@ -26,7 +26,7 @@ const PlayerPage = ({ type }) => {
     type ? "movie/" : "tv/"
   }${id}?primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
 
-  const tv = `${server}tv/${id}/${season}/${episode}?primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
+  const tv = `${server}tv/${id}/${season}/${episode}?nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
 
   const src = type ? movie : tv;
 
@@ -77,25 +77,26 @@ const PlayerPage = ({ type }) => {
         ></iframe>
       </div>
 
-      <div className="flex justify-center items-center bg-black">
-      <div className="bg-black backdrop-blur-sm rounded-xl p-6 shadow-2xl max-w-2xl w-full">
+      <div className="flex justify-center items-center lg:w-full bg-black">
+      <div className="bg-black backdrop-blur-sm rounded-xl p-6 shadow-2xl max-w-2xl w-full  lg:max-w-full">
         <h2 className="text-2xl font-bold text-white mb-4 text-center">
-          Select Server
+          Try these Servers
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+        <div className=" lg:flex lg:w-full lg:justify-center  lg:h-20 lg:gap-10 grid grid-cols-2 md:grid-cols-3 gap-3 mb-6  ">
           {[
-            { name: "Server 1", color: "bg-pink-300", textColor: "text-pink-300", choice: choice[4] },
-            { name: "Server 2", color: "bg-yellow-200", textColor: "text-yellow-200", choice: choice[1] },
-            { name: "Server 3", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
-            { name: "Server 4", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
-            { name: "Server 5", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
-            { name: "Server 6", color: "bg-red-200", textColor: "text-red-200", choice: choice[5] },
+            { name: "Server 1", desc:"Default choice", color: "bg-pink-300", textColor: "text-pink-300", choice: choice[4] },
+            { name: "Server 2", desc:"Speedy", color: "bg-yellow-200", textColor: "text-yellow-200", choice: choice[1] },
+            { name: "Server 3", desc:"With Johnny", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
+            { name: "Server 4", desc:"For movies only", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
+            { name: "Server 5", desc:"Best for Series", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
+            { name: "Server 6", desc:"No Ads", color: "bg-red-200", textColor: "text-red-200", choice: choice[5] },
+            { name: "Server 7", desc:"Smooth", color: "bg-gray-200", textColor: "text-gray-200", choice: choice[6] },
           ].map((serverItem, index) => (
             <div
               key={index}
               onClick={() => setServer(serverItem.choice)}
-              className={`p-3 rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-between
+              className={`p-3 rounded-lg cursor-pointer transition-all lg:w-40 lg:h-20 duration-200 flex items-center justify-between
           ${
             server === serverItem.choice
               ? `${serverItem.color}/20 border-2 ${serverItem.color.replace('bg-', 'border-')} scale-105`
@@ -104,7 +105,7 @@ const PlayerPage = ({ type }) => {
         `}
             >
               <span className={`${serverItem.textColor} font-medium`}>
-                {serverItem.name}
+                {serverItem.name}<p>{serverItem.desc}</p>
               </span>
               {server === serverItem.choice && (
                 <div className="w-2 h-2 rounded-full bg-green-400 ml-2 shadow-[0_0_8px_#34d399]" />
