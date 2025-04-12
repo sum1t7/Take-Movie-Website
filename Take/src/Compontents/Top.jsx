@@ -14,7 +14,7 @@ const Top = ({title , bit}) => {
          {!bit && (
           <>
            <h3 className="text-xl font-semibold  uppercase tracking-[10px]">
-            Movies
+            ALL
             </h3>
           <h3 className="text-xl font-semibold tracking-[10px]">TODAY</h3>
           </>

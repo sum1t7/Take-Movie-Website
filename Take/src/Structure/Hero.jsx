@@ -26,7 +26,7 @@ const Hero = () => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.themoviedb.org/3/trending/all/week?api_key=${apikey}`
+          `https://api.themoviedb.org/3/trending/all/day?api_key=${apikey}&sort_by=popularity.desc`
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
@@ -44,7 +44,7 @@ const Hero = () => {
         setLoadingRomance(false);
 
         const res = await axios.get(
-          `https://api.themoviedb.org/3/trending/all/week?api_key=${apikey}`
+          `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
         );
         setTOP(res.data);
         setLoadingTOP(false);
@@ -95,6 +95,11 @@ const Hero = () => {
           type={1}
         />
       )}
+        {loadingAction ? (
+          <PinkLoading />
+        ) : (
+          <FullViewPreview/>
+        )}
       {loadingAction ? (
         <PinkLoading />
       ) : (
@@ -104,11 +109,6 @@ const Hero = () => {
           bit={0}
           type={1}
         />
-      )}
-      {loadingAction ? (
-        <PinkLoading />
-      ) : (
-        <FullViewPreview/>
       )}
 
       <Foter />

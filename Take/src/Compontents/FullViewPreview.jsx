@@ -34,7 +34,7 @@ return (
     <div className="mt-0">
         <div className="flex items-center justify-between bg-gray-900 gap-8 lg:pt-15 pt-10 px-4 max-sm:flex-col sm:px-16">
             <div className={`ml-4 flex gap-10 items-center justify-center max-sm:flex-col`}>
-                <h3 className="text-8xl font-bold stroke lg:text-9xl">FEATURED</h3>
+                <h3 className="md:text-7xl text-7xl font-bold stroke lg:text-9xl">FEATURED</h3>
                 <div className="flex flex-col gap-2 max-sm:text-center"></div>
             </div>
         </div>

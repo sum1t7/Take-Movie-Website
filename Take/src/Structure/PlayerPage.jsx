@@ -1,131 +1,216 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useMemo } from "react";
+
 import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import Recommendation from "../Compontents/Recommendation";
 import Foter from "../Compontents/Foter";
- 
-const apikey = import.meta.env.VITE_TMDB_API_KEY;
+
 import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
+
+
+
+const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+
+const SERVERS = [
+  {
+    name: "Server 1",
+    desc: "Default choice",
+    color: "pink",
+    envKey: "VITE_SERVER_URL_5"
+  },
+  {
+    name: "Server 2",
+    desc: "Speedy",
+    color: "yellow",
+    envKey: "VITE_SERVER_URL_2"
+  },
+  {
+    name: "Server 3",
+    desc: "With Johnny",
+    color: "green",
+    envKey: "VITE_SERVER_URL_3"
+  },
+  {
+    name: "Server 4",
+    desc: "For movies only",
+    color: "blue",
+    envKey: "VITE_SERVER_URL_4"
+  },
+  {
+    name: "Server 5",
+    desc: "Best for Series",
+    color: "purple",
+    envKey: "VITE_SERVER_URL"
+  },
+  {
+    name: "Server 6",
+    desc: "No Ads",
+    color: "red",
+    envKey: "VITE_SERVER_URL_6"
+  },
+  {
+    name: "Server 7",
+    desc: "Smooth",
+    color: "gray",
+    envKey: "VITE_SERVER_URL_7"
+  }
+];
+
+const ServerButton = ({ server, currentServer, onClick, details }) => {
+  const isActive = server === currentServer;
+  const { name, desc, color } = details;
+  
+  const getColorClasses = (colorName) => {
+    const baseClasses = {
+      pink: "bg-pink-500/20 border-pink-500 text-pink-300",
+      yellow: "bg-yellow-500/20 border-yellow-500 text-yellow-200",
+      green: "bg-green-500/20 border-green-500 text-green-200",
+      blue: "bg-blue-500/20 border-blue-500 text-blue-200",
+      purple: "bg-purple-500/20 border-purple-500 text-purple-200",
+      red: "bg-red-500/20 border-red-500 text-red-200",
+      gray: "bg-gray-500/20 border-gray-500 text-gray-200"
+    };
+    return baseClasses[colorName] || baseClasses.gray;
+  };
+  
+  return (
+    <button
+    onClick={onClick}
+    className={`p-3 rounded-lg transition-all duration-200 flex flex-col justify-center h-full w-full
+      ${isActive 
+        ? `${getColorClasses(color)} border-2 scale-105` 
+        : "bg-gray-800/50 hover:bg-gray-700 border-2 border-transparent"
+      }`}
+      >
+      <span className={`font-medium ${isActive ? "" : "text-gray-300"}`}>
+        {name}
+      </span>
+      <span className={`text-xs ${isActive ? "" : "text-gray-400"}`}>
+        {desc}
+      </span>
+      {isActive && (
+        <div className="w-2 h-2 rounded-full bg-green-400 absolute top-2 right-2 shadow-lg shadow-green-500/50" />
+      )}
+    </button>
+  );
+};
+
+
+
+
 const PlayerPage = ({ type }) => {
+  
+  
+  
   const { id, season, episode } = useParams();
-  const [server, setServer] = useState(import.meta.env.VITE_SERVER_URL_5);
-  const [tvData, setTvData] = useState(null);
-  const [recommendation, setRecommendation] = useState(null);
-  const choice = [
-    import.meta.env.VITE_SERVER_URL,
-    import.meta.env.VITE_SERVER_URL_2,
-    import.meta.env.VITE_SERVER_URL_3,
-    import.meta.env.VITE_SERVER_URL_4,
-    import.meta.env.VITE_SERVER_URL_5,
-    import.meta.env.VITE_SERVER_URL_6,
-    import.meta.env.VITE_SERVER_URL_7,
-   ];
+  const [activeServer, setActiveServer] = useState(import.meta.env.VITE_SERVER_URL_5);
+  const [contentData, setContentData] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const serverUrls = useMemo(() => {
+    return SERVERS.map(server => import.meta.env[server.envKey]);
+  }, []);
+  
+  const contentType = type ? "movie" : "tv";
+  
+  const playerUrl = useMemo(() => {
+    const baseParams = "primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true";
+    
+    if (contentType === "movie") {
+      return `${activeServer}movie/${id}?${baseParams}&nextbutton=false`;
+    } else {
+      return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}&nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&nextbutton=false`;
+    }
+  }, [activeServer, id, season, episode, contentType]);
 
-  const movie = `${server}${
-    type ? "movie/" : "tv/"
-  }${id}?primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
-
-  const tv = `${server}tv/${id}/${season}/${episode}?nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true&nextbutton=false`;
-
-  const src = type ? movie : tv;
- 
-
-   useEffect(() => {
-    const fetchtvData = async () => {
+  useEffect(() => {
+    const fetchContentData = async () => {
+      setIsLoading(true);
       try {
-
-        if(!type){
-
+        // Only fetch TV data if we're viewing a TV show
+        if (contentType === "tv") {
           const tvResponse = await axios.get(
-            `https://api.themoviedb.org/3/tv/${id}?api_key=${apikey}&language=en-US`
+            `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`
           );
-          setTvData(tvResponse.data);
+          setContentData(tvResponse.data);
         }
-
         
-        const recommendationResponse = await axios.get(
-          `https://api.themoviedb.org/3/${type ? "movie" : "tv"}/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
+        // Always fetch recommendations
+        const recommendationsResponse = await axios.get(
+          `https://api.themoviedb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`
         );
-        setRecommendation(recommendationResponse.data);
-        console.log(recommendationResponse.data);
-         
+        setRecommendations(recommendationsResponse.data);
       } catch (error) {
-        console.error("Error fetching TV data:", error);
+        console.error(`Error fetching ${contentType} data:`, error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchtvData();
-  }, [id]);
+    
+    fetchContentData();
+  }, [id, contentType]);
 
-  if (!recommendation || (!tvData && !type) ) {
+  if (isLoading) {
     return <PinkLoading />;
   }
-   
+
 
   return (
     <>
       <NavBar />
 
       <div className="flex flex-col justify-center  items-center bg-black h-screen  ">
-        <iframe
-          src={src}
-          className="size-full"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
+                <iframe
+            src={playerUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allowFullScreen
+            title={`${contentType === 'movie' ? 'Movie' : 'Episode'} Player`}
+          ></iframe>
+
       </div>
 
-      <div className="flex justify-center items-center lg:w-full bg-black">
-      <div className="bg-black backdrop-blur-sm rounded-xl p-6 shadow-2xl max-w-2xl w-full  lg:max-w-full">
-        <h2 className="text-2xl font-bold text-white mb-4 text-center">
-          Try these Servers
-        </h2>
+      <div className="bg-gray-900/80 backdrop-blur-md rounded-xl p-6 shadow-2xl  ">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+            </svg>
+            Select Server
+          </h2>
 
-        <div className=" lg:flex lg:w-full lg:justify-center  lg:h-20 lg:gap-10 grid grid-cols-2 md:grid-cols-3 gap-3 mb-6  ">
-          {[
-            { name: "Server 1", desc:"Default choice", color: "bg-pink-300", textColor: "text-pink-300", choice: choice[4] },
-            { name: "Server 2", desc:"Speedy", color: "bg-yellow-200", textColor: "text-yellow-200", choice: choice[1] },
-            { name: "Server 3", desc:"With Johnny", color: "bg-green-200", textColor: "text-green-200", choice: choice[2] },
-            { name: "Server 4", desc:"For movies only", color: "bg-blue-200", textColor: "text-blue-200", choice: choice[3] },
-            { name: "Server 5", desc:"Best for Series", color: "bg-purple-200", textColor: "text-purple-200", choice: choice[0] },
-            { name: "Server 6", desc:"No Ads", color: "bg-red-200", textColor: "text-red-200", choice: choice[5] },
-            { name: "Server 7", desc:"Smooth", color: "bg-gray-200", textColor: "text-gray-200", choice: choice[6] },
-          ].map((serverItem, index) => (
-            <div
-              key={index}
-              onClick={() => setServer(serverItem.choice)}
-              className={`p-3 rounded-lg cursor-pointer transition-all lg:w-40 lg:h-20 duration-200 flex items-center justify-between
-          ${
-            server === serverItem.choice
-              ? `${serverItem.color}/20 border-2 ${serverItem.color.replace('bg-', 'border-')} scale-105`
-              : "bg-gray-700/30 hover:bg-gray-700/50 border-2 border-transparent"
-          }
-        `}
-            >
-              <span className={`${serverItem.textColor} font-medium`}>
-                {serverItem.name}<p>{serverItem.desc}</p>
-              </span>
-              {server === serverItem.choice && (
-                <div className="w-2 h-2 rounded-full bg-green-400 ml-2 shadow-[0_0_8px_#34d399]" />
-              )}
-            </div>
-          ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+            {SERVERS.map((serverInfo, index) => (
+              <ServerButton
+                key={index}
+                server={serverUrls[index]}
+                currentServer={activeServer}
+                onClick={() => setActiveServer(serverUrls[index])}
+                details={serverInfo}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      </div>
 
      
         
+{contentType === "tv" && contentData && (
+             <Seasons 
+              tv={contentData} 
+              episodenumbers={episode} 
+              seasonnumbers={season} 
+            />
+         )}
 
-      {!type && <Seasons tv={tvData} episodenumbers={episode} seasonnumbers={season} />}
-
-
-
-      <Recommendation
-        recommendation={recommendation}
-        title={"Recommendations"}
-      />
+         {recommendations && recommendations.results && recommendations.results.length > 0 && (
+             <Recommendation
+              recommendation={recommendations}
+              title="You May Also Like"
+            />
+         )}
       <Foter/>
     </>
   );
