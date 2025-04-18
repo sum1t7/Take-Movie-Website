@@ -34,7 +34,7 @@ const PosterPage = ({ movie, images, id, type }) => {
         style={{ color: "transparent" }}
       />
 
-      <div className="flex  items-center gap-4 lg:justify-between overflow-hidden max-sm:w-full max-sm:flex-col sm:gap-20">
+      <div className="flex  items-center gap-4 lg:justify-between overflow-hidden  max-sm:w-full    max-sm:flex-col sm:gap-20">
         <div className="md:max-w-1/2 flex items-center gap-10">
           <div className="relative hidden max-w-[175px] shrink-0 sm:block">
             <img

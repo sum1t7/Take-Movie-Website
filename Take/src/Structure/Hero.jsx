@@ -8,6 +8,7 @@ import TopList from "../Compontents/TopList";
 import Foter from "../Compontents/Foter";
 import PinkLoading from "../Compontents/Loading";
 import FullViewPreview from "../Compontents/FullViewPreview";
+import Watched from "../Compontents/Watched";
 
 const Hero = () => {
   const [trending, setTrending] = useState(null);
@@ -56,16 +57,11 @@ const Hero = () => {
     fetchTrending();
   }, []);
 
-   
-
   return (
     <>
       <NavBar />
-      {loadingTrending ? (
-        <PinkLoading />
-      ) : (
-        <PosterMain trending={trending} />
-      )}
+      {loadingTrending ? <PinkLoading /> : <PosterMain trending={trending} />}
+      {loadingTrending ? <PinkLoading /> : <Watched />}
       {loadingTrending ? (
         <PinkLoading />
       ) : (
@@ -75,16 +71,8 @@ const Hero = () => {
           bit={0}
         />
       )}
-      {loadingTOP ? (
-        <PinkLoading />
-      ) : (
-        <Top title="TOP 10" bit={0} />
-      )}
-      {loadingTOP ? (
-        <PinkLoading />
-      ) : (
-        <TopList TOP={TOP} />
-      )}
+      {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
+      {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
       {loadingRomance ? (
         <PinkLoading />
       ) : (
@@ -92,14 +80,10 @@ const Hero = () => {
           recommendation={romance}
           title={"Romance"}
           bit={1}
-          type={1}
+          type={'movie'}
         />
       )}
-        {loadingAction ? (
-          <PinkLoading />
-        ) : (
-          <FullViewPreview/>
-        )}
+      {loadingAction ? <PinkLoading /> : <FullViewPreview />}
       {loadingAction ? (
         <PinkLoading />
       ) : (
@@ -107,7 +91,7 @@ const Hero = () => {
           recommendation={action}
           title={"Action"}
           bit={0}
-          type={1}
+          type={'movie'}
         />
       )}
 

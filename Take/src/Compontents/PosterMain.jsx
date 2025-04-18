@@ -156,8 +156,7 @@ const PosterMain = ({ trending }) => {
         >
           {trending[currentIndex] && (
             <div className="relative h-full w-full">
-              {/* Background image with animated scale */}
-              <motion.div
+               <motion.div
                
                 className="absolute inset-0"
               >
@@ -165,16 +164,14 @@ const PosterMain = ({ trending }) => {
                   src={`https://image.tmdb.org/t/p/original/${trending[currentIndex].backdrop_path}`}
                   alt={trending[currentIndex].title || trending[currentIndex].name}
                   className="w-full h-full object-cover"
-                />
+                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
               </motion.div>
 
-              {/* Content overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
                 <div className="container mx-auto">
                   <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
-                    {/* Logo and info */}
-                    <motion.div
+                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.7, delay: 0.2 }}
@@ -193,8 +190,7 @@ const PosterMain = ({ trending }) => {
                         </h2>
                       )}
 
-                      {/* Movie/Show details */}
-                      <div className="flex items-center gap-4 text-sm md:text-base text-white my-4 flex-wrap">
+                       <div className="flex items-center gap-4 text-sm md:text-base text-white my-4 flex-wrap">
                         <div className="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
                           <svg
                             fill="yellow"
@@ -226,8 +222,7 @@ const PosterMain = ({ trending }) => {
                         </div>
                       </div>
 
-                      {/* Overview */}
-                      <motion.p
+                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
@@ -237,8 +232,7 @@ const PosterMain = ({ trending }) => {
                       </motion.p>
                     </motion.div>
 
-                    {/* Watch button */}
-                    <motion.div
+                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5, delay: 0.6 }}

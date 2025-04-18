@@ -91,7 +91,7 @@ const Person = () => {
               recommendation={{ results: credits }}
               title="Movies"
               bit={true}
-              type={true}
+              type={'movie'}
             />
         </>
       )}

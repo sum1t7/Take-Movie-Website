@@ -73,13 +73,13 @@ const Page = ({ type }) => {
         recommendation={TopRated}
         title={"Popular"}
         bit={1}
-        type={type}
+        type={type ? 'movie' : 'tv' }
       />
       <Recommendation
         recommendation={trending}
         title={"Trending this week"}
         bit={0}
-        type={type}
+        type={type ? 'movie' : 'tv' }
       />
 
       <Foter />

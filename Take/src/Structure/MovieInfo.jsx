@@ -8,6 +8,9 @@ import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import PinkLoading from "../Compontents/Loading";
 import Cast  from '../Compontents/Cast';
+import { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
+
 const MovieInfo = () => {
   const { id } = useParams();
 
@@ -18,6 +21,19 @@ const MovieInfo = () => {
   const [recommendation, setRecommendation] = useState(null);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
+
+  const handleAddToFav = () => {
+    const favContent = {
+      id: id,
+      type: 'movie',
+    };
+    let favList = JSON.parse(localStorage.getItem("favList")) || [];
+    favList = favList.filter((item) => item.id !== id ); 
+    favList.push(favContent);
+    localStorage.setItem("favList", JSON.stringify(favList));
+    toast.success("Successfully added to favorites!");
+
+  }
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -60,8 +76,17 @@ const MovieInfo = () => {
 
   return (
     <>
+    <Toaster/>
       <NavBar />
       <PosterPage movie={movie} images={images} id={id} type={1} />
+      <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">
+        <button
+          className="bg-fuchsia-700 text-white px-4 py-2 rounded-4xl cursor-pointer hover:bg-fuchsia-800 transition duration-300 ease-in-out"
+          onClick={handleAddToFav}
+        >
+          Add to Favorites
+        </button>
+      </div>
       <Description movie={movie} video={video} id={id} />
       <Cast movie={movie} cast={cast} />
       <Recommendation

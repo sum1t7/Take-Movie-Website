@@ -17,9 +17,9 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const SERVERS = [
   {
     name: "Server 1",
-    desc: "Default choice",
+    desc: "No Ads",
     color: "pink",
-    envKey: "VITE_SERVER_URL_5"
+    envKey: "VITE_SERVER_URL_6"
   },
   {
     name: "Server 2",
@@ -47,9 +47,9 @@ const SERVERS = [
   },
   {
     name: "Server 6",
-    desc: "No Ads",
+    desc: "All rounder",
     color: "red",
-    envKey: "VITE_SERVER_URL_6"
+    envKey: "VITE_SERVER_URL_5"
   },
   {
     name: "Server 7",
@@ -131,16 +131,14 @@ const PlayerPage = ({ type }) => {
     const fetchContentData = async () => {
       setIsLoading(true);
       try {
-        // Only fetch TV data if we're viewing a TV show
-        if (contentType === "tv") {
+         if (contentType === "tv") {
           const tvResponse = await axios.get(
             `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`
           );
           setContentData(tvResponse.data);
         }
         
-        // Always fetch recommendations
-        const recommendationsResponse = await axios.get(
+         const recommendationsResponse = await axios.get(
           `https://api.themoviedb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`
         );
         setRecommendations(recommendationsResponse.data);

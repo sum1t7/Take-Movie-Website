@@ -9,7 +9,8 @@ import NavBar from "../Compontents/NavBar";
 import Cast from "../Compontents/Cast";
 import PinkLoading from "../Compontents/Loading";
 import Seasons from "../Compontents/Seasons";
-
+import { toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 const TvInfo = () => {
   const { id } = useParams();
 
@@ -18,8 +19,23 @@ const TvInfo = () => {
   const [video, setVideo] = useState(null);
   const [cast, setCast] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
+  
+
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
+
+  const handleAddToFav = () => {
+    const favContent = {
+      id: id,
+      type: 'tv',
+    };
+    let favList = JSON.parse(localStorage.getItem("favList")) || [];
+    favList = favList.filter((item) => item.id !== id); 
+    favList.push(favContent);
+    localStorage.setItem("favList", JSON.stringify(favList));
+    toast.success("Successfully added to favorites!");
+  }
+
   useEffect(() => {
     const fetchtvData = async () => {
       try {
@@ -61,8 +77,17 @@ const TvInfo = () => {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <NavBar />
       <PosterPage movie={tv} images={images} id={id} type={0} />
+      <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">
+        <button
+          className="bg-fuchsia-700 text-white px-4 py-2 rounded-4xl cursor-pointer hover:bg-fuchsia-800 transition duration-300 ease-in-out"
+          onClick={handleAddToFav}
+        >
+          Add to Favorites
+        </button>
+      </div>
       <Seasons tv={tv} />
       <Description movie={tv} video={video} id={id} />
       <Cast movie={tv} cast={cast} />
