@@ -56,7 +56,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
   }, [currentIndex]);
 
   return (
-    <div className="relative items-end lg:py-15 py-10 bg-gray-900">
+    <div className={`relative items-end ${recommendation.results[0] ? 'lg:py-15 py-10' : ''}   bg-gray-900`}>
       <Toaster />
       <button
         type="button"
@@ -94,12 +94,14 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         </svg>{" "}
       </button>
 
-      <h1
+       <h1
         className={`text-2xl md:text-3xl font-bold flex items-center gap-3  lg:ml-20 ml-10    ${
           bit ? "text-[#e91eb0]" : ""
         }`}
-      >
+        >
+        {recommendation.results[0] && (
         <div class="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
+      )}
 
         {recommendation.results[0] ? title : ""}
       </h1>
