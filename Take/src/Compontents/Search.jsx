@@ -33,7 +33,7 @@ const Search = () => {
       try {
         const sanitizedQuery = DOMPurify.sanitize(query);
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false`
+          `https://api.tmdb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false`
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
@@ -61,7 +61,7 @@ const Search = () => {
   return (
     <>
       <NavBar />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -79,7 +79,7 @@ const Search = () => {
                 Discover Entertainment
               </span>
             </h1>
-            
+
             <div className="relative">
               <input
                 type="text"
@@ -98,13 +98,24 @@ const Search = () => {
                   onClick={() => setQuery("")}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               )}
             </div>
-            
+
             <AnimatePresence>
               {!query && (
                 <motion.div
@@ -115,8 +126,8 @@ const Search = () => {
                   className="p-6 mt-8 text-gray-300 text-center rounded-xl bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 shadow-xl"
                 >
                   <p className="lg:text-xl text-base">
-                    Find your favorite movies and series easily. Type in the title or
-                    keyword and discover detailed information.
+                    Find your favorite movies and series easily. Type in the
+                    title or keyword and discover detailed information.
                   </p>
                   <p className="mt-2 text-fuchsia-400 lg:text-lg text-sm">
                     Explore our catalog and find what to watch in seconds!
@@ -127,7 +138,7 @@ const Search = () => {
           </motion.div>
 
           {loading && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -138,7 +149,7 @@ const Search = () => {
           )}
 
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
@@ -178,23 +189,30 @@ const Search = () => {
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          
+
                           <div className="absolute top-2 right-2">
-                            <span className={`
+                            <span
+                              className={`
                               text-xs font-bold py-1 px-3 rounded-full
-                              ${item.media_type === "tv" 
-                                ? "bg-fuchsia-500" 
-                                : "bg-amber-500"
+                              ${
+                                item.media_type === "tv"
+                                  ? "bg-fuchsia-500"
+                                  : "bg-amber-500"
                               } text-white shadow-md shadow-black/30 backdrop-blur-sm
-                            `}>
+                            `}
+                            >
                               {item.media_type}
                             </span>
                           </div>
-                          
+
                           <div className="absolute bottom-0 left-0 right-0 p-3 transform transition-transform duration-300">
                             <div className="flex items-center space-x-1 mb-1">
-                              <span className="text-yellow-400 text-sm">⭐</span>
-                              <span className="text-white text-sm font-medium">{item.vote_average.toFixed(1)}</span>
+                              <span className="text-yellow-400 text-sm">
+                                ⭐
+                              </span>
+                              <span className="text-white text-sm font-medium">
+                                {item.vote_average.toFixed(1)}
+                              </span>
                             </div>
                             <h2 className="text-white text-sm md:text-base font-semibold line-clamp-2">
                               {item.title || item.name}
@@ -218,22 +236,24 @@ const Search = () => {
                 transition={{ duration: 0.3 }}
                 className="text-center py-10 px-6 mt-4 text-fuchsia-400 bg-gray-800/30 backdrop-blur-sm rounded-lg border border-gray-700/50"
               >
-                <svg 
-                  className="w-12 h-12 mx-auto mb-4 text-gray-500" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
+                <svg
+                  className="w-12 h-12 mx-auto mb-4 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={1.5} 
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
                 <p className="text-lg">No results found for "{query}"</p>
-                <p className="text-sm text-gray-400 mt-2">Try another search term</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Try another search term
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

@@ -19,48 +19,46 @@ const TvInfo = () => {
   const [video, setVideo] = useState(null);
   const [cast, setCast] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
-  
-
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
   const handleAddToFav = () => {
     const favContent = {
       id: id,
-      type: 'tv',
+      type: "tv",
     };
     let favList = JSON.parse(localStorage.getItem("favList")) || [];
-    favList = favList.filter((item) => item.id !== id); 
+    favList = favList.filter((item) => item.id !== id);
     favList.push(favContent);
     localStorage.setItem("favList", JSON.stringify(favList));
     toast.success("Successfully added to favorites!");
-  }
+  };
 
   useEffect(() => {
     const fetchtvData = async () => {
       try {
         const tvResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${id}?api_key=${apikey}&language=en-US`
         );
         settv(tvResponse.data);
 
         const imagesResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}/images?api_key=${apikey}`
+          `https://api.tmdb.org/3/tv/${id}/images?api_key=${apikey}`
         );
         setImages(imagesResponse.data);
 
         const videoResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${id}/videos?api_key=${apikey}&language=en-US`
         );
         setVideo(videoResponse.data);
 
         const castResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${apikey}`
+          `https://api.tmdb.org/3/tv/${id}/credits?api_key=${apikey}`
         );
         setCast(castResponse.data);
 
         const recommendationResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
         );
         setRecommendation(recommendationResponse.data);
       } catch (error) {

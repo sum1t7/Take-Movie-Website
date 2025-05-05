@@ -16,13 +16,13 @@ const Person = () => {
     const fetchperson = async () => {
       try {
         const res = await axios.get(
-          `https://api.themoviedb.org/3/person/${id}?api_key=${apikey}`
+          `https://api.tmdb.org/3/person/${id}?api_key=${apikey}`
         );
         setPerson(res.data);
         setLoading(false);
 
         const creditsResponse = await fetch(
-          `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${apikey}&sort_by=vote_average.desc`
+          `https://api.tmdb.org/3/person/${id}/movie_credits?api_key=${apikey}&sort_by=vote_average.desc`
         );
         const creditsData = await creditsResponse.json();
 

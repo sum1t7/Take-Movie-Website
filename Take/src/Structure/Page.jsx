@@ -22,31 +22,31 @@ const Page = ({ type }) => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.themoviedb.org/3/trending/${
+          `https://api.tmdb.org/3/trending/${
             type ? "movie" : "tv"
           }/week?api_key=${apikey}`
         );
         setTrending(trendingResponse.data);
         console.log(
-          `https://api.themoviedb.org/3/trending/${
+          `https://api.tmdb.org/3/trending/${
             type ? "movie" : "tv"
           }/week?api_key=${apikey}`
         );
 
         const actionResponse = await axios.get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
         );
         setAction(actionResponse.data);
 
         const res = await axios.get(
-          `https://api.themoviedb.org/3/trending/${
+          `https://api.tmdb.org/3/trending/${
             type ? "movie" : "tv"
           }/day?api_key=${apikey}&sort_by=vote_average.desc`
         );
         setTOP(res.data);
 
         const TopRatedResponse = await axios.get(
-          `https://api.themoviedb.org/3/${
+          `https://api.tmdb.org/3/${
             type ? "movie" : "tv"
           }/top_rated?api_key=${apikey}`
         );
@@ -73,13 +73,13 @@ const Page = ({ type }) => {
         recommendation={TopRated}
         title={"Popular"}
         bit={1}
-        type={type ? 'movie' : 'tv' }
+        type={type ? "movie" : "tv"}
       />
       <Recommendation
         recommendation={trending}
         title={"Trending this week"}
         bit={0}
-        type={type ? 'movie' : 'tv' }
+        type={type ? "movie" : "tv"}
       />
 
       <Foter />

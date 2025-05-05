@@ -16,7 +16,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
     try {
       const fetchEpisode = async () => {
         const res = await axios.get(
-          `https://api.themoviedb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
         );
         setEpisode(res.data.episodes);
         setFilteredEpisodes(res.data.episodes);
@@ -35,7 +35,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
       if (searchQuery.trim() === "") {
         setFilteredEpisodes(episode);
       } else {
-        const filtered = episode.filter(ep => 
+        const filtered = episode.filter((ep) =>
           ep.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredEpisodes(filtered);
@@ -49,9 +49,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
 
   return (
     <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-gradient-to-b from-gray-900 to-gray-950">
-      <h1 className="px-4 pb-3 text-5xl font-bold text-fuchsia-600">
-        Seasons
-      </h1>
+      <h1 className="px-4 pb-3 text-5xl font-bold text-fuchsia-600">Seasons</h1>
 
       <div className="flex lg:flex-row flex-col overflow-hidden">
         <div className="lg:flex-2/6 flex lg:flex-col max-h-[30rem] overflow-x-auto space-y-2 lg:overflow-y-auto py-2 pl-1 lg:max-h-[40rem]">
@@ -70,7 +68,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
                 className="w-40 select h-60 rounded-2xl object-contain"
                 onClick={() => {
                   setSeasonNumber(s.season_number);
-                  setSearchQuery("");  
+                  setSearchQuery("");
                 }}
               />
 
@@ -105,7 +103,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
         </div>
 
         <div className="flex lg:flex-4/5 max-h-[30rem] flex-col gap-4 max-sm:min-h-[30rem] lg:max-h-[40rem]">
-           <div className="pl-10 pr-4 pt-4">
+          <div className="pl-10 pr-4 pt-4">
             <div className="relative">
               <input
                 type="text"
@@ -153,15 +151,16 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
               )}
             </div>
           </div>
-          
-           <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
+
+          <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
             {filteredEpisodes && filteredEpisodes.length > 0 ? (
               filteredEpisodes.map((e) => (
                 <a
                   key={e.id}
                   href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
                   className={`group relative select ${
-                    e.episode_number == episodeNumber && seasonnumbers == SeasonNumber
+                    e.episode_number == episodeNumber &&
+                    seasonnumbers == SeasonNumber
                       ? "borderpink"
                       : ""
                   } block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
@@ -201,7 +200,8 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
                     </h3>
                     <div className="flex justify-between items-center mt-1 mb-2">
                       <span className="text-xs text-gray-300">
-                        S{SeasonNumber}-E{e.episode_number} • {e.runtime || '?'} min
+                        S{SeasonNumber}-E{e.episode_number} • {e.runtime || "?"}{" "}
+                        min
                       </span>
                       <span className="text-xs text-gray-300">
                         {e.air_date ? e.air_date.split("-").join("/") : "TBA"}
@@ -210,12 +210,8 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
                     <div className="text-xs text-gray-200 overflow-y-auto flex-grow">
                       {e.overview || "No description available."}
                     </div>
-                    <div className="mt-2 flex justify-between items-center">
-                      
-                    </div>
-
-
-                    </div>
+                    <div className="mt-2 flex justify-between items-center"></div>
+                  </div>
                 </a>
               ))
             ) : loading ? (
@@ -224,7 +220,9 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
               </div>
             ) : (
               <div className="text-center w-full py-8">
-                <p className="text-gray-400">No episodes found matching "{searchQuery}"</p>
+                <p className="text-gray-400">
+                  No episodes found matching "{searchQuery}"
+                </p>
               </div>
             )}
           </div>

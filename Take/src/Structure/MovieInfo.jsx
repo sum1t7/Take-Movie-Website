@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import PinkLoading from "../Compontents/Loading";
-import Cast  from '../Compontents/Cast';
+import Cast from "../Compontents/Cast";
 import { Toaster } from "react-hot-toast";
 import { toast } from "react-hot-toast";
 
@@ -25,41 +25,40 @@ const MovieInfo = () => {
   const handleAddToFav = () => {
     const favContent = {
       id: id,
-      type: 'movie',
+      type: "movie",
     };
     let favList = JSON.parse(localStorage.getItem("favList")) || [];
-    favList = favList.filter((item) => item.id !== id ); 
+    favList = favList.filter((item) => item.id !== id);
     favList.push(favContent);
     localStorage.setItem("favList", JSON.stringify(favList));
     toast.success("Successfully added to favorites!");
-
-  }
+  };
 
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
         const movieResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/movie/${id}?api_key=${apikey}&language=en-US`
         );
         setMovie(movieResponse.data);
 
         const imagesResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apikey}`
+          `https://api.tmdb.org/3/movie/${id}/images?api_key=${apikey}`
         );
         setImages(imagesResponse.data);
 
         const videoResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`
         );
         setVideo(videoResponse.data);
 
         const castResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apikey}`
+          `https://api.tmdb.org/3/movie/${id}/credits?api_key=${apikey}`
         );
         setCast(castResponse.data);
 
         const recommendationResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
         );
         setRecommendation(recommendationResponse.data);
       } catch (error) {
@@ -76,7 +75,7 @@ const MovieInfo = () => {
 
   return (
     <>
-    <Toaster/>
+      <Toaster />
       <NavBar />
       <PosterPage movie={movie} images={images} id={id} type={1} />
       <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">

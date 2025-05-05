@@ -16,8 +16,8 @@ const PosterMain = ({ trending }) => {
     try {
       const url =
         type === "movie"
-          ? `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apikey}`
-          : `https://api.themoviedb.org/3/tv/${id}/images?api_key=${apikey}`;
+          ? `https://api.tmdb.org/3/movie/${id}/images?api_key=${apikey}`
+          : `https://api.tmdb.org/3/tv/${id}/images?api_key=${apikey}`;
 
       const res = await axios.get(url);
       const englishLogos = res.data.logos.filter(
@@ -101,7 +101,9 @@ const PosterMain = ({ trending }) => {
       <div className="flex items-center justify-center h-screen bg-gray-900">
         <div className="flex flex-col items-center">
           <div className="w-16 h-16 border-4 border-fuchsia-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-fuchsia-400 text-lg">Loading amazing content...</p>
+          <p className="mt-4 text-fuchsia-400 text-lg">
+            Loading amazing content...
+          </p>
         </div>
       </div>
     );
@@ -109,7 +111,7 @@ const PosterMain = ({ trending }) => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-       <button
+      <button
         type="button"
         className="absolute top-1/2 -translate-y-1/2 left-4 z-20 bg-black/30 hover:bg-black/60 backdrop-blur-sm w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
         onClick={handlePrev}
@@ -125,7 +127,7 @@ const PosterMain = ({ trending }) => {
           <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
         </svg>
       </button>
-      
+
       <button
         type="button"
         className="absolute top-1/2 -translate-y-1/2 right-4 z-20 bg-black/30 hover:bg-black/60 backdrop-blur-sm w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
@@ -143,9 +145,7 @@ const PosterMain = ({ trending }) => {
         </svg>
       </button>
 
-      
-
-       <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0 }}
@@ -156,22 +156,21 @@ const PosterMain = ({ trending }) => {
         >
           {trending[currentIndex] && (
             <div className="relative h-full w-full">
-               <motion.div
-               
-                className="absolute inset-0"
-              >
+              <motion.div className="absolute inset-0">
                 <img
                   src={`https://image.tmdb.org/t/p/original/${trending[currentIndex].backdrop_path}`}
-                  alt={trending[currentIndex].title || trending[currentIndex].name}
+                  alt={
+                    trending[currentIndex].title || trending[currentIndex].name
+                  }
                   className="w-full h-full object-cover"
-                 />
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
               </motion.div>
 
-               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
                 <div className="container mx-auto">
                   <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
-                     <motion.div
+                    <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.7, delay: 0.2 }}
@@ -179,18 +178,24 @@ const PosterMain = ({ trending }) => {
                     >
                       {logos[trending[currentIndex].id] ? (
                         <img
-                          alt={trending[currentIndex].title || trending[currentIndex].name}
+                          alt={
+                            trending[currentIndex].title ||
+                            trending[currentIndex].name
+                          }
                           loading="lazy"
                           className="w-64 md:w-80 h-auto object-contain mb-6"
-                          src={`https://image.tmdb.org/t/p/w500${logos[trending[currentIndex].id]}`}
+                          src={`https://image.tmdb.org/t/p/w500${
+                            logos[trending[currentIndex].id]
+                          }`}
                         />
                       ) : (
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-                          {trending[currentIndex].title || trending[currentIndex].name}
+                          {trending[currentIndex].title ||
+                            trending[currentIndex].name}
                         </h2>
                       )}
 
-                       <div className="flex items-center gap-4 text-sm md:text-base text-white my-4 flex-wrap">
+                      <div className="flex items-center gap-4 text-sm md:text-base text-white my-4 flex-wrap">
                         <div className="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
                           <svg
                             fill="yellow"
@@ -206,23 +211,25 @@ const PosterMain = ({ trending }) => {
                             {trending[currentIndex].vote_average.toFixed(1)}
                           </p>
                         </div>
-                        
+
                         <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
                           {trending[currentIndex].release_date
                             ? trending[currentIndex].release_date.split("-")[0]
-                            : trending[currentIndex].first_air_date?.split("-")[0]}
+                            : trending[currentIndex].first_air_date?.split(
+                                "-"
+                              )[0]}
                         </div>
-                        
+
                         <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full font-semibold uppercase">
                           {trending[currentIndex].media_type}
                         </div>
-                        
+
                         <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full font-semibold uppercase">
                           {trending[currentIndex].original_language}
                         </div>
                       </div>
 
-                       <motion.p
+                      <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
@@ -232,36 +239,34 @@ const PosterMain = ({ trending }) => {
                       </motion.p>
                     </motion.div>
 
-                     <motion.div
+                    <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5, delay: 0.6 }}
                     >
-                      
                       <a
-                  className="play-button"
-                  href={`${
+                        className="play-button"
+                        href={`${
                           trending[currentIndex].media_type === "movie"
                             ? `/watch/movie/${trending[currentIndex].id}`
                             : `/tv/${trending[currentIndex].id}`
                         }`}
                       >
-                         <span className="play-icon">
-                    <svg
-                      strokeWidth="currentColor"
-                      fill="currentColor"
-                      viewBox="0 0 384 512"
-                      className="h-8 w-8 play-icon-inner"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
-                    </svg>
-                      </span>
+                        <span className="play-icon">
+                          <svg
+                            strokeWidth="currentColor"
+                            fill="currentColor"
+                            viewBox="0 0 384 512"
+                            className="h-8 w-8 play-icon-inner"
+                            height="1em"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+                          </svg>
+                        </span>
                         <span className="play-text">WATCH NOW!</span>
-                        </a>
-                      
+                      </a>
                     </motion.div>
                   </div>
                 </div>

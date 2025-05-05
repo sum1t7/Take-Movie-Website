@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./rec.css";
+import logo from "../assets/Take-logo.PNG";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll for desktop version
-  useEffect(() => {
+   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setScrolled(true);
@@ -26,19 +26,22 @@ const NavBar = () => {
 
   return (
     <>
-       <nav 
+      <nav
         className={`hidden md:block fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled 
-            ? "bg-gray-900/95 backdrop-blur-sm py-2 shadow-lg" 
+          scrolled
+            ? "bg-gray-900/95 backdrop-blur-sm py-2 shadow-lg"
             : "bg-transparent py-4"
         }`}
       >
         <div className="container mx-auto px-6 py-2">
           <div className="flex justify-evenly items-center">
-            <Link to="/" className="text-white text-3xl font-bold">
-             TAKE 🎬
+            <Link
+              to="/"
+              className="text-white text-3xl flex-row flex font-bold"
+            >
+              <img src={logo} className="w-30 h-14 " alt="Take Logo" />
             </Link>
-            
+
             <div className="flex space-x-8">
               <Link
                 to="/"
@@ -100,7 +103,7 @@ const NavBar = () => {
         </div>
       </nav>
 
-       <nav className="fixed bottom-0 w-full bg-gray-900/95 backdrop-blur-sm text-white shadow-lg z-50 md:hidden">
+      <nav className="fixed bottom-0 w-full bg-gray-900/95 backdrop-blur-sm text-white shadow-lg z-50 md:hidden">
         <div className="container mx-auto flex justify-around items-center py-3">
           <Link
             to="/"
@@ -171,9 +174,7 @@ const NavBar = () => {
         {/* Mobile Menu Dropdown */}
         <div
           className={`absolute bottom-full left-0 w-full bg-gray-800 text-white shadow-lg transition-all duration-300 overflow-hidden ${
-            isOpen 
-              ? "max-h-64 opacity-100" 
-              : "max-h-0 opacity-0"
+            isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="flex flex-col items-center py-4 space-y-6">

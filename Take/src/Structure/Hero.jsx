@@ -27,25 +27,25 @@ const Hero = () => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.themoviedb.org/3/trending/all/day?api_key=${apikey}&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/trending/all/day?api_key=${apikey}&sort_by=popularity.desc`
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
 
         const actionResponse = await axios.get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
         );
         setAction(actionResponse.data);
         setLoadingAction(false);
 
         const romanceResponse = await axios.get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_genres=10749&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=10749&sort_by=popularity.desc`
         );
         setRomance(romanceResponse.data);
         setLoadingRomance(false);
 
         const res = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
+          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
         );
         setTOP(res.data);
         setLoadingTOP(false);
@@ -80,7 +80,7 @@ const Hero = () => {
           recommendation={romance}
           title={"Romance"}
           bit={1}
-          type={'movie'}
+          type={"movie"}
         />
       )}
       {loadingAction ? <PinkLoading /> : <FullViewPreview />}
@@ -91,7 +91,7 @@ const Hero = () => {
           recommendation={action}
           title={"Action"}
           bit={0}
-          type={'movie'}
+          type={"movie"}
         />
       )}
 

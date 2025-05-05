@@ -9,4 +9,6 @@ export default defineConfig({
     tailwindcss(),
 
   ],
+  assetsInclude: ['**/*.PNG'],  
+
 })
