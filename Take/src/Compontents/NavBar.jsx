@@ -98,6 +98,12 @@ const NavBar = () => {
               >
                 TV Shows
               </Link>
+               <Link
+                to="/recs"
+                className="text-gray-300 hover:text-fuchsia-400 transition-all duration-300"
+              >
+                Recommendations
+              </Link>
             </div>
           </div>
         </div>

@@ -16,11 +16,13 @@
     "dotenv": "^16.4.7",
     "env": "^0.0.2",
     "framer-motion": "^12.6.5",
+    "lucide-react": "^0.513.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-loading-skeleton": "^3.5.0",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.3.0",
     "tailwindcss": "^4.0.12"
   },
