@@ -100,6 +100,7 @@ const Recs = () => {
             >
               {isLoading ? <>Analyzing your mood...</> : <>Explore</>}
             </button>
+            <p className="text-4xl text-center p-10">Under Construction🦭</p>
           </div>
         </motion.div>
 
