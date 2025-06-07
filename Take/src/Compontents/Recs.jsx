@@ -13,10 +13,9 @@ const Recs = () => {
     User input: "${userInput}"
     Format your response just like this:
     Genre : [Genre Category]
-    Movies : [List of 5-7 movie recommendations based on the mood and highlight them]
-    Format for the movies and t show list is: 
-    [Movie name](https://take-movie-website.vercel.app/movie/{tmdm_id}) for movie 
-    [Tv show name](https://take-movie-website.vercel.app/tv/{tmdm_id}) for tv shows.
+    Movies/tvshows : [List of 5-7 movie recommendations based on the mood and highlight them]
+    You can try to use emojis with the movie titles.
+    If the user input is not related to movies or tv shows, respond with "I am not sure about that, please try again with a movie or tv show related query."
     `;
 
     try {
