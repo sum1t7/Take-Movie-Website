@@ -13,7 +13,11 @@ const Recs = () => {
     User input: "${userInput}"
     Format your response just like this:
     Genre : [Genre Category]
-    Movies : [List of 5-7 movie recommendations based on the mood and highlight them]`;
+    Movies : [List of 5-7 movie recommendations based on the mood and highlight them]
+    Format for the movies and t show list is: 
+    [Movie name](https://take-movie-website.vercel.app/movie/{tmdm_id}) for movie 
+    [Tv show name](https://take-movie-website.vercel.app/tv/{tmdm_id}) for tv shows.
+    `;
 
     try {
       setIsLoading(true);
