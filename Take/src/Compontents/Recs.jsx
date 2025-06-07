@@ -83,7 +83,7 @@ const Recs = () => {
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(sanitizeInput(e.target.value))}
-              placeholder="I enjoyed Fight club, recommend me some movies like that..."
+              placeholder="I enjoyed Fight club, recommend me some like that..."
               className="w-full h-14 px-6 py-4   rounded-full 
             border-2 border-fuchsia-500/30 focus:border-fuchsia-500 
             focus:ring-2 focus:ring-fuchsia-500/20 
