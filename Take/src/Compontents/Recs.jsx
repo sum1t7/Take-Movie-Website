@@ -83,6 +83,11 @@ const Recs = () => {
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(sanitizeInput(e.target.value))}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && userInput.trim()) {
+                  analyzeWithAI();
+                }
+              }}
               placeholder="I enjoyed Fight club, recommend me some like that..."
               className="w-full h-14 px-6 py-4   rounded-full 
             border-2 border-fuchsia-500/30 focus:border-fuchsia-500 
