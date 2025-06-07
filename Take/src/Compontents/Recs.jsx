@@ -17,7 +17,7 @@ const Recs = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`https://gemma-endpoint-fqc8.vercel.app/api/prompt`, {
+      const response = await fetch(`http://localhost:3001/api/prompt`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,6 @@ const Recs = () => {
             >
               {isLoading ? <>Analyzing your mood...</> : <>Explore</>}
             </button>
-            <p className="text-4xl text-center p-10">Under Construction🦭</p>
           </div>
         </motion.div>
 
