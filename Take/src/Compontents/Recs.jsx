@@ -17,7 +17,7 @@ const Recs = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:3001/api/prompt`, {
+      const response = await fetch(`https://gemma-endpoint.vercel.app/api/prompt`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
