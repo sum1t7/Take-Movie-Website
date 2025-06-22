@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Markdown from "react-markdown";
 import { motion } from "framer-motion";
 import NavBar from "./NavBar";
@@ -9,12 +9,12 @@ const Recs = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const analyzeWithAI = async () => {
-    const prompt = `The Answer should not be more than 200 words or less than 20.Analyze the following user input and determine their Mood and Genre preference they want to watch.
+    const prompt = `The Answer should not be more than 300 words .Analyze the following user input and determine their Mood and Genre preference they want to watch.
     User input: "${userInput}"
     Format your response just like this:
-    Genre : [Genre Category]
-    Movies/tvshows : [List of 5-7 movie recommendations based on the mood and highlight them]
-    You can try to use emojis with the movie titles.
+    Movies/tvshows : [List of 10 movie recommendations based on the mood and genre, or as the user wishes] (with the google search link for each movie)
+    for example:
+    [Fight Club](https://www.google.com/search?q=Fight+Club) and so on...
     If the user input is not related to movies or tv shows, respond with "I am not sure about that, please try again with a movie or tv show related query."
     `;
 
