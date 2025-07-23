@@ -15,43 +15,43 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const SERVERS = [
   {
     name: "Server 1",
-    desc: "No Ads",
+    desc: "Ads & smooth",
     color: "pink",
     envKey: "VITE_SERVER_URL_6",
   },
   {
     name: "Server 2",
-    desc: "Speedy",
+    desc: "Ads but fast",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
   },
   {
     name: "Server 3",
-    desc: "With Johnny",
+    desc: "One Ad",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
   },
   {
     name: "Server 4",
-    desc: "For movies only",
+    desc: "For movies only & Ads",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
   },
   {
     name: "Server 5",
-    desc: "Best for Series",
+    desc: "Good Variety & Ads",
     color: "purple",
     envKey: "VITE_SERVER_URL",
   },
   {
     name: "Server 6",
-    desc: "All rounder",
+    desc: "Allrounder & Ads",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
   },
   {
     name: "Server 7",
-    desc: "Smooth",
+    desc: "Smooth & Ads",
     color: "gray",
     envKey: "VITE_SERVER_URL_7",
   },
@@ -156,7 +156,7 @@ const PlayerPage = ({ type }) => {
     <>
       <NavBar />
 
-      <div className="flex flex-col justify-center  items-center bg-black h-[40vh]  lg:h-[100vh] md:h-[70vh] ">
+      <div className="flex flex-col justify-center  items-center bg-black h-[40vh]  lg:h-[97vh] md:h-[70vh] ">
         <iframe
           src={playerUrl}
           className=" size-full"
@@ -165,7 +165,7 @@ const PlayerPage = ({ type }) => {
           title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
         ></iframe>
       </div>
-
+      <p className="text-center text-gray-400 bg-gray-700">I dont have control over the ads. Please close any pages that open up, or use an Ad blocker</p>
       <div className="bg-gray-900/80 backdrop-blur-md rounded-xl p-6 shadow-2xl  ">
         <h2 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
           <svg
