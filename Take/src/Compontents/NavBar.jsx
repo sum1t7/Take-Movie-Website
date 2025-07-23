@@ -7,7 +7,7 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setScrolled(true);
@@ -98,7 +98,7 @@ const NavBar = () => {
               >
                 TV Shows
               </Link>
-               <Link
+              <Link
                 to="/recs"
                 className="text-gray-300 hover:text-fuchsia-400 transition-all duration-300"
               >
@@ -196,6 +196,12 @@ const NavBar = () => {
             >
               TV Shows
             </Link>
+             <Link
+                to="/recs"
+                className="text-gray-300 hover:text-fuchsia-400 transition-all duration-300"
+              >
+                Recommendations
+              </Link>
           </div>
         </div>
       </nav>

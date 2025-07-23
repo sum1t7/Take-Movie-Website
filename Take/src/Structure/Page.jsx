@@ -34,21 +34,21 @@ const Page = ({ type }) => {
         );
 
         const actionResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=vote_count.desc`
         );
         setAction(actionResponse.data);
 
         const res = await axios.get(
           `https://api.tmdb.org/3/trending/${
             type ? "movie" : "tv"
-          }/day?api_key=${apikey}&sort_by=vote_average.desc`
+          }/day?api_key=${apikey}&sort_by=vote_count.desc`
         );
         setTOP(res.data);
 
         const TopRatedResponse = await axios.get(
           `https://api.tmdb.org/3/${
             type ? "movie" : "tv"
-          }/top_rated?api_key=${apikey}`
+          }/top_rated?api_key=${apikey}&sort_by=vote_count.desc`
         );
         setTopRated(TopRatedResponse.data);
       } catch (error) {

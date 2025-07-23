@@ -31,7 +31,7 @@ const Rofees = () => {
         <Route path="/person/:id" element={<Person/>} />
         <Route path="/watch/tv/:id/:season/:episode" element={<PlayerPage type={0}/>} />
          <Route path="*" element={<Navigate to="/" />} />
-         <Route path="/test" element={<Test/>}/>
+         {/* <Route path="/test" element={<Test/>}/> */}
          <Route path="/recs" element={<Recs/>}/>
        </Routes>
     </Router>

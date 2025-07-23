@@ -100,7 +100,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         }`}
         >
         {recommendation.results[0] && (
-        <div class="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
+        <div className="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
       )}
 
         {recommendation.results[0] ? title : ""}

@@ -15,13 +15,17 @@ const Hero = () => {
   const [Comedy, setComedy] = useState(null);
   const [Action, setAction] = useState(null);
   const [Romance, setRomance] = useState(null);
+  const [Animation, setAnimation] = useState(null);
   const [TOP, setTOP] = useState(null);
+  const [genre, setGenre] = useState("Comedy");
 
   const [loadingTrending, setLoadingTrending] = useState(true);
   const [loadingComedy, setLoadingComedy] = useState(true);
   const [loadingTOP, setLoadingTOP] = useState(true);
   const [loadingAction, setLoadingAction] = useState(true);
   const [loadingRomance, setLoadingRomance] = useState(true);
+  const [loadingAnimation, setLoadingAnimation] = useState(true);
+
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
@@ -50,6 +54,12 @@ const Hero = () => {
         );
         setRomance(RomanceResponse.data);
         setLoadingRomance(false);
+
+         const AnimationResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=16&sort_by=vote_count.desc`
+        );
+        setAnimation(AnimationResponse.data);
+        setLoadingAnimation(false);
 
         const res = await axios.get(
           `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
@@ -81,38 +91,70 @@ const Hero = () => {
       {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
       {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
 
-      {loadingComedy ? (
-        <PinkLoading />
-      ) : (
-        <Recommendation
-          recommendation={Comedy}
-          title={"Comedy"}
-          bit={0}
-          type={"movie"}
-        />
-      )}
+      <div className="flex lg:px-20 md:px-10 px-10 items-end pt-20  bg-gray-900 ">
+        <select
+          className="px-4 py-2 text-base rounded-md border border[#101828] bg-[#ba1c93] min-w-[180px] text-black"
+          onChange={(e) => setGenre(e.target.value)}
+          defaultValue=""
+        >
+          <option className="hidden" value="" disabled>
+            Genre
+          </option>
+          <option value="Comedy">Comedy</option>
+          <option value="Action">Action</option>
+          <option value="Romance">Romance</option>
+          <option value="Animation">Animation</option>
+        </select>
+      </div>
 
-      {loadingAction ? (
-        <PinkLoading />
-      ) : (
-        <Recommendation
-          recommendation={Action}
-          title={"Action"}
-          bit={0}
-          type={"movie"}
-        />
-      )}
+      {genre === "Comedy" &&
+        (loadingComedy ? (
+          <PinkLoading />
+        ) : (
+          <Recommendation
+            recommendation={Comedy}
+            title={"Comedy"}
+            bit={0}
+            type={"movie"}
+          />
+        ))}
 
-      {loadingRomance ? (
-        <PinkLoading />
-      ) : (
-        <Recommendation
-          recommendation={Romance}
-          title={"Romance"}
-          bit={0}
-          type={"movie"}
-        />
-      )}
+      {genre === "Action" &&
+        (loadingAction ? (
+          <PinkLoading />
+        ) : (
+          <Recommendation
+            recommendation={Action}
+            title={"Action"}
+            bit={0}
+            type={"movie"}
+          />
+        ))}
+
+        {genre === "Animation" &&
+        (loadingAnimation ? (
+          <PinkLoading />
+        ) : (
+          <Recommendation
+            recommendation={Animation}
+            title={"Animation"}
+            bit={0}
+            type={"movie"}
+          />
+        ))}
+
+
+      {genre === "Romance" &&
+        (loadingRomance ? (
+          <PinkLoading />
+        ) : (
+          <Recommendation
+            recommendation={Romance}
+            title={"Romance"}
+            bit={0}
+            type={"movie"}
+          />
+        ))}
 
       {loadingComedy ? <PinkLoading /> : <FullViewPreview />}
 

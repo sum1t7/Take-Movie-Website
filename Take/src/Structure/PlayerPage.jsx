@@ -156,10 +156,10 @@ const PlayerPage = ({ type }) => {
     <>
       <NavBar />
 
-      <div className="flex flex-col justify-center  items-center bg-black h-screen  ">
+      <div className="flex flex-col justify-center  items-center bg-black h-[40vh]  lg:h-[100vh] md:h-[70vh] ">
         <iframe
           src={playerUrl}
-          className="w-full h-full"
+          className=" size-full"
           frameBorder="0"
           allowFullScreen
           title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
