@@ -12,15 +12,16 @@ import Watched from "../Compontents/Watched";
 
 const Hero = () => {
   const [trending, setTrending] = useState(null);
-  const [action, setAction] = useState(null);
-  const [romance, setRomance] = useState(null);
+  const [Comedy, setComedy] = useState(null);
+  const [Action, setAction] = useState(null);
+  const [Romance, setRomance] = useState(null);
   const [TOP, setTOP] = useState(null);
 
   const [loadingTrending, setLoadingTrending] = useState(true);
+  const [loadingComedy, setLoadingComedy] = useState(true);
+  const [loadingTOP, setLoadingTOP] = useState(true);
   const [loadingAction, setLoadingAction] = useState(true);
   const [loadingRomance, setLoadingRomance] = useState(true);
-  const [loadingTOP, setLoadingTOP] = useState(true);
-
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
@@ -32,16 +33,22 @@ const Hero = () => {
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
 
-        const actionResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=popularity.desc`
+        const ComedyResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=35&sort_by=vote_count.desc`
         );
-        setAction(actionResponse.data);
+        setComedy(ComedyResponse.data);
+        setLoadingComedy(false);
+
+        const ActionResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=vote_count.desc`
+        );
+        setAction(ActionResponse.data);
         setLoadingAction(false);
 
-        const romanceResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=10749&sort_by=popularity.desc`
+        const RomanceResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=10749&sort_by=vote_count.desc`
         );
-        setRomance(romanceResponse.data);
+        setRomance(RomanceResponse.data);
         setLoadingRomance(false);
 
         const res = await axios.get(
@@ -73,27 +80,41 @@ const Hero = () => {
       )}
       {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
       {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
-      {loadingRomance ? (
+
+      {loadingComedy ? (
         <PinkLoading />
       ) : (
         <Recommendation
-          recommendation={romance}
-          title={"Romance"}
-          bit={1}
+          recommendation={Comedy}
+          title={"Comedy"}
+          bit={0}
           type={"movie"}
         />
       )}
-      {loadingAction ? <PinkLoading /> : <FullViewPreview />}
+
       {loadingAction ? (
         <PinkLoading />
       ) : (
         <Recommendation
-          recommendation={action}
+          recommendation={Action}
           title={"Action"}
           bit={0}
           type={"movie"}
         />
       )}
+
+      {loadingRomance ? (
+        <PinkLoading />
+      ) : (
+        <Recommendation
+          recommendation={Romance}
+          title={"Romance"}
+          bit={0}
+          type={"movie"}
+        />
+      )}
+
+      {loadingComedy ? <PinkLoading /> : <FullViewPreview />}
 
       <Foter />
     </>
