@@ -6,6 +6,7 @@ import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import Recommendation from "../Compontents/Recommendation";
 import Foter from "../Compontents/Foter";
+import { getIMDBId } from "../utils/VideoRelated";
 
 import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
@@ -55,6 +56,7 @@ const SERVERS = [
     color: "gray",
     envKey: "VITE_SERVER_URL_7",
   },
+  
 ];
 
 const ServerButton = ({ server, currentServer, onClick, details }) => {
@@ -105,6 +107,7 @@ const PlayerPage = ({ type }) => {
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [IMDBId, setIMDBId] = useState(null);
 
   const serverUrls = useMemo(() => {
     return SERVERS.map((server) => import.meta.env[server.envKey]);
@@ -112,11 +115,23 @@ const PlayerPage = ({ type }) => {
 
   const contentType = type ? "movie" : "tv";
 
+  async function getId (){
+    const IMDBId = await getIMDBId({ id, type: contentType });
+    setIMDBId(IMDBId);
+  }
+
+  useEffect(() => {
+    getId();  
+  }, [id, contentType]);  
+
+ 
   const playerUrl = useMemo(() => {
     const baseParams =
       "primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true";
 
-    if (contentType === "movie") {
+     if(activeServer == serverUrls[1]) {
+      return `${activeServer}/${IMDBId}`;
+     }else if (contentType === "movie") {
       return `${activeServer}movie/${id}?${baseParams}&nextbutton=false`;
     } else {
       return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}&nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&nextbutton=false`;
@@ -156,7 +171,7 @@ const PlayerPage = ({ type }) => {
     <>
       <NavBar />
 
-      <div className="flex flex-col justify-center  items-center bg-black h-[40vh]  lg:h-[97vh] md:h-[70vh] ">
+      <div className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${activeServer === serverUrls[1] ? 'lg:pt-[70px]' : ''} lg:h-[97vh] md:h-[70vh] `}>
         <iframe
           src={playerUrl}
           className=" size-full"

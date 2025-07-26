@@ -17,7 +17,7 @@ export const getIMDBId = async ({ id, type }) => {
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
   try {
     const res = await axios.get(
-      `https://api.tmdb.org/3/${type}/${id}?api_key=${apikey}`
+      `https://api.themoviedb.org/3/${type}/${id}/external_ids?api_key=${apikey}`
     );
     return res.data.imdb_id;
   } catch (error) {
