@@ -120,7 +120,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
                 <a
                   key={recommendation.id}
                   className={`flex-shrink-0 ${
-                    bit ? "lg:w-65 w-65" : "lg:w-48 w-50"
+                    bit ? "lg:w-65 w-65" : "lg:w-65 md:w-65 w-45"
                   }`}
                   href={`/${
                     recommendation.media_type
@@ -135,7 +135,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
                 >
                   <div
                     className={`relative w-full ${
-                      bit ? "lg:h-105 h-105" : "lg:h-72 h-72 "
+                      bit ? "lg:h-105 h-105" : "lg:h-105 md:h-105 h-70"
                     }  overflow-hidden rounded-lg select`}
                   >
                     <img

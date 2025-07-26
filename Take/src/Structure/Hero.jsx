@@ -16,6 +16,7 @@ const Hero = () => {
   const [Action, setAction] = useState(null);
   const [Romance, setRomance] = useState(null);
   const [Animation, setAnimation] = useState(null);
+  const [HindiTrending, setHindiTrending] = useState(null);
   const [TOP, setTOP] = useState(null);
   const [genre, setGenre] = useState("Comedy");
 
@@ -24,6 +25,7 @@ const Hero = () => {
   const [loadingTOP, setLoadingTOP] = useState(true);
   const [loadingAction, setLoadingAction] = useState(true);
   const [loadingRomance, setLoadingRomance] = useState(true);
+  const [loadingHindiTrending, setLoadingHindiTrending] = useState(true);
   const [loadingAnimation, setLoadingAnimation] = useState(true);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
@@ -55,11 +57,17 @@ const Hero = () => {
         setRomance(RomanceResponse.data);
         setLoadingRomance(false);
 
-         const AnimationResponse = await axios.get(
+        const AnimationResponse = await axios.get(
           `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=16&sort_by=vote_count.desc`
         );
         setAnimation(AnimationResponse.data);
         setLoadingAnimation(false);
+
+        const HindiTrendingResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&language=hi-IN&region=IN&with_original_language=hi`
+        );
+        setHindiTrending(HindiTrendingResponse.data);
+        setLoadingHindiTrending(false);
 
         const res = await axios.get(
           `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
@@ -90,7 +98,6 @@ const Hero = () => {
       )}
       {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
       {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
-
       <div className="flex lg:px-20 md:px-10 px-10 items-end pt-20  bg-gray-900 ">
         <select
           className="px-4 py-2 text-base rounded-md border border[#101828] bg-[#ba1c93] min-w-[180px] text-black"
@@ -106,7 +113,6 @@ const Hero = () => {
           <option value="Animation">Animation</option>
         </select>
       </div>
-
       {genre === "Comedy" &&
         (loadingComedy ? (
           <PinkLoading />
@@ -118,7 +124,6 @@ const Hero = () => {
             type={"movie"}
           />
         ))}
-
       {genre === "Action" &&
         (loadingAction ? (
           <PinkLoading />
@@ -130,8 +135,7 @@ const Hero = () => {
             type={"movie"}
           />
         ))}
-
-        {genre === "Animation" &&
+      {genre === "Animation" &&
         (loadingAnimation ? (
           <PinkLoading />
         ) : (
@@ -142,8 +146,6 @@ const Hero = () => {
             type={"movie"}
           />
         ))}
-
-
       {genre === "Romance" &&
         (loadingRomance ? (
           <PinkLoading />
@@ -155,9 +157,19 @@ const Hero = () => {
             type={"movie"}
           />
         ))}
+        
+      {loadingHindiTrending ? (
+      <PinkLoading />
+      ) : (
+      <Recommendation
+        recommendation={HindiTrending}
+        title={"Bollywood"}
+        bit={0}
+        type={"movie"}
+      />
+      )}
 
       {loadingComedy ? <PinkLoading /> : <FullViewPreview />}
-
       <Foter />
     </>
   );

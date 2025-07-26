@@ -22,7 +22,7 @@ const Person = () => {
         setLoading(false);
 
         const creditsResponse = await fetch(
-          `https://api.tmdb.org/3/person/${id}/movie_credits?api_key=${apikey}&sort_by=vote_average.desc`
+          `https://api.tmdb.org/3/person/${id}/movie_credits?api_key=${apikey}`
         );
         const creditsData = await creditsResponse.json();
 
