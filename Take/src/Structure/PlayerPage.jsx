@@ -16,47 +16,46 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const SERVERS = [
   {
     name: "Server 1",
-    desc: "Ads & smooth",
+    desc: "Has Pop-ups",
     color: "pink",
     envKey: "VITE_SERVER_URL_6",
   },
   {
     name: "Server 2",
-    desc: "Ads but fast",
+    desc: "Good for new releases",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
   },
   {
     name: "Server 3",
-    desc: "One Ad",
+    desc: "One 15s Ad",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
   },
   {
     name: "Server 4",
-    desc: "For movies only & Ads",
+    desc: "Fastest One",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
   },
   {
     name: "Server 5",
-    desc: "Good Variety & Ads",
+    desc: "Good Variety",
     color: "purple",
     envKey: "VITE_SERVER_URL",
   },
   {
     name: "Server 6",
-    desc: "Allrounder & Ads",
+    desc: "Allrounder",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
   },
   {
     name: "Server 7",
-    desc: "Smooth & Ads",
+    desc: "Smooth",
     color: "gray",
     envKey: "VITE_SERVER_URL_7",
   },
-  
 ];
 
 const ServerButton = ({ server, currentServer, onClick, details }) => {
@@ -115,26 +114,34 @@ const PlayerPage = ({ type }) => {
 
   const contentType = type ? "movie" : "tv";
 
-  async function getId (){
+  async function getId() {
     const IMDBId = await getIMDBId({ id, type: contentType });
     setIMDBId(IMDBId);
   }
 
   useEffect(() => {
-    getId();  
-  }, [id, contentType]);  
+    getId();
+  }, [id, contentType]);
 
- 
   const playerUrl = useMemo(() => {
     const baseParams =
       "primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true";
 
-     if(activeServer == serverUrls[1]) {
+    if (activeServer == serverUrls[1] && contentType === "movie") {
       return `${activeServer}/${IMDBId}`;
-     }else if (contentType === "movie") {
+    } else if (contentType === "movie") {
       return `${activeServer}movie/${id}?${baseParams}&nextbutton=false`;
     } else {
-      return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}&nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&nextbutton=false`;
+      if (activeServer == serverUrls[3]) {
+        console.log(`${activeServer}tv/${id}?${season}&${episode}`);
+        return `${activeServer}tv/${id}?s=${season}&e=${episode}`;
+      }
+      else if(activeServer == serverUrls[1]) {
+          return `${activeServer}tv?tmdb=${id}&season=${season}&episode=${episode}`;
+      }
+       else {
+        return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}&nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&nextbutton=false`;
+      }
     }
   }, [activeServer, id, season, episode, contentType]);
 
@@ -171,7 +178,11 @@ const PlayerPage = ({ type }) => {
     <>
       <NavBar />
 
-      <div className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${activeServer === serverUrls[1] ? 'lg:pt-[70px]' : ''} lg:h-[97vh] md:h-[70vh] `}>
+      <div
+        className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${
+          activeServer === serverUrls[1] ? "lg:pt-[70px]" : ""
+        } lg:h-[97vh] md:h-[70vh] `}
+      >
         <iframe
           src={playerUrl}
           className=" size-full"
@@ -180,7 +191,9 @@ const PlayerPage = ({ type }) => {
           title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
         ></iframe>
       </div>
-      <p className="text-center text-gray-400 bg-gray-700">I dont have control over the ads. Please close any pages that open up, or use an Ad blocker</p>
+      <p className="text-center text-gray-400 bg-gray-700">
+        Please have an adblocker enabled for a better experience.
+      </p>
       <div className="bg-gray-900/80 backdrop-blur-md rounded-xl p-6 shadow-2xl  ">
         <h2 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
           <svg
