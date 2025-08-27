@@ -24,6 +24,10 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % 10);
   };
 
+  const handleSeeMore = () => {
+    window.location.href = "/more";
+  };
+
   const handleRemoveFav = (id) => {
     console.log("Removed from favList:", id);
     const updatedList = likedList.filter((item) => item.id !== id.toString());
@@ -56,7 +60,11 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
   }, [currentIndex]);
 
   return (
-    <div className={`relative items-end ${recommendation.results[0] ? 'lg:py-15 py-10' : ''}   bg-gray-900`}>
+    <div
+      className={`relative items-end ${
+        recommendation.results[0] ? "lg:py-15 py-10" : ""
+      }   bg-gray-900`}
+    >
       <Toaster />
       <button
         type="button"
@@ -94,17 +102,20 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         </svg>{" "}
       </button>
 
-       <h1
-        className={`text-2xl md:text-3xl font-bold flex items-center gap-3  lg:ml-20 ml-10    ${
-          bit ? "text-[#e91eb0]" : ""
-        }`}
+      <div className="flex justify-between mr-2">
+        <h1
+          className={`text-2xl md:text-3xl font-bold flex items-center gap-3 lg:ml-20 ml-10    ${
+            bit ? "text-[#e91eb0]" : ""
+          }`}
         >
-        {recommendation.results[0] && (
-        <div className="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
-      )}
+          {recommendation.results[0] && (
+            <div className="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
+          )}
 
-        {recommendation.results[0] ? title : ""}
-      </h1>
+          {recommendation.results[0] ? title : ""}
+        </h1>
+        <h1 className="text-sm self-end cursor-pointer text-gray-400" onClick={handleSeeMore}> </h1>
+      </div>
 
       <div className="overflow-x-auto w-full recommendation-container mt-1">
         <div

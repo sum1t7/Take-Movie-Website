@@ -12,23 +12,62 @@ import Watched from "../Compontents/Watched";
 
 const Hero = () => {
   const [trending, setTrending] = useState(null);
-  const [Comedy, setComedy] = useState(null);
-  const [Action, setAction] = useState(null);
-  const [Romance, setRomance] = useState(null);
-  const [Animation, setAnimation] = useState(null);
   const [HindiTrending, setHindiTrending] = useState(null);
   const [TOP, setTOP] = useState(null);
   const [genre, setGenre] = useState("Comedy");
+  const [genresLink, setGenresLink] = useState(null);
 
   const [loadingTrending, setLoadingTrending] = useState(true);
-  const [loadingComedy, setLoadingComedy] = useState(true);
   const [loadingTOP, setLoadingTOP] = useState(true);
-  const [loadingAction, setLoadingAction] = useState(true);
-  const [loadingRomance, setLoadingRomance] = useState(true);
   const [loadingHindiTrending, setLoadingHindiTrending] = useState(true);
-  const [loadingAnimation, setLoadingAnimation] = useState(true);
+  const [loadingGenre, setLoadingGenre] = useState(true);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
+
+  const Genres = {
+    Action: 28,
+    Adventure: 12,
+    Animation: 16,
+    Comedy: 35,
+    Crime: 80,
+    Documentary: 99,
+    Drama: 18,
+    Family: 10751,
+    Fantasy: 14,
+    History: 36,
+    Horror: 27,
+    Music: 10402,
+    Mystery: 9648,
+    Romance: 10749,
+    "Science Fiction": 878,
+    "TV Movie": 10770,
+    Thriller: 53,
+    War: 10752,
+    Western: 37
+  };
+
+  const handleGenreChange = (e) => {
+    setGenre(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchGenreMovies = async () => {
+      setLoadingGenre(true);
+      try {
+        const GenreResponse = await axios.get(
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=${Genres[genre]}&sort_by=vote_count.desc`
+        );
+        setGenresLink(GenreResponse.data);
+      } catch (error) {
+        console.error("Error fetching genre data:", error);
+      }
+      setLoadingGenre(false);
+    };
+
+    if (genre) {
+      fetchGenreMovies();
+    }
+  }, [genre]);
 
   useEffect(() => {
     const fetchTrending = async () => {
@@ -38,30 +77,6 @@ const Hero = () => {
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
-
-        const ComedyResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=35&sort_by=vote_count.desc`
-        );
-        setComedy(ComedyResponse.data);
-        setLoadingComedy(false);
-
-        const ActionResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=vote_count.desc`
-        );
-        setAction(ActionResponse.data);
-        setLoadingAction(false);
-
-        const RomanceResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=10749&sort_by=vote_count.desc`
-        );
-        setRomance(RomanceResponse.data);
-        setLoadingRomance(false);
-
-        const AnimationResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=16&sort_by=vote_count.desc`
-        );
-        setAnimation(AnimationResponse.data);
-        setLoadingAnimation(false);
 
         const HindiTrendingResponse = await axios.get(
           `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&language=hi-IN&region=IN&with_original_language=hi`
@@ -98,78 +113,48 @@ const Hero = () => {
       )}
       {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
       {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
-      <div className="flex lg:px-20 md:px-10 px-10 items-end pt-20  bg-gray-900 ">
+      <div className=" bg-gray-900 ">
         <select
-          className="px-4 py-2 text-base rounded-md border border[#101828] bg-[#ba1c93] min-w-[180px] text-black"
-          onChange={(e) => setGenre(e.target.value)}
-          defaultValue=""
+          className="px-4 py-2 mx-20 mt-10  text-base rounded-md border border[#101828] bg-[#ba1c93] min-w-[180px]  text-black"
+          name="Genre"
+          onClick={handleGenreChange}
+          id="Genre"         
         >
-          <option className="hidden" value="" disabled>
-            Genre
+          <option value="" disabled selected>
+            Select Genre
           </option>
-          <option value="Comedy">Comedy</option>
-          <option value="Action">Action</option>
-          <option value="Romance">Romance</option>
-          <option value="Animation">Animation</option>
+          {Object.keys(Genres).map((genre) => (
+            <option  key={genre} value={genre}>
+              {genre}
+            </option>
+          ))}
         </select>
+      
+        {loadingGenre ? (
+          <PinkLoading />
+        ) : (
+          genresLink && (
+            <Recommendation
+              recommendation={genresLink}
+              title={genre}
+              bit={0}
+              type={"movie"}
+            />
+          )
+        )}
       </div>
-      {genre === "Comedy" &&
-        (loadingComedy ? (
-          <PinkLoading />
-        ) : (
-          <Recommendation
-            recommendation={Comedy}
-            title={"Comedy"}
-            bit={0}
-            type={"movie"}
-          />
-        ))}
-      {genre === "Action" &&
-        (loadingAction ? (
-          <PinkLoading />
-        ) : (
-          <Recommendation
-            recommendation={Action}
-            title={"Action"}
-            bit={0}
-            type={"movie"}
-          />
-        ))}
-      {genre === "Animation" &&
-        (loadingAnimation ? (
-          <PinkLoading />
-        ) : (
-          <Recommendation
-            recommendation={Animation}
-            title={"Animation"}
-            bit={0}
-            type={"movie"}
-          />
-        ))}
-      {genre === "Romance" &&
-        (loadingRomance ? (
-          <PinkLoading />
-        ) : (
-          <Recommendation
-            recommendation={Romance}
-            title={"Romance"}
-            bit={0}
-            type={"movie"}
-          />
-        ))}
-        
-      {loadingHindiTrending ? (
-      <PinkLoading />
-      ) : (
-      <Recommendation
-        recommendation={HindiTrending}
-        title={"Bollywood"}
-        bit={0}
-        type={"movie"}
-      />
-      )}
 
-      {loadingComedy ? <PinkLoading /> : <FullViewPreview />}
+      {loadingHindiTrending ? (
+        <PinkLoading />
+      ) : (
+        <Recommendation
+          recommendation={HindiTrending}
+          title={"Bollywood"}
+          bit={0}
+          type={"movie"}
+        />
+      )}
+      <FullViewPreview />
       <Foter />
     </>
   );

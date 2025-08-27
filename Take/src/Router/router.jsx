@@ -15,6 +15,7 @@ import Genre from "../Structure/Genre";
 import Person from "../Structure/Person";
 import Test from "../Structure/Test";
 import Recs from "../Compontents/Recs";
+import InfiniteScrollPage from "../Structure/InfiniteScrollPage";
 
 const Rofees = () => {
   return (
@@ -31,6 +32,7 @@ const Rofees = () => {
         <Route path="/person/:id" element={<Person/>} />
         <Route path="/watch/tv/:id/:season/:episode" element={<PlayerPage type={0}/>} />
          <Route path="*" element={<Navigate to="/" />} />
+         <Route path="/more" element={<InfiniteScrollPage/>}/>
          {/* <Route path="/test" element={<Test/>}/> */}
          <Route path="/recs" element={<Recs/>}/>
        </Routes>
