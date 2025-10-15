@@ -73,7 +73,7 @@ const Hero = () => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.tmdb.org/3/trending/all/day?api_key=${apikey}&sort_by=popularity.desc`
+          `https://api.tmdb.org/3/trending/all/day?api_key=${apikey}&sort_by=vote_average.desc`
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
@@ -85,7 +85,7 @@ const Hero = () => {
         setLoadingHindiTrending(false);
 
         const res = await axios.get(
-          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_average.desc`
+          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_count.desc`
         );
         setTOP(res.data);
         setLoadingTOP(false);

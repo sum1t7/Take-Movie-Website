@@ -125,7 +125,7 @@ const PlayerPage = ({ type }) => {
 
   const playerUrl = useMemo(() => {
     const baseParams =
-      "primaryColor=e91eac&secondaryColor=#101828&iconColor=eefdec&icons=vid&player=default&title=true&autoplay=true";
+      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default&player=jw&title=true&poster=true&autoplay=true";
 
     if (activeServer == serverUrls[1] && contentType === "movie") {
       return `${activeServer}/${IMDBId}`;
@@ -140,7 +140,7 @@ const PlayerPage = ({ type }) => {
           return `${activeServer}tv?tmdb=${id}&season=${season}&episode=${episode}`;
       }
        else {
-        return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}&nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&color=8B5CF6&nextbutton=false`;
+        return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}`;
       }
     }
   }, [activeServer, id, season, episode, contentType]);
@@ -185,6 +185,7 @@ const PlayerPage = ({ type }) => {
       >
         <iframe
           src={playerUrl}
+          key={playerUrl}
           className=" size-full"
           frameBorder="0"
           allowFullScreen
