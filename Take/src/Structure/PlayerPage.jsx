@@ -46,7 +46,7 @@ const SERVERS = [
   },
   {
     name: "Server 6",
-    desc: "Allrounder",
+    desc: "All Rounder",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
   },
@@ -56,6 +56,13 @@ const SERVERS = [
     color: "gray",
     envKey: "VITE_SERVER_URL_7",
   },
+  {
+    name: "Server 8",
+    desc: "Quality",
+    color: "blue",
+    envKey: "VITE_SERVER_URL_8",
+
+  }
 ];
 
 const ServerButton = ({ server, currentServer, onClick, details }) => {
@@ -125,12 +132,12 @@ const PlayerPage = ({ type }) => {
 
   const playerUrl = useMemo(() => {
     const baseParams =
-      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default&player=jw&title=true&poster=true&autoplay=true";
+      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default";
 
     if (activeServer == serverUrls[1] && contentType === "movie") {
       return `${activeServer}/${IMDBId}`;
     } else if (contentType === "movie") {
-      return `${activeServer}movie/${id}?${baseParams}&nextbutton=false`;
+      return `${activeServer}movie/${id}?${baseParams}`;
     } else {
       if (activeServer == serverUrls[3]) {
         console.log(`${activeServer}tv/${id}?${season}&${episode}`);
@@ -142,7 +149,7 @@ const PlayerPage = ({ type }) => {
        else {
         return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}`;
       }
-    }
+     }
   }, [activeServer, id, season, episode, contentType]);
 
   useEffect(() => {

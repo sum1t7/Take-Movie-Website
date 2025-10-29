@@ -75,8 +75,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         <svg
           strokeWidth="currentColor"
           fill="currentColor"
-          stroke-width="4"
-          viewBox="0 0 1024 1024"
+           viewBox="0 0 1024 1024"
           height="24"
           width="24"
           xmlns="http://www.w3.org/2000/svg"
@@ -92,8 +91,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         <svg
           strokeWidth="currentColor"
           fill="currentColor"
-          stroke-width="4"
-          viewBox="0 0 1024 1024"
+           viewBox="0 0 1024 1024"
           height="24"
           width="24"
           xmlns="http://www.w3.org/2000/svg"
