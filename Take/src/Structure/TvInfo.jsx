@@ -19,6 +19,7 @@ const TvInfo = () => {
   const [video, setVideo] = useState(null);
   const [cast, setCast] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
+  const [isfav, setIsfav] = useState(false);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -32,6 +33,7 @@ const TvInfo = () => {
     favList.push(favContent);
     localStorage.setItem("favList", JSON.stringify(favList));
     toast.success("Successfully added to favorites!");
+    setIsfav(true);
   };
 
   useEffect(() => {
@@ -69,6 +71,16 @@ const TvInfo = () => {
     fetchtvData();
   }, [id]);
 
+  useEffect(() => {
+    try {
+      const favList = JSON.parse(localStorage.getItem("favList")) || [];
+      const isFavorite = favList.some((item) => item.id === id);
+      setIsfav(isFavorite);
+    } catch (error) {
+      console.error("Error checking favorite status:", error);
+    }
+  }, [id]);
+
   if (!tv || !images || !video || !cast || !recommendation) {
     return <PinkLoading />;
   }
@@ -80,12 +92,18 @@ const TvInfo = () => {
       <PosterPage movie={tv} images={images} id={id} type={0} />
       <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">
         <button
-          className="bg-fuchsia-700 text-white px-4 py-2 rounded-4xl cursor-pointer hover:bg-fuchsia-800 transition duration-300 ease-in-out"
+          className={`px-4 py-2 rounded-4xl transition duration-300 ease-in-out ${
+            isfav
+              ? "bg-gray-600 text-white cursor-default"
+              : "bg-fuchsia-700 text-white hover:bg-fuchsia-800 cursor-pointer"
+          }`}
           onClick={handleAddToFav}
+          disabled={isfav}
         >
-          Add to Favorites
+          {isfav ? "Added to Favorites" : "Add to Favorites"}
         </button>
       </div>
+
       <Seasons tv={tv} />
       <Description movie={tv} video={video} id={id} />
       <Cast movie={tv} cast={cast} />
