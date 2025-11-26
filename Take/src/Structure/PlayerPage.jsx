@@ -108,7 +108,7 @@ const ServerButton = ({ server, currentServer, onClick, details }) => {
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
   const [activeServer, setActiveServer] = useState(
-    import.meta.env.VITE_SERVER_URL_5
+    import.meta.env.VITE_SERVER_URL_3
   );
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
@@ -132,7 +132,7 @@ const PlayerPage = ({ type }) => {
 
   const playerUrl = useMemo(() => {
     const baseParams =
-      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default";
+      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default&autoplay=true";
 
     if (activeServer == serverUrls[1] && contentType === "movie") {
       return `${activeServer}/${IMDBId}`;
