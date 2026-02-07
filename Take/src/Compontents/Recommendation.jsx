@@ -7,7 +7,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef(null);
   const likedList = useRef(
-    JSON.parse(localStorage.getItem("favList")) || []
+    JSON.parse(localStorage.getItem("favList")) || [],
   ).current;
   const buttonRefs = useRef([]);
 
@@ -15,7 +15,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
     setCurrentIndex(
       (prevIndex) =>
         (prevIndex - 1 + recommendation.results.length) %
-        recommendation.results.length
+        recommendation.results.length,
     );
   };
 
@@ -75,7 +75,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         <svg
           strokeWidth="currentColor"
           fill="currentColor"
-           viewBox="0 0 1024 1024"
+          viewBox="0 0 1024 1024"
           height="24"
           width="24"
           xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +91,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
         <svg
           strokeWidth="currentColor"
           fill="currentColor"
-           viewBox="0 0 1024 1024"
+          viewBox="0 0 1024 1024"
           height="24"
           width="24"
           xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,12 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
 
           {recommendation.results[0] ? title : ""}
         </h1>
-        <h1 className="text-sm self-end cursor-pointer text-gray-400" onClick={handleSeeMore}> </h1>
+        <h1
+          className="text-sm self-end cursor-pointer text-gray-400"
+          onClick={handleSeeMore}
+        >
+          {" "}
+        </h1>
       </div>
 
       <div className="overflow-x-auto w-full recommendation-container mt-1">
@@ -122,82 +127,82 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
           }`}
           ref={sliderRef}
         >
-          {recommendation.results.map(
-            (recommendation) =>
-              recommendation.poster_path &&
-              recommendation.vote_average > 3 && (
-                <a
-                  key={recommendation.id}
-                  className={`flex-shrink-0 ${
-                    bit ? "lg:w-65 w-65" : "lg:w-65 md:w-65 w-45"
-                  }`}
-                  href={`/${
-                    recommendation.media_type
-                      ? recommendation.media_type
-                      : type
+          {recommendation.results
+            .filter(
+              (rec) =>
+                rec.poster_path &&
+                rec.vote_average > 3 &&
+                (rec.title || rec.name),
+            )
+            .map((recommendation) => (
+              <a
+                key={recommendation.id}
+                className={`flex-shrink-0 ${
+                  bit ? "lg:w-65 w-65" : "lg:w-65 md:w-65 w-45"
+                }`}
+                href={`/${
+                  recommendation.media_type
+                    ? recommendation.media_type
+                    : type
                       ? type
                       : recommendation.first_air_date
-                      ? "tv"
-                      : "movie"
-                  }/${recommendation.id}`}
-                  title={recommendation.title || recommendation.name}
+                        ? "tv"
+                        : "movie"
+                }/${recommendation.id}`}
+                title={recommendation.title || recommendation.name}
+              >
+                <div
+                  className={`relative w-full ${
+                    bit ? "lg:h-105 h-105" : "lg:h-105 md:h-105 h-70"
+                  }  overflow-hidden rounded-lg select`}
                 >
-                  <div
-                    className={`relative w-full ${
-                      bit ? "lg:h-105 h-105" : "lg:h-105 md:h-105 h-70"
-                    }  overflow-hidden rounded-lg select`}
-                  >
-                    <img
-                      className="w-full h-full object-cover"
-                      src={`https://image.tmdb.org/t/p/w500${recommendation.poster_path}`}
-                      alt={recommendation.title || recommendation.name}
-                      loading="lazy"
-                    />
+                  <img
+                    className="w-full h-full object-cover"
+                    src={`https://image.tmdb.org/t/p/w500${recommendation.poster_path}`}
+                    alt={recommendation.title || recommendation.name}
+                    loading="lazy"
+                  />
 
-                    {forLiked && (
-                      <button
-                        className="absolute top-2 cursor-pointer transition-scale duration-300 ease-in-out hover:scale-150 right-2   p-1"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleRemoveFav(recommendation.id);
-                        }}
+                  {forLiked && (
+                    <button
+                      className="absolute top-2 cursor-pointer transition-scale duration-300 ease-in-out hover:scale-150 right-2   p-1"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemoveFav(recommendation.id);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="25"
+                        height="25"
+                        viewBox="0 0 48 48"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="25"
-                          height="25"
-                          viewBox="0 0 48 48"
-                        >
-                          <path
-                            fill="#b39ddb"
-                            d="M30.6,44H17.4c-2,0-3.7-1.4-4-3.4L9,11h30l-4.5,29.6C34.2,42.6,32.5,44,30.6,44z"
-                          ></path>
-                          <path
-                            fill="#9575cd"
-                            d="M28 6L20 6 14 12 34 12z"
-                          ></path>
-                          <path
-                            fill="#7e57c2"
-                            d="M10,8h28c1.1,0,2,0.9,2,2v2H8v-2C8,8.9,8.9,8,10,8z"
-                          ></path>
-                        </svg>
-                      </button>
-                    )}
+                        <path
+                          fill="#b39ddb"
+                          d="M30.6,44H17.4c-2,0-3.7-1.4-4-3.4L9,11h30l-4.5,29.6C34.2,42.6,32.5,44,30.6,44z"
+                        ></path>
+                        <path fill="#9575cd" d="M28 6L20 6 14 12 34 12z"></path>
+                        <path
+                          fill="#7e57c2"
+                          d="M10,8h28c1.1,0,2,0.9,2,2v2H8v-2C8,8.9,8.9,8,10,8z"
+                        ></path>
+                      </svg>
+                    </button>
+                  )}
 
-                    <div className="absolute appear bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
-                      <h1 className="text-white text-sm mt-2 truncate">
-                        {recommendation.title || recommendation.name}
-                      </h1>
-                      <h1 className="text-white text-sm">
-                        ⭐ {recommendation.vote_average.toFixed(1)}
-                      </h1>
-                    </div>
+                  <div className="absolute appear bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
+                    <h1 className="text-white text-sm mt-2 truncate">
+                      {recommendation.title || recommendation.name}
+                    </h1>
+                    <h1 className="text-white text-sm">
+                      ⭐ {recommendation.vote_average?.toFixed(1) || "N/A"}
+                    </h1>
                   </div>
-                </a>
-              )
-          )}
+                </div>
+              </a>
+            ))}
         </div>
       </div>
     </div>

@@ -10,7 +10,12 @@ const PosterMain = ({ trending }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
-  trending = trending?.results || [];
+  trending = trending?.results?.filter((item) => 
+  item.backdrop_path &&
+  item.vote_average > 3 &&
+  (item.title || item.name) &&
+  item.id
+) || [];
 
   const getlogo = async (id, type) => {
     try {
@@ -21,7 +26,7 @@ const PosterMain = ({ trending }) => {
 
       const res = await axios.get(url);
       const englishLogos = res.data.logos.filter(
-        (logo) => logo.iso_639_1 === "en"
+        (logo) => logo.iso_639_1 === "en",
       );
       if (englishLogos.length > 0) {
         return englishLogos.sort((a, b) => b.vote_average - a.vote_average)[0]
@@ -46,7 +51,7 @@ const PosterMain = ({ trending }) => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % trending.length);
         setIsTransitioning(false);
       }, 500);
-    }, 10000);
+    }, 7000);
 
     return () => clearInterval(interval);
   }, [trending]);
@@ -56,7 +61,7 @@ const PosterMain = ({ trending }) => {
       setIsLoading(true);
       try {
         const logoPromises = trending.map((trend) =>
-          getlogo(trend.id, trend.media_type)
+          getlogo(trend.id, trend.media_type),
         );
         const logoResults = await Promise.all(logoPromises);
         const logoMap = trending.reduce((acc, trend, index) => {
@@ -74,14 +79,14 @@ const PosterMain = ({ trending }) => {
     if (trending && trending.length > 0) {
       fetchLogos();
     }
-  }, [trending]);
+  }, []);
 
   const handlePrev = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrentIndex(
-        (prevIndex) => (prevIndex - 1 + trending.length) % trending.length
+        (prevIndex) => (prevIndex - 1 + trending.length) % trending.length,
       );
       setIsTransitioning(false);
     }, 300);
@@ -157,13 +162,16 @@ const PosterMain = ({ trending }) => {
           {trending[currentIndex] && (
             <div className="relative h-full w-full">
               <motion.div className="absolute inset-0">
-                <img
-                  src={`https://image.tmdb.org/t/p/original/${trending[currentIndex].backdrop_path}`}
-                  alt={
-                    trending[currentIndex].title || trending[currentIndex].name
-                  }
-                  className="w-full h-full object-cover"
-                />
+                {trending[currentIndex].backdrop_path && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/original/${trending[currentIndex].backdrop_path}`}
+                    alt={
+                      trending[currentIndex].title ||
+                      trending[currentIndex].name
+                    }
+                    className="w-full h-full object-cover"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
               </motion.div>
 
@@ -208,7 +216,8 @@ const PosterMain = ({ trending }) => {
                             <path d="M14.43 10 12 2l-2.43 8H2l6.18 4.41L5.83 22 12 17.31 18.18 22l-2.35-7.59L22 10z"></path>
                           </svg>
                           <p className="font-semibold">
-                            {trending[currentIndex].vote_average.toFixed(1)}
+                            {trending[currentIndex].vote_average?.toFixed(1) ||
+                              "N/A"}
                           </p>
                         </div>
 
@@ -216,8 +225,8 @@ const PosterMain = ({ trending }) => {
                           {trending[currentIndex].release_date
                             ? trending[currentIndex].release_date.split("-")[0]
                             : trending[currentIndex].first_air_date?.split(
-                                "-"
-                              )[0]}
+                                "-",
+                              )[0] || "N/A"}
                         </div>
 
                         <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full font-semibold uppercase">

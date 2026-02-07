@@ -16,53 +16,41 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const SERVERS = [
   {
     name: "Server 1",
-    desc: "Has Pop-ups",
-    color: "pink",
-    envKey: "VITE_SERVER_URL_6",
-  },
-  {
-    name: "Server 2",
     desc: "Good for new releases",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
   },
   {
-    name: "Server 3",
+    name: "Server 2",
     desc: "One 15s Ad",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
   },
   {
-    name: "Server 4",
-    desc: "Fastest One",
+    name: "Server 3",
+    desc: "Smoother Playback",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
   },
   {
-    name: "Server 5",
+    name: "Server 4",
     desc: "Good Variety",
     color: "purple",
     envKey: "VITE_SERVER_URL",
   },
   {
-    name: "Server 6",
+    name: "Server 5",
     desc: "All Rounder",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
   },
+
   {
-    name: "Server 7",
-    desc: "Smooth",
-    color: "gray",
-    envKey: "VITE_SERVER_URL_7",
-  },
-  {
-    name: "Server 8",
+    name: "Server 6",
     desc: "Quality",
     color: "blue",
     envKey: "VITE_SERVER_URL_8",
-
-  }
+  },
 ];
 
 const ServerButton = ({ server, currentServer, onClick, details }) => {
@@ -107,8 +95,11 @@ const ServerButton = ({ server, currentServer, onClick, details }) => {
 
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [activeServer, setActiveServer] = useState(
-    import.meta.env.VITE_SERVER_URL_3
+    isMobile
+      ? import.meta.env.VITE_SERVER_URL_5
+      : import.meta.env.VITE_SERVER_URL_3,
   );
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
@@ -130,6 +121,23 @@ const PlayerPage = ({ type }) => {
     getId();
   }, [id, contentType]);
 
+  // Handle mobile detection and change server for mobile
+  useEffect(() => {
+    const handleResize = () => {
+      const mobileView = window.innerWidth < 768;
+      setIsMobile(mobileView);
+      // Set server 5 for mobile, server 2 for desktop
+      setActiveServer(
+        mobileView
+          ? import.meta.env.VITE_SERVER_URL_5
+          : import.meta.env.VITE_SERVER_URL_3,
+      );
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const playerUrl = useMemo(() => {
     const baseParams =
       "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default&autoplay=true";
@@ -142,14 +150,12 @@ const PlayerPage = ({ type }) => {
       if (activeServer == serverUrls[3]) {
         console.log(`${activeServer}tv/${id}?${season}&${episode}`);
         return `${activeServer}tv/${id}?s=${season}&e=${episode}`;
-      }
-      else if(activeServer == serverUrls[1]) {
-          return `${activeServer}tv?tmdb=${id}&season=${season}&episode=${episode}`;
-      }
-       else {
+      } else if (activeServer == serverUrls[1]) {
+        return `${activeServer}tv?tmdb=${id}&season=${season}&episode=${episode}`;
+      } else {
         return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}`;
       }
-     }
+    }
   }, [activeServer, id, season, episode, contentType]);
 
   useEffect(() => {
@@ -158,13 +164,13 @@ const PlayerPage = ({ type }) => {
       try {
         if (contentType === "tv") {
           const tvResponse = await axios.get(
-            `https://api.tmdb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`
+            `https://api.tmdb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`,
           );
           setContentData(tvResponse.data);
         }
 
         const recommendationsResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`,
         );
         setRecommendations(recommendationsResponse.data);
       } catch (error) {
@@ -186,7 +192,7 @@ const PlayerPage = ({ type }) => {
       <NavBar />
 
       <div
-        className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${
+        className={`flex flex-col justify-center  items-center bg-black h-[80vh] ${
           activeServer === serverUrls[1] ? "lg:pt-[70px]" : ""
         } lg:h-[97vh] md:h-[70vh] `}
       >

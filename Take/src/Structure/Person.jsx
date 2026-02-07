@@ -16,13 +16,13 @@ const Person = () => {
     const fetchperson = async () => {
       try {
         const res = await axios.get(
-          `https://api.tmdb.org/3/person/${id}?api_key=${apikey}`
+          `https://api.tmdb.org/3/person/${id}?api_key=${apikey}`,
         );
         setPerson(res.data);
         setLoading(false);
 
         const creditsResponse = await fetch(
-          `https://api.tmdb.org/3/person/${id}/movie_credits?api_key=${apikey}`
+          `https://api.tmdb.org/3/person/${id}/movie_credits?api_key=${apikey}`,
         );
         const creditsData = await creditsResponse.json();
 
@@ -47,7 +47,7 @@ const Person = () => {
       ) : (
         <>
           <NavBar />
-          <div className="px-20 items-end pt-30 bg-gray-900">
+          <div className="md:px-10 px-10 lg:px-20 items-end pt-30 bg-gray-900">
             <div className="flex flex-col md:flex-row">
               <div className="rounded-lg h-130 overflow-hidden">
                 <img
@@ -75,7 +75,7 @@ const Person = () => {
                 </p>
                 <p className="text-gray-500">
                   Date of Birth:{" "}
-                  {person.birthday
+                  {person.birthday && person.birthday.includes("-")
                     ? `${person.birthday.split("-")[2]}/${
                         person.birthday.split("-")[1]
                       }/${person.birthday.split("-")[0]}`
@@ -87,12 +87,12 @@ const Person = () => {
               </div>
             </div>
           </div>
-            <Recommendation
-              recommendation={{ results: credits }}
-              title="Movies"
-              bit={true}
-              type={'movie'}
-            />
+          <Recommendation
+            recommendation={{ results: credits }}
+            title="Movies"
+            bit={true}
+            type={"movie"}
+          />
         </>
       )}
     </>

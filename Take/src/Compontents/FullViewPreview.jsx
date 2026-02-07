@@ -13,7 +13,7 @@ const FullViewPreview = () => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}`
+          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}`,
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
@@ -25,7 +25,7 @@ const FullViewPreview = () => {
     fetchTrending();
   }, []);
 
-  if (!trending) {
+  if (!trending || !trending.results || trending.results.length === 0) {
     return <PinkLoading />;
   }
 
@@ -54,24 +54,28 @@ const FullViewPreview = () => {
 
       <div className="relative flex h-[90vh] items-center justify-start">
         <div className="absolute inset-0 w-full h-[20vh] bg-gradient-to-b from-[#101828] to-transparent z-10"></div>
-        <img
-          src={`https://image.tmdb.org/t/p/original${trending.results[0].backdrop_path}`}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 -z-10 mask-top-bottom"
-          loading="eager"
-          decoding="async"
-          style={{ color: "transparent" }}
-        />
+        {trending.results[0]?.backdrop_path && (
+          <img
+            src={`https://image.tmdb.org/t/p/original${trending.results[0].backdrop_path}`}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 -z-10 mask-top-bottom"
+            loading="eager"
+            decoding="async"
+            style={{ color: "transparent" }}
+          />
+        )}
         <div className="absolute z-20 left-10 mx-8">
-          <h1 className="text-4xl font-bold">{trending.results[0].title}</h1>
+          <h1 className="text-4xl font-bold">
+            {trending.results[0]?.title || trending.results[0]?.name}
+          </h1>
           <p className="mt-4 text-wrap lg:w-200">
-            {trending.results[0].overview}
+            {trending.results[0]?.overview}
           </p>
           <a
             className="play-button mt-6 inline-block w-50"
             href={`/watch${
               type
-                ? `/movie/${trending.results[0].id}`
-                : `/tv/${trending.results[0].id}/1/1`
+                ? `/movie/${trending.results[0]?.id}`
+                : `/tv/${trending.results[0]?.id}/1/1`
             }`}
           >
             <span className="play-icon">

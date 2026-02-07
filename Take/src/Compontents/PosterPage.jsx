@@ -9,13 +9,16 @@ const PosterPage = ({ movie, images, id, type }) => {
 
   const releaseDate = movie.release_date
     ? movie.release_date.split("-")[0]
-    : movie.first_air_date.split("-")[0];
+    : movie.first_air_date?.split("-")[0] || "N/A";
   const runtime = movie.runtime;
   const originalLanguage = movie.original_language;
-  const rating = movie.vote_average.toFixed(1);
+  const rating = movie.vote_average?.toFixed(1) || "N/A";
   const Name = movie.name ? movie.name : movie.title;
-  const englogo = images.logos.filter((logo) => logo.iso_639_1 === "en");
-  const bestLogo = englogo.sort((a, b) => b.vote_average - a.vote_average)[0];
+  const englogo = images.logos?.filter((logo) => logo.iso_639_1 === "en") || [];
+  const bestLogo =
+    englogo.length > 0
+      ? englogo.sort((a, b) => b.vote_average - a.vote_average)[0]
+      : null;
 
   if (!movie || !images || !id) {
     return <PinkLoading />;
@@ -70,7 +73,6 @@ const PosterPage = ({ movie, images, id, type }) => {
             </div>
 
             <div className="flex items-center gap-4  text-sm 2xl:text-base">
-
               <div className="flex items-center gap-1.5">
                 <svg
                   strokeWidth="currentColor"
@@ -96,7 +98,6 @@ const PosterPage = ({ movie, images, id, type }) => {
               <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
               <p className="font-semibold uppercase">{originalLanguage}</p>
             </div>
-            
           </div>
         </div>
 
@@ -104,7 +105,6 @@ const PosterPage = ({ movie, images, id, type }) => {
           <a
             className="play-button"
             href={`/watch${type ? `/movie/${movie.id}` : `/tv/${movie.id}/1/1`}`}
-
           >
             <span className="play-icon">
               <svg
@@ -123,8 +123,6 @@ const PosterPage = ({ movie, images, id, type }) => {
           </a>
         </div>
       </div>
-
-     
     </div>
   );
 };

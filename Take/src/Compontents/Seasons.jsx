@@ -16,7 +16,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
     try {
       const fetchEpisode = async () => {
         const res = await axios.get(
-          `https://api.tmdb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${tv.id}/season/${SeasonNumber}?api_key=${apikey}&language=en-US`,
         );
         setEpisode(res.data.episodes);
         setFilteredEpisodes(res.data.episodes);
@@ -36,7 +36,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
         setFilteredEpisodes(episode);
       } else {
         const filtered = episode.filter((ep) =>
-          ep.name.toLowerCase().includes(searchQuery.toLowerCase())
+          ep.name.toLowerCase().includes(searchQuery.toLowerCase()),
         );
         setFilteredEpisodes(filtered);
       }
@@ -154,66 +154,71 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
 
           <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
             {filteredEpisodes && filteredEpisodes.length > 0 ? (
-              filteredEpisodes.map((e) => (
-                <a
-                  key={e.id}
-                  href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
-                  className={`group relative select ${
-                    e.episode_number == episodeNumber &&
-                    seasonnumbers == SeasonNumber
-                      ? "borderpink"
-                      : ""
-                  } block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
-                >
-                  <div className="aspect-video  bg-gray-800">
-                    <img
-                      src={
-                        e.still_path
-                          ? `https://image.tmdb.org/t/p/w500${e.still_path}`
-                          : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
-                      }
-                      alt={e.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
+              filteredEpisodes
+                ?.filter(
+                  (e) =>
+                    e.name && e.vote_average !== undefined && e.episode_number,
+                )
+                .map((e) => (
+                  <a
+                    key={e.id}
+                    href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
+                    className={`group relative select ${
+                      e.episode_number == episodeNumber &&
+                      seasonnumbers == SeasonNumber
+                        ? "borderpink"
+                        : ""
+                    } block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
+                  >
+                    <div className="aspect-video  bg-gray-800">
+                      <img
+                        src={
+                          e.still_path
+                            ? `https://image.tmdb.org/t/p/w500${e.still_path}`
+                            : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
+                        }
+                        alt={e.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
 
-                  <div className="absolute  bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold text-sm sm:text-base">
-                          S{SeasonNumber}-E{e.episode_number}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-gray-200 w-40 truncate">
-                          {e.name}
-                        </p>
+                    <div className="absolute  bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold text-sm sm:text-base">
+                            S{SeasonNumber}-E{e.episode_number}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-gray-200 w-40 truncate">
+                            {e.name}
+                          </p>
+                        </div>
+                        <span className="text-xs sm:text-sm bg-black/50 px-2 py-1 rounded-full">
+                          ⭐ {e.vote_average?.toFixed(1) || "N/A"}
+                        </span>
                       </div>
-                      <span className="text-xs sm:text-sm bg-black/50 px-2 py-1 rounded-full">
-                        ⭐ {e.vote_average.toFixed(1)}
-                      </span>
                     </div>
-                  </div>
 
-                  <div className="absolute inset-0 bg-black/80 flex flex-col p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
-                    <h3 className="font-semibold text-base text-fuchsia-400">
-                      {e.name}
-                    </h3>
-                    <div className="flex justify-between items-center mt-1 mb-2">
-                      <span className="text-xs text-gray-300">
-                        S{SeasonNumber}-E{e.episode_number} • {e.runtime || "?"}{" "}
-                        min
-                      </span>
-                      <span className="text-xs text-gray-300">
-                        {e.air_date ? e.air_date.split("-").join("/") : "TBA"}
-                      </span>
+                    <div className="absolute inset-0 bg-black/80 flex flex-col p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
+                      <h3 className="font-semibold text-base text-fuchsia-400">
+                        {e.name}
+                      </h3>
+                      <div className="flex justify-between items-center mt-1 mb-2">
+                        <span className="text-xs text-gray-300">
+                          S{SeasonNumber}-E{e.episode_number} •{" "}
+                          {e.runtime || "?"} min
+                        </span>
+                        <span className="text-xs text-gray-300">
+                          {e.air_date?.split("-").join("/") || "TBA"}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-200 overflow-y-auto flex-grow">
+                        {e.overview || "No description available."}
+                      </div>
+                      <div className="mt-2 flex justify-between items-center"></div>
                     </div>
-                    <div className="text-xs text-gray-200 overflow-y-auto flex-grow">
-                      {e.overview || "No description available."}
-                    </div>
-                    <div className="mt-2 flex justify-between items-center"></div>
-                  </div>
-                </a>
-              ))
+                  </a>
+                ))
             ) : loading ? (
               <div className="flex items-center justify-center w-full py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-fuchsia-500"></div>
