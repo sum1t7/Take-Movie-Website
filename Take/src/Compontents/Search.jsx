@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ImSpinner8 } from "react-icons/im";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "./NavBar";
@@ -8,9 +8,15 @@ const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const inputRef = useRef(null);
+  const observerTarget = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [showNoResults, setShowNoResults] = useState(false);
 
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -20,43 +26,115 @@ const Search = () => {
     inputRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    const searchMedia = async () => {
+  // Search function for both initial search and pagination
+  const searchMedia = useCallback(
+    async (page = 1, isLoadingMore = false) => {
       if (query.length < 1) {
         setResults([]);
+        setShowNoResults(false);
+        setTotalPages(0);
+        setCurrentPage(1);
+        setHasMore(false);
         return;
       }
 
-      setLoading(true);
+      if (!isLoadingMore) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
       setError(null);
 
       try {
-        const sanitizedQuery = DOMPurify.sanitize(query);
         const response = await fetch(
-          `https://api.tmdb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=1&include_adult=false`
+          `https://api.tmdb.org/3/search/multi?api_key=${apikey}&language=en-US&query=${query}&page=${page}&include_adult=false`,
         );
 
         if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();
 
-        const filteredResults = data.results.filter(
-          (item) => item.media_type === "movie" || item.media_type === "tv"
-        );
-        setResults(filteredResults);
+        const filteredResults = data.results
+          .filter(
+            (item) => item.media_type === "movie" || item.media_type === "tv",
+          )
+          .sort((a, b) => (b.vote_count || 0) - (a.vote_count || 0));
+
+        // Store total pages info
+        setTotalPages(data.total_pages || 0);
+
+        if (isLoadingMore) {
+          // Append to existing results
+          setResults((prev) => [...prev, ...filteredResults]);
+        } else {
+          // Replace results for new search
+          setResults(filteredResults);
+          setShowNoResults(false);
+        }
+
+        // Check if there are more pages
+        setHasMore(page < (data.total_pages || 0));
+        setCurrentPage(page);
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false);
+        if (!isLoadingMore) {
+          setLoading(false);
+        } else {
+          setLoadingMore(false);
+        }
       }
-    };
+    },
+    [query, apikey],
+  );
 
+  // Initial search when query changes
+  useEffect(() => {
     const debounceTimer = setTimeout(() => {
-      searchMedia();
+      searchMedia(1, false);
     }, 500);
 
-    return () => clearTimeout(debounceTimer);
-  }, [query]);
+    // Delay showing "no results" message
+    const noResultsTimer = setTimeout(() => {
+      if (query.length > 0) {
+        setShowNoResults(true);
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(debounceTimer);
+      clearTimeout(noResultsTimer);
+    };
+  }, [query, searchMedia]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          hasMore &&
+          !loadingMore &&
+          !loading &&
+          query.length > 0
+        ) {
+          // Load next page
+          searchMedia(currentPage + 1, true);
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [hasMore, loadingMore, loading, query, currentPage, searchMedia]);
 
   return (
     <>
@@ -74,10 +152,8 @@ const Search = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="mb-12"
           >
-            <h1 className="text-3xl font-bold text-white mb-6 text-center">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 to-pink-500">
-                Discover Entertainment
-              </span>
+            <h1 className="lg:text-8xl  text-6xl my-10 font-bold text-white  text-center">
+              <span className=" text-fuchsia-600">The Search Bar. 🦭</span>
             </h1>
 
             <div className="relative">
@@ -122,15 +198,11 @@ const Search = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="p-6 mt-8 text-gray-300 text-center rounded-xl bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 shadow-xl"
+                  transition={{ duration: 0.6 }}
+                  className="p-6 mt-8 text-gray-300 text-center rounded-xl   "
                 >
                   <p className="lg:text-xl text-base">
-                    Find your favorite movies and series easily. Type in the
-                    title or keyword and discover detailed information.
-                  </p>
-                  <p className="mt-2 text-fuchsia-400 lg:text-lg text-sm">
-                    Explore our catalog and find what to watch in seconds!
+                    Seal your searches here. 🦭
                   </p>
                 </motion.div>
               )}
@@ -153,9 +225,10 @@ const Search = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="p-4 mb-6 text-red-500 bg-red-900/20 backdrop-blur-sm border border-red-800/50 rounded-lg"
+              className="p-4 mb-6 text-amber-500 text-center  backdrop-blur-sm bg-amber-950 rounded-lg"
             >
-              Error: {error}
+              Something has happend that should'nt have happend. Please wait
+              with the seal. 🦭
             </motion.div>
           )}
 
@@ -164,19 +237,19 @@ const Search = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, staggerChildren: 0.1 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, staggerChildren: 0.1 }}
+                className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
               >
                 {results.map(
                   (item) =>
                     item.poster_path &&
-                    item.vote_average > 0 && (
+                    item.vote_average > 3 && (
                       <motion.a
                         key={item.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
                         className="relative group overflow-hidden rounded-lg shadow-lg shadow-black/40 transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-fuchsia-900/20"
                         href={`/${item.media_type}/${item.id}`}
                         title={item.title || item.name}
@@ -221,14 +294,30 @@ const Search = () => {
                           </div>
                         </div>
                       </motion.a>
-                    )
+                    ),
                 )}
               </motion.div>
             )}
           </AnimatePresence>
 
+          {/* Infinite scroll observer target */}
+          {hasMore && results.length > 0 && (
+            <div ref={observerTarget} className="py-8 flex justify-center">
+              {loadingMore && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex justify-center py-8"
+                >
+                  <ImSpinner8 className="animate-spin text-2xl text-fuchsia-500" />
+                </motion.div>
+              )}
+            </div>
+          )}
+
           <AnimatePresence>
-            {!loading && results.length === 0 && query.length >= 2 && (
+            {!loading && results.length === 0 && query && showNoResults && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -250,9 +339,11 @@ const Search = () => {
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-                <p className="text-lg">No results found for "{query}"</p>
+                <p className="text-2xl font-bold">
+                  Cannot find it! Its the seal's fault. 🦭
+                </p>
                 <p className="text-sm text-gray-400 mt-2">
-                  Try another search term
+                  Maybe try a different term?
                 </p>
               </motion.div>
             )}
