@@ -157,7 +157,7 @@ const PlayerPage = ({ type }) => {
   const [cast, setCast] = useState(null);
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
-  const resolvedServers = useMemo(() => {
+   const resolvedServers = useMemo(() => {
     return SERVERS.map((server) => ({
       ...server,
       baseUrl: import.meta.env[server.envKey],
@@ -243,7 +243,7 @@ const PlayerPage = ({ type }) => {
 
     return buildDefaultPath(activeServer.baseUrl);
   }, [activeServer, id, season, episode, contentType]);
-
+   console.log("Player URL:", playerUrl);
   useEffect(() => {
     const fetchContentData = async () => {
       setIsLoading(true);
