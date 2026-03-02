@@ -89,6 +89,20 @@ const SERVERS = [
   },
 ];
 
+const SERVER_FALLBACK_URLS = {
+  VITE_SERVER_URL: "https://player.videasy.net/",
+  VITE_SERVER_URL_2: "https://vidsrc.xyz/embed/",
+  VITE_SERVER_URL_3: "https://player.autoembed.cc/embed/",
+  VITE_SERVER_URL_4: "https://player.smashystream.com/",
+  VITE_SERVER_URL_5: "https://vidlink.pro/",
+  VITE_SERVER_URL_6: "https://vidfast.pro/",
+  VITE_SERVER_URL_7: "https://111movies.net/",
+  VITE_SERVER_URL_8: "https://spencerdevs.xyz/",
+};
+
+const AUTOPLAY_ENABLED =
+  String(import.meta.env.VITE_PLAYER_AUTOPLAY ?? "false") === "true";
+
 const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
   const { name, desc, color } = details;
 
@@ -122,18 +136,14 @@ const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
       <span
         className={`relative z-10 font-semibold tracking-wide ${
           isActive ? "" : "text-slate-200"
-        } ${
-          !isAvailable ? "opacity-50" : ""
-        }`}
+        } ${!isAvailable ? "opacity-50" : ""}`}
       >
         {name}
       </span>
       <span
         className={`relative z-10 text-xs ${
           isActive ? "text-white/85" : "text-slate-400"
-        } ${
-          !isAvailable ? "opacity-50" : ""
-        }`}
+        } ${!isAvailable ? "opacity-50" : ""}`}
       >
         {isAvailable ? desc : "Not configured"}
       </span>
@@ -146,7 +156,7 @@ const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
 
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [activeServerKey, setActiveServerKey] = useState("movies111");
+  const [activeServerKey, setActiveServerKey] = useState("autoembed");
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,10 +167,11 @@ const PlayerPage = ({ type }) => {
   const [cast, setCast] = useState(null);
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
-   const resolvedServers = useMemo(() => {
+  const resolvedServers = useMemo(() => {
     return SERVERS.map((server) => ({
       ...server,
-      baseUrl: import.meta.env[server.envKey],
+      baseUrl:
+        import.meta.env[server.envKey] ?? SERVER_FALLBACK_URLS[server.envKey],
     }));
   }, []);
 
@@ -191,7 +202,7 @@ const PlayerPage = ({ type }) => {
     }
 
     if (server.colorParams === "primary") {
-      return "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&autoplay=true";
+      return `primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&autoplay=${AUTOPLAY_ENABLED}`;
     }
 
     if (server.colorParams === "videasy") {
@@ -199,10 +210,10 @@ const PlayerPage = ({ type }) => {
     }
 
     if (server.colorParams === "theme") {
-      return "autoPlay=true&title=true&poster=true&theme=e91eac&nextButton=true&autoNext=true";
+      return `autoplay=${AUTOPLAY_ENABLED}&autoPlay=${AUTOPLAY_ENABLED}&title=true&poster=true&theme=e91eac&nextButton=true&autoNext=true`;
     }
 
-    return "autoplay=true";
+    return `autoplay=${AUTOPLAY_ENABLED}`;
   };
 
   const playerUrl = useMemo(() => {
@@ -243,7 +254,7 @@ const PlayerPage = ({ type }) => {
 
     return buildDefaultPath(activeServer.baseUrl);
   }, [activeServer, id, season, episode, contentType]);
-   console.log("Player URL:", playerUrl);
+
   useEffect(() => {
     const fetchContentData = async () => {
       setIsLoading(true);
