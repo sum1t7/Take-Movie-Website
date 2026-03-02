@@ -16,26 +16,26 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 const SERVERS = [
   {
-    key: "movies111",
-    name: "111movies",
-    desc: "Very Smooth",
+    key: "srv01",
+    name: "Server 1",
+    desc: "Primary",
     color: "gray",
     envKey: "VITE_SERVER_URL_7",
     mode: "default",
     colorParams: "primary",
   },
   {
-    key: "vidfast",
-    name: "Vidfast",
-    desc: "Smooth AF",
+    key: "srv02",
+    name: "Server 2",
+    desc: "Even better",
     color: "pink",
     envKey: "VITE_SERVER_URL_6",
-    mode: "imdbDefaultTv",
+    mode: "moviePathMode",
     colorParams: "theme",
   },
   {
-    key: "videasy",
-    name: "videasy",
+    key: "srv03",
+    name: "Server 3",
     desc: "Reliable",
     color: "purple",
     envKey: "VITE_SERVER_URL",
@@ -43,65 +43,51 @@ const SERVERS = [
     colorParams: "videasy",
   },
   {
-    key: "vidsrc",
-    name: "Vidsrc",
-    desc: "New releases",
+    key: "srv04",
+    name: "Server 4",
+    desc: "Old but gold",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
-    mode: "vidsrc",
+    mode: "tmdbQueryMode",
     colorParams: "none",
   },
   {
-    key: "autoembed",
-    name: "Autoembed",
-    desc: "One 15s Ad",
+    key: "srv05",
+    name: "Server 5",
+    desc: "Spanish subtitles",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
     mode: "default",
     colorParams: "primary",
   },
   {
-    key: "smashystream",
-    name: "Smashystream",
-    desc: "Variety",
+    key: "srv06",
+    name: "Server 6",
+    desc: "Variaty",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
-    mode: "smashyTv",
+    mode: "tvQueryMode",
     colorParams: "primary",
   },
   {
-    key: "vidlink",
-    name: "Vidlink",
-    desc: "Works Sometimes",
+    key: "srv07",
+    name: "Server 7",
+    desc: "Works sometimes",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
     mode: "default",
     colorParams: "primary",
   },
   {
-    key: "spencerdevs",
-    name: "spencerdevs",
-    desc: "Quality Options",
+    key: "srv08",
+    name: "Server 8",
+    desc: "Slower",
     color: "blue",
     envKey: "VITE_SERVER_URL_8",
     mode: "default",
     colorParams: "primary",
   },
 ];
-
-const SERVER_FALLBACK_URLS = {
-  VITE_SERVER_URL: "https://player.videasy.net/",
-  VITE_SERVER_URL_2: "https://vidsrc.xyz/embed/",
-  VITE_SERVER_URL_3: "https://player.autoembed.cc/embed/",
-  VITE_SERVER_URL_4: "https://player.smashystream.com/",
-  VITE_SERVER_URL_5: "https://vidlink.pro/",
-  VITE_SERVER_URL_6: "https://vidfast.pro/",
-  VITE_SERVER_URL_7: "https://111movies.net/",
-  VITE_SERVER_URL_8: "https://spencerdevs.xyz/",
-};
-
-const AUTOPLAY_ENABLED =
-  String(import.meta.env.VITE_PLAYER_AUTOPLAY ?? "false") === "true";
 
 const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
   const { name, desc, color } = details;
@@ -156,7 +142,7 @@ const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
 
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [activeServerKey, setActiveServerKey] = useState("autoembed");
+  const [activeServerKey, setActiveServerKey] = useState("srv01");
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -170,8 +156,7 @@ const PlayerPage = ({ type }) => {
   const resolvedServers = useMemo(() => {
     return SERVERS.map((server) => ({
       ...server,
-      baseUrl:
-        import.meta.env[server.envKey] ?? SERVER_FALLBACK_URLS[server.envKey],
+      baseUrl: import.meta.env[server.envKey],
     }));
   }, []);
 
@@ -202,7 +187,7 @@ const PlayerPage = ({ type }) => {
     }
 
     if (server.colorParams === "primary") {
-      return `primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&autoplay=${AUTOPLAY_ENABLED}`;
+      return "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&autoplay=true";
     }
 
     if (server.colorParams === "videasy") {
@@ -210,10 +195,21 @@ const PlayerPage = ({ type }) => {
     }
 
     if (server.colorParams === "theme") {
-      return `autoplay=${AUTOPLAY_ENABLED}&autoPlay=${AUTOPLAY_ENABLED}&title=true&poster=true&theme=e91eac&nextButton=true&autoNext=true`;
+      return "autoPlay=true&title=true&poster=true&theme=e91eac&nextButton=true&autoNext=true";
     }
 
-    return `autoplay=${AUTOPLAY_ENABLED}`;
+    return "autoplay=true";
+  };
+
+  const withAutoplay = (paramsString = "") => {
+    const params = new URLSearchParams(paramsString);
+    params.set("autoplay", "true");
+
+    if (params.has("autoPlay")) {
+      params.set("autoPlay", "true");
+    }
+
+    return params.toString();
   };
 
   const playerUrl = useMemo(() => {
@@ -221,7 +217,7 @@ const PlayerPage = ({ type }) => {
       return "";
     }
 
-    const baseParams = getServerParams(activeServer);
+    const baseParams = withAutoplay(getServerParams(activeServer));
     const hasParams = baseParams.length > 0;
     const buildDefaultPath = (content) => {
       if (contentType === "movie") {
@@ -233,19 +229,19 @@ const PlayerPage = ({ type }) => {
       }`;
     };
 
-    if (activeServer.mode === "vidsrc") {
+    if (activeServer.mode === "tmdbQueryMode") {
       if (contentType === "movie") {
-        return `${activeServer.baseUrl}movie?tmdb=${id}`;
+        return `${activeServer.baseUrl}movie?tmdb=${id}&autoplay=true`;
       }
 
-      return `${activeServer.baseUrl}tv?tmdb=${id}&season=${season}&episode=${episode}`;
+      return `${activeServer.baseUrl}tv?tmdb=${id}&season=${season}&episode=${episode}&autoplay=true`;
     }
 
-    if (activeServer.mode === "imdbDefaultTv" && contentType === "movie") {
+    if (activeServer.mode === "moviePathMode" && contentType === "movie") {
       return `${activeServer.baseUrl}movie/${id}${hasParams ? `?${baseParams}` : ""}`;
     }
 
-    if (activeServer.mode === "smashyTv" && contentType === "tv") {
+    if (activeServer.mode === "tvQueryMode" && contentType === "tv") {
       const query = hasParams
         ? `s=${season}&e=${episode}&${baseParams}`
         : `s=${season}&e=${episode}`;
@@ -254,7 +250,6 @@ const PlayerPage = ({ type }) => {
 
     return buildDefaultPath(activeServer.baseUrl);
   }, [activeServer, id, season, episode, contentType]);
-
   useEffect(() => {
     const fetchContentData = async () => {
       setIsLoading(true);
@@ -328,7 +323,7 @@ const PlayerPage = ({ type }) => {
 
       <div
         className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${
-          activeServer.mode === "vidsrc" ? "lg:pt-[70px]" : ""
+          activeServer.mode === "tmdbQueryMode" ? "lg:pt-[70px]" : ""
         } lg:h-[97vh] md:h-[70vh] `}
       >
         <iframe
@@ -340,11 +335,11 @@ const PlayerPage = ({ type }) => {
           title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
         ></iframe>
       </div>
-      {/* <p className="text-center text-gray-400 bg-[#101828]">
+      <p className="text-center text-gray-400 bg-[#101828]">
         Please have an adblocker enabled for a better experience.
-      </p> */}
-      <div className="relative mx-3 bg-cyan-900 md:mx-6 lg:mx-8 mt-4 overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-slate-900/85 via-slate-900/70 to-fuchsia-950/35 backdrop-blur-2xl shadow-[0_18px_45px_rgba(0,0,0,0.45)] p-6">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,114,182,0.20),transparent_50%)]" />
+      </p> 
+      <div className="relative mx-3 bg-cyan-900 md:mx-6 lg:mx-8 mt-4 overflow-hidden rounded-2xl border border-white/15    backdrop-blur-2xl shadow-[0_18px_45px_rgba(0,0,0,0.45)] p-6">
+        <div className="pointer-events-none  " />
         <h2 className="relative text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
