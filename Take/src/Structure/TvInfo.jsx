@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import PosterPage from "../Compontents/PosterPage";
 import Description from "../Compontents/Description";
 import Foter from "../Compontents/Foter";
@@ -11,6 +11,7 @@ import PinkLoading from "../Compontents/Loading";
 import Seasons from "../Compontents/Seasons";
 import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
+
 const TvInfo = () => {
   const { id } = useParams();
 

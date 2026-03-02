@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useMemo } from "react";
 
@@ -6,78 +6,101 @@ import axios from "axios";
 import NavBar from "../Compontents/NavBar";
 import Recommendation from "../Compontents/Recommendation";
 import Foter from "../Compontents/Foter";
-import { getIMDBId } from "../utils/VideoRelated";
 
 import Seasons from "../Compontents/Seasons";
 import PinkLoading from "../Compontents/Loading";
+import Description from "../Compontents/Description";
+import Cast from "../Compontents/Cast";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 const SERVERS = [
   {
-    name: "Server 1",
-    desc: "Has Pop-ups",
+    key: "movies111",
+    name: "111movies",
+    desc: "Very Smooth",
+    color: "gray",
+    envKey: "VITE_SERVER_URL_7",
+    mode: "default",
+    colorParams: "primary",
+  },
+  {
+    key: "vidfast",
+    name: "Vidfast",
+    desc: "Smooth AF",
     color: "pink",
     envKey: "VITE_SERVER_URL_6",
+    mode: "imdbDefaultTv",
+    colorParams: "theme",
   },
   {
-    name: "Server 2",
-    desc: "Good for new releases",
+    key: "videasy",
+    name: "videasy",
+    desc: "Reliable",
+    color: "purple",
+    envKey: "VITE_SERVER_URL",
+    mode: "default",
+    colorParams: "videasy",
+  },
+  {
+    key: "vidsrc",
+    name: "Vidsrc",
+    desc: "New releases",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
+    mode: "vidsrc",
+    colorParams: "none",
   },
   {
-    name: "Server 3",
+    key: "autoembed",
+    name: "Autoembed",
     desc: "One 15s Ad",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
+    mode: "default",
+    colorParams: "primary",
   },
   {
-    name: "Server 4",
-    desc: "Fastest One",
+    key: "smashystream",
+    name: "Smashystream",
+    desc: "Variety",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
+    mode: "smashyTv",
+    colorParams: "primary",
   },
   {
-    name: "Server 5",
-    desc: "Good Variety",
-    color: "purple",
-    envKey: "VITE_SERVER_URL",
-  },
-  {
-    name: "Server 6",
-    desc: "For Mobile",
+    key: "vidlink",
+    name: "Vidlink",
+    desc: "Works Sometimes",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
+    mode: "default",
+    colorParams: "primary",
   },
   {
-    name: "Server 7",
-    desc: "Smooth",
-    color: "gray",
-    envKey: "VITE_SERVER_URL_7",
-  },
-  {
-    name: "Server 8",
-    desc: "Quality",
+    key: "spencerdevs",
+    name: "spencerdevs",
+    desc: "Quality Options",
     color: "blue",
     envKey: "VITE_SERVER_URL_8",
-
-  }
+    mode: "default",
+    colorParams: "primary",
+  },
 ];
 
-const ServerButton = ({ server, currentServer, onClick, details }) => {
-  const isActive = server === currentServer;
+const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
   const { name, desc, color } = details;
 
   const getColorClasses = (colorName) => {
     const baseClasses = {
-      pink: "bg-pink-500/20 border-pink-500 text-pink-300",
-      yellow: "bg-yellow-500/20 border-yellow-500 text-yellow-200",
-      green: "bg-green-500/20 border-green-500 text-green-200",
-      blue: "bg-blue-500/20 border-blue-500 text-blue-200",
-      purple: "bg-purple-500/20 border-purple-500 text-purple-200",
-      red: "bg-red-500/20 border-red-500 text-red-200",
-      gray: "bg-gray-500/20 border-gray-500 text-gray-200",
+      pink: "from-pink-500/35 to-fuchsia-500/20 text-pink-100",
+      yellow: "from-amber-500/35 to-yellow-500/20 text-yellow-100",
+      green: "from-emerald-500/35 to-green-500/20 text-emerald-100",
+      blue: "from-sky-500/35 to-blue-500/20 text-sky-100",
+      purple: "from-violet-500/35 to-purple-500/20 text-violet-100",
+      red: "from-rose-500/35 to-red-500/20 text-rose-100",
+      gray: "from-slate-500/35 to-zinc-500/20 text-slate-100",
     };
     return baseClasses[colorName] || baseClasses.gray;
   };
@@ -85,21 +108,37 @@ const ServerButton = ({ server, currentServer, onClick, details }) => {
   return (
     <button
       onClick={onClick}
-      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 flex flex-col justify-center h-full w-full
+      disabled={!isAvailable}
+      className={`group relative overflow-hidden p-3 rounded-xl transition-all duration-300 ease-out flex flex-col justify-center h-full w-full border backdrop-blur-xl
       ${
         isActive
-          ? `${getColorClasses(color)} border-2 scale-105`
-          : "bg-gray-800/50 hover:bg-gray-700 border-2 border-transparent"
+          ? `bg-gradient-to-br ${getColorClasses(
+              color,
+            )} border-white/30 scale-[1.03] -translate-y-0.5 shadow-[0_0_28px_rgba(236,72,153,0.26)]`
+          : "bg-white/[0.04] border-white/10 hover:bg-white/[0.10] hover:border-pink-200/35 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,0.32)]"
       }`}
     >
-      <span className={`font-medium ${isActive ? "" : "text-gray-300"}`}>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(255,255,255,0.22),transparent_42%)] opacity-70" />
+      <span
+        className={`relative z-10 font-semibold tracking-wide ${
+          isActive ? "" : "text-slate-200"
+        } ${
+          !isAvailable ? "opacity-50" : ""
+        }`}
+      >
         {name}
       </span>
-      <span className={`text-xs ${isActive ? "" : "text-gray-400"}`}>
-        {desc}
+      <span
+        className={`relative z-10 text-xs ${
+          isActive ? "text-white/85" : "text-slate-400"
+        } ${
+          !isAvailable ? "opacity-50" : ""
+        }`}
+      >
+        {isAvailable ? desc : "Not configured"}
       </span>
       {isActive && (
-        <div className="w-2 h-2 rounded-full bg-green-400 absolute top-2 right-2 shadow-lg shadow-green-500/50" />
+        <div className="w-2 h-2 rounded-full bg-emerald-300 absolute top-2 right-2 shadow-lg shadow-emerald-300/60 z-10" />
       )}
     </button>
   );
@@ -107,49 +146,102 @@ const ServerButton = ({ server, currentServer, onClick, details }) => {
 
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [activeServer, setActiveServer] = useState(
-    import.meta.env.VITE_SERVER_URL_3
-  );
+  const [activeServerKey, setActiveServerKey] = useState("movies111");
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [IMDBId, setIMDBId] = useState(null);
+  const [tv, settv] = useState(null);
+  const [movie, setMovie] = useState(null);
+  const [images, setImages] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [cast, setCast] = useState(null);
+  const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
-  const serverUrls = useMemo(() => {
-    return SERVERS.map((server) => import.meta.env[server.envKey]);
+  const resolvedServers = useMemo(() => {
+    return SERVERS.map((server) => ({
+      ...server,
+      baseUrl: import.meta.env[server.envKey],
+    }));
   }, []);
+
+  const availableServers = useMemo(
+    () => resolvedServers.filter((server) => Boolean(server.baseUrl)),
+    [resolvedServers],
+  );
+
+  const activeServer = useMemo(() => {
+    return (
+      availableServers.find((server) => server.key === activeServerKey) ||
+      availableServers[0] ||
+      null
+    );
+  }, [availableServers, activeServerKey]);
 
   const contentType = type ? "movie" : "tv";
 
-  async function getId() {
-    const IMDBId = await getIMDBId({ id, type: contentType });
-    setIMDBId(IMDBId);
-  }
-
   useEffect(() => {
-    getId();
-  }, [id, contentType]);
+    if (!activeServer && availableServers.length > 0) {
+      setActiveServerKey(availableServers[0].key);
+    }
+  }, [activeServer, availableServers]);
+
+  const getServerParams = (server) => {
+    if (!server) {
+      return "";
+    }
+
+    if (server.colorParams === "primary") {
+      return "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&autoplay=true";
+    }
+
+    if (server.colorParams === "videasy") {
+      return "nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true&overlay=true&color=e91eac";
+    }
+
+    if (server.colorParams === "theme") {
+      return "autoPlay=true&title=true&poster=true&theme=e91eac&nextButton=true&autoNext=true";
+    }
+
+    return "autoplay=true";
+  };
 
   const playerUrl = useMemo(() => {
-    const baseParams =
-      "primaryColor=e91eac&secondaryColor=101828&iconColor=eefdec&icons=default&autoplay=true";
+    if (!activeServer?.baseUrl) {
+      return "";
+    }
 
-    if (activeServer == serverUrls[1] && contentType === "movie") {
-      return `${activeServer}/${IMDBId}`;
-    } else if (contentType === "movie") {
-      return `${activeServer}movie/${id}?${baseParams}`;
-    } else {
-      if (activeServer == serverUrls[3]) {
-        console.log(`${activeServer}tv/${id}?${season}&${episode}`);
-        return `${activeServer}tv/${id}?s=${season}&e=${episode}`;
+    const baseParams = getServerParams(activeServer);
+    const hasParams = baseParams.length > 0;
+    const buildDefaultPath = (content) => {
+      if (contentType === "movie") {
+        return `${content}movie/${id}${hasParams ? `?${baseParams}` : ""}`;
       }
-      else if(activeServer == serverUrls[1]) {
-          return `${activeServer}tv?tmdb=${id}&season=${season}&episode=${episode}`;
+
+      return `${content}tv/${id}/${season}/${episode}${
+        hasParams ? `?${baseParams}` : ""
+      }`;
+    };
+
+    if (activeServer.mode === "vidsrc") {
+      if (contentType === "movie") {
+        return `${activeServer.baseUrl}movie?tmdb=${id}`;
       }
-       else {
-        return `${activeServer}tv/${id}/${season}/${episode}?${baseParams}`;
-      }
-     }
+
+      return `${activeServer.baseUrl}tv?tmdb=${id}&season=${season}&episode=${episode}`;
+    }
+
+    if (activeServer.mode === "imdbDefaultTv" && contentType === "movie") {
+      return `${activeServer.baseUrl}movie/${id}${hasParams ? `?${baseParams}` : ""}`;
+    }
+
+    if (activeServer.mode === "smashyTv" && contentType === "tv") {
+      const query = hasParams
+        ? `s=${season}&e=${episode}&${baseParams}`
+        : `s=${season}&e=${episode}`;
+      return `${activeServer.baseUrl}tv/${id}?${query}`;
+    }
+
+    return buildDefaultPath(activeServer.baseUrl);
   }, [activeServer, id, season, episode, contentType]);
 
   useEffect(() => {
@@ -158,13 +250,13 @@ const PlayerPage = ({ type }) => {
       try {
         if (contentType === "tv") {
           const tvResponse = await axios.get(
-            `https://api.tmdb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`
+            `https://api.tmdb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`,
           );
           setContentData(tvResponse.data);
         }
 
         const recommendationsResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`,
         );
         setRecommendations(recommendationsResponse.data);
       } catch (error) {
@@ -177,17 +269,55 @@ const PlayerPage = ({ type }) => {
     fetchContentData();
   }, [id, contentType]);
 
+  useEffect(() => {
+    const fetchtvData = async () => {
+      try {
+        const tvResponse = await axios.get(
+          `https://api.tmdb.org/3/${contentType}/${id}?api_key=${apikey}&language=en-US`,
+        );
+        settv(tvResponse.data);
+        setMovie(tvResponse.data);
+
+        const imagesResponse = await axios.get(
+          `https://api.tmdb.org/3/${contentType}/${id}/images?api_key=${apikey}`,
+        );
+        setImages(imagesResponse.data);
+
+        const videoResponse = await axios.get(
+          `https://api.tmdb.org/3/${contentType}/${id}/videos?api_key=${apikey}&language=en-US`,
+        );
+        setVideo(videoResponse.data);
+
+        const castResponse = await axios.get(
+          `https://api.tmdb.org/3/${contentType}/${id}/credits?api_key=${apikey}`,
+        );
+        setCast(castResponse.data);
+      } catch (error) {
+        console.error("Error fetching tv data:", error);
+      }
+    };
+
+    fetchtvData();
+  }, [id]);
+
   if (isLoading) {
+    return <PinkLoading />;
+  }
+  if (!tv || !images || !video || !cast || !movie) {
+    return <PinkLoading />;
+  }
+
+  if (!activeServer) {
     return <PinkLoading />;
   }
 
   return (
-    <>
+    <div className="bg-[#101828]">
       <NavBar />
 
       <div
         className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${
-          activeServer === serverUrls[1] ? "lg:pt-[70px]" : ""
+          activeServer.mode === "vidsrc" ? "lg:pt-[70px]" : ""
         } lg:h-[97vh] md:h-[70vh] `}
       >
         <iframe
@@ -199,11 +329,12 @@ const PlayerPage = ({ type }) => {
           title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
         ></iframe>
       </div>
-      <p className="text-center text-gray-400 bg-gray-700">
+      {/* <p className="text-center text-gray-400 bg-[#101828]">
         Please have an adblocker enabled for a better experience.
-      </p>
-      <div className="bg-gray-900/80 backdrop-blur-md rounded-xl p-6 shadow-2xl  ">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
+      </p> */}
+      <div className="relative mx-3 bg-cyan-900 md:mx-6 lg:mx-8 mt-4 overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-slate-900/85 via-slate-900/70 to-fuchsia-950/35 backdrop-blur-2xl shadow-[0_18px_45px_rgba(0,0,0,0.45)] p-6">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,114,182,0.20),transparent_50%)]" />
+        <h2 className="relative text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-2 text-pink-500"
@@ -221,13 +352,16 @@ const PlayerPage = ({ type }) => {
           Select Server
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <div className="relative grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
           {SERVERS.map((serverInfo, index) => (
             <ServerButton
-              key={index}
-              server={serverUrls[index]}
-              currentServer={activeServer}
-              onClick={() => setActiveServer(serverUrls[index])}
+              key={serverInfo.key}
+              isActive={activeServer?.key === serverInfo.key}
+              isAvailable={Boolean(resolvedServers[index].baseUrl)}
+              onClick={() =>
+                resolvedServers[index].baseUrl &&
+                setActiveServerKey(serverInfo.key)
+              }
               details={serverInfo}
             />
           ))}
@@ -242,6 +376,13 @@ const PlayerPage = ({ type }) => {
         />
       )}
 
+      <Description
+        movie={contentType === "tv" ? movie : tv}
+        video={video}
+        id={id}
+      />
+      <Cast movie={contentType === "tv" ? movie : tv} cast={cast} />
+
       {recommendations &&
         recommendations.results &&
         recommendations.results.length > 0 && (
@@ -251,7 +392,7 @@ const PlayerPage = ({ type }) => {
           />
         )}
       <Foter />
-    </>
+    </div>
   );
 };
 
