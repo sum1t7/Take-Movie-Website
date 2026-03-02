@@ -142,7 +142,7 @@ const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
 
 const PlayerPage = ({ type }) => {
   const { id, season, episode } = useParams();
-  const [activeServerKey, setActiveServerKey] = useState("srv01");
+  const [activeServerKey, setActiveServerKey] = useState("srv02");
   const [contentData, setContentData] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
