@@ -204,7 +204,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
     <div className="max-h-[65vh] overflow-y-auto pr-2 custom-scrollbar">
       
       {/* GRID */}
-      <div className="gap-4 flex flex-wrap justify-center lg:justify-start">
+      <div className="gap-4 p-10 flex flex-wrap justify-center lg:justify-start">
         {allEpisodesLoading ? (
           <div className="flex items-center justify-center w-full py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-fuchsia-500"></div>
@@ -219,7 +219,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
                 seasonnumbers == e.season_number
                   ? "borderpink"
                   : ""
-              } block h-34 lg:w-80 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
+              } block h-34 lg:w-75 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
             >
               {/* rank */}
               <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-bold px-2 py-0.5 rounded-full">
