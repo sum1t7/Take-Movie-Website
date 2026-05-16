@@ -102,7 +102,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
 
       <div className="flex justify-between mr-2">
         <h1
-          className={`text-2xl md:text-3xl font-bold flex items-center gap-3 lg:ml-20 ml-10    ${
+          className={`text-2xl md:text-3xl font-bold flex justify-center items-center gap-3 lg:ml-20 ml-10    ${
             bit ? "text-[#e91eb0]" : ""
           }`}
         >
@@ -111,6 +111,7 @@ const Recommendation = ({ recommendation, title, bit, type, forLiked }) => {
           )}
 
           {recommendation.results[0] ? title : ""}
+          {recommendation.results[0] ? <span className="text-purple-400/70 font-semibold text-sm ">(Shift + Scroll)</span> : ""}
         </h1>
         <h1
           className="text-sm self-end cursor-pointer text-gray-400"
