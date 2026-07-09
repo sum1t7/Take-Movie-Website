@@ -47,7 +47,7 @@ const Person = () => {
       ) : (
         <>
           <NavBar />
-          <div className="md:px-10 px-10 lg:px-20 items-end pt-30 bg-gray-900">
+          <div className="md:px-10 px-10 lg:px-20 items-end pt-30 bg-[#0a0e17]">
             <div className="flex flex-col md:flex-row">
               <div className="rounded-lg h-130 overflow-hidden">
                 <img

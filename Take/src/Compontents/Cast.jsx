@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import "./rec.css";
 import PinkLoading from "./Loading";
 
@@ -27,38 +28,43 @@ const Cast = ({ cast }) => {
       setLoading(false);
     });
   }, [cast]);
+
   return (
-    <div className="flex flex-col gap-3 lg:px-22  px-10 bg-gray-900">
+    <div className="flex flex-col gap-3 lg:px-22 px-10 bg-[#0a0e17] py-6">
       {cast && cast.cast && cast.cast.length > 0 && (
-        <h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
-          <div class="w-1 h-8 bg-fuchsia-700 rounded-full"></div>
+        <h2 className="text-2xl md:text-3xl font-semibold text-white/90 flex items-center gap-3 tracking-tight">
+          <div className="w-1 h-8 bg-indigo-500 rounded-full" />
           <span>Cast</span>
         </h2>
       )}
-      <div className="relative flex  items-center"></div>
-      <div className="overflow-x-auto no-scrollbar  pb-4">
+
+      <div className="overflow-x-auto no-scrollbar pb-4">
         <div className="flex gap-6 py-2">
           {cast &&
             cast.cast &&
             cast.cast.slice(0, 13).map((actor, index) => (
               <a
                 key={actor.id}
-                className="flex-shrink-0  w-32 group"
+                className="flex-shrink-0 w-32 group"
                 href={`/person/${actor.id}`}
                 title={actor.name}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="relative">
+                <motion.div
+                  className="relative"
+                  animate={{ scale: hoveredIndex === index ? 1.06 : 1 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 18 }}
+                >
                   <div
-                    className={`w-32 h-32 mb-3 rounded-full overflow-hidden transform transition-all duration-300 ${
+                    className={`w-32 h-32 mb-3 rounded-full overflow-hidden border border-white/10 transition-shadow duration-300 ${
                       hoveredIndex === index
-                        ? "scale-105 shadow-lg shadow-fuchsia-500/20"
+                        ? "shadow-[0_0_0_3px_rgba(99,102,241,0.35)]"
                         : ""
                     }`}
                   >
                     {loading ? (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                      <div className="w-full h-full flex items-center justify-center bg-white/[0.03]">
                         <PinkLoading size={24} speed={2.5} hscreen="h-full" />
                       </div>
                     ) : (
@@ -70,17 +76,17 @@ const Cast = ({ cast }) => {
                             : "https://via.placeholder.com/500x750?text=No+Image"
                         }
                         alt={actor.name}
-                        className="w-full h-full object-cover transition-transform duration-500"
+                        className="w-full h-full object-cover"
                       />
                     )}
                   </div>
-                </div>
+                </motion.div>
 
                 <div className="text-center">
-                  <h3 className="text-base font-semibold text-white truncate transition-colors duration-300 group-hover:text-fuchsia-400">
+                  <h3 className="text-base font-semibold text-white/90 truncate transition-colors duration-300 group-hover:text-indigo-400">
                     {actor.name}
                   </h3>
-                  <p className="text-sm text-gray-400 truncate">
+                  <p className="text-sm text-white/40 truncate">
                     {actor.character ? `as ${actor.character}` : "Unknown Role"}
                   </p>
                 </div>

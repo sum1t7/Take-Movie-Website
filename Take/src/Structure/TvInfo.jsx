@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PosterPage from "../Compontents/PosterPage";
 import Description from "../Compontents/Description";
 import Foter from "../Compontents/Foter";
@@ -41,27 +41,27 @@ const TvInfo = () => {
     const fetchtvData = async () => {
       try {
         const tvResponse = await axios.get(
-          `https://api.tmdb.org/3/tv/${id}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${id}?api_key=${apikey}&language=en-US`,
         );
         settv(tvResponse.data);
 
         const imagesResponse = await axios.get(
-          `https://api.tmdb.org/3/tv/${id}/images?api_key=${apikey}`
+          `https://api.tmdb.org/3/tv/${id}/images?api_key=${apikey}`,
         );
         setImages(imagesResponse.data);
 
         const videoResponse = await axios.get(
-          `https://api.tmdb.org/3/tv/${id}/videos?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/tv/${id}/videos?api_key=${apikey}&language=en-US`,
         );
         setVideo(videoResponse.data);
 
         const castResponse = await axios.get(
-          `https://api.tmdb.org/3/tv/${id}/credits?api_key=${apikey}`
+          `https://api.tmdb.org/3/tv/${id}/credits?api_key=${apikey}`,
         );
         setCast(castResponse.data);
 
         const recommendationResponse = await axios.get(
-          `https://api.tmdb.org/3/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`,
         );
         setRecommendation(recommendationResponse.data);
       } catch (error) {
@@ -91,7 +91,7 @@ const TvInfo = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <NavBar />
       <PosterPage movie={tv} images={images} id={id} type={0} />
-      <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">
+      <div className="flex  bg-[#0a0e17] lg:px-27 py-3 justify-center lg:justify-start">
         <button
           className={`px-4 py-2 rounded-4xl transition duration-300 ease-in-out ${
             isfav

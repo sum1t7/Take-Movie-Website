@@ -165,7 +165,7 @@ const Search = () => {
                 className="w-full h-14 px-6 py-4 text-lg rounded-full 
                           border-2 border-fuchsia-500/30 focus:border-fuchsia-500 
                           focus:ring-2 focus:ring-fuchsia-500/20 
-                          bg-gray-900/50 backdrop-blur-sm text-white placeholder-gray-400
+                          bg-[#0a0e17]/50 backdrop-blur-sm text-white placeholder-gray-400
                           transition-all duration-300 shadow-lg shadow-fuchsia-500/5"
                 ref={inputRef}
               />

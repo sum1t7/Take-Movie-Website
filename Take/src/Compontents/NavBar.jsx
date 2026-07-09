@@ -29,7 +29,7 @@ const NavBar = () => {
       <nav
         className={`hidden md:block fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-gray-900/95 backdrop-blur-sm py-2 shadow-lg"
+            ? "bg-[#0a0e17]/95 backdrop-blur-sm py-2 shadow-lg"
             : "bg-transparent py-4"
         }`}
       >
@@ -109,7 +109,7 @@ const NavBar = () => {
         </div>
       </nav>
 
-      <nav className="fixed bottom-0 w-full bg-gray-900/95 backdrop-blur-sm text-white shadow-lg z-50 md:hidden">
+      <nav className="fixed bottom-0 w-full bg-[#0a0e17]/95 backdrop-blur-sm text-white shadow-lg z-50 md:hidden">
         <div className="container mx-auto flex justify-around items-center py-3">
           <Link
             to="/"
@@ -196,12 +196,12 @@ const NavBar = () => {
             >
               TV Shows
             </Link>
-             <Link
-                to="/recs"
-                className="text-gray-300 hover:text-fuchsia-400 transition-all duration-300"
-              >
-                Recommendations
-              </Link>
+            <Link
+              to="/recs"
+              className="text-gray-300 hover:text-fuchsia-400 transition-all duration-300"
+            >
+              Recommendations
+            </Link>
           </div>
         </div>
       </nav>

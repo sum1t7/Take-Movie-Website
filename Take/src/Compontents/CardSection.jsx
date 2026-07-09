@@ -5,7 +5,7 @@ const CardSection = ({ card, title, bit }) => {
   useEffect(() => {}, [card]);
 
   return (
-    <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-gray-900">
+    <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-[#0a0e17]">
       {title && (
         <h3 className=" md:text-8xl text-7xl font-bold justify-self-center lg:p-20 pt-20 stroke lg:text-9xl">
           {title}

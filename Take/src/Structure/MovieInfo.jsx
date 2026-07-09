@@ -40,27 +40,27 @@ const MovieInfo = () => {
     const fetchMovieData = async () => {
       try {
         const movieResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/movie/${id}?api_key=${apikey}&language=en-US`,
         );
         setMovie(movieResponse.data);
 
         const imagesResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/images?api_key=${apikey}`
+          `https://api.tmdb.org/3/movie/${id}/images?api_key=${apikey}`,
         );
         setImages(imagesResponse.data);
 
         const videoResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`
+          `https://api.tmdb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`,
         );
         setVideo(videoResponse.data);
 
         const castResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/credits?api_key=${apikey}`
+          `https://api.tmdb.org/3/movie/${id}/credits?api_key=${apikey}`,
         );
         setCast(castResponse.data);
 
         const recommendationResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
+          `https://api.tmdb.org/3/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`,
         );
         setRecommendation(recommendationResponse.data);
       } catch (error) {
@@ -90,8 +90,7 @@ const MovieInfo = () => {
       <Toaster />
       <NavBar />
       <PosterPage movie={movie} images={images} id={id} type={1} />
-      <div className="flex  bg-gray-900 lg:pl-17 justify-center lg:justify-start">
-       
+      <div className="flex  bg-[#0a0e17] lg:px-27 py-3 justify-center lg:justify-start">
         <button
           className={`px-4 py-2 rounded-4xl transition duration-300 ease-in-out ${
             isfav

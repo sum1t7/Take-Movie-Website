@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-const PinkLoading = ({ size = 64, speed = 1.5 , hscreen = "min-h-screen"}) => {
+const PinkLoading = ({ size = 64, speed = 1.5, hscreen = "min-h-screen" }) => {
   const loaderStyle = {
     width: size,
     height: size,
@@ -8,22 +8,21 @@ const PinkLoading = ({ size = 64, speed = 1.5 , hscreen = "min-h-screen"}) => {
   };
 
   return (
-    <div className={`flex bg-gray-900 items-center justify-center  ${hscreen}`}>
-      <div 
-        className="relative"
-        style={{ width: size, height: size }}
-      >
+    <div
+      className={`flex bg-[#0a0e17] items-center justify-center  ${hscreen}`}
+    >
+      <div className="relative" style={{ width: size, height: size }}>
         {/* Outer Ring */}
         <div
           className="absolute border-4 border-pink-200 rounded-full"
           style={{
             width: size,
             height: size,
-            borderTopColor: 'transparent',
+            borderTopColor: "transparent",
             animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
           }}
         ></div>
-        
+
         {/* Middle Ring */}
         <div
           className="absolute border-4 border-pink-400 rounded-full"
@@ -32,11 +31,11 @@ const PinkLoading = ({ size = 64, speed = 1.5 , hscreen = "min-h-screen"}) => {
             height: size * 0.7,
             left: size * 0.15,
             top: size * 0.15,
-            borderRightColor: 'transparent',
+            borderRightColor: "transparent",
             animation: `spin ${speed * 0.8}s linear infinite`,
           }}
         ></div>
-        
+
         {/* Inner Dot */}
         <div
           className="absolute bg-pink-600 rounded-full"
@@ -71,7 +70,7 @@ const styles = `
 `;
 
 // Add the styles to the document head
-const styleSheet = document.createElement('style');
+const styleSheet = document.createElement("style");
 styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
 

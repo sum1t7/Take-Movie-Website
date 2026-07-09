@@ -12,10 +12,8 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
   const [allEpisodesMode, setAllEpisodesMode] = useState(false);
   const [allEpisodes, setAllEpisodes] = useState(null);
   const [allEpisodesLoading, setAllEpisodesLoading] = useState(false);
-  // --- new ---
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
-  // -----------
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
   const season = tv.seasons;
 
@@ -78,7 +76,6 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
     }
   };
 
-  // --- replaced: animated toggle ---
   const handleToggleAllEpisodes = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
@@ -96,7 +93,6 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
       }, 60);
     }, 260);
   };
-  // ---------------------------------
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -111,11 +107,10 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
     : [];
 
   return (
-    <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-gradient-to-b from-gray-900 to-gray-950">
+    <div className="px-4 sm:px-16 items-end lg:py-15 py-10 bg-[#0a0e17]">
       <div className="flex items-center gap-4 px-4 pb-3">
-        <h1 className="text-5xl font-bold text-fuchsia-600">Seasons</h1>
+        <h1 className="text-4xl font-bold text-white/90 tracking-tight">Seasons</h1>
 
-        {/* --- updated toggle button --- */}
         <button
           onClick={handleToggleAllEpisodes}
           disabled={isTransitioning}
@@ -124,14 +119,13 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
             ${isTransitioning ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}
             ${
               allEpisodesMode
-                ? "bg-fuchsia-600 border-fuchsia-600 text-white shadow-lg shadow-fuchsia-900/50 scale-105"
-                : "bg-transparent border-fuchsia-600 text-fuchsia-400 hover:bg-fuchsia-600/20 hover:scale-105"
+                ? "bg-indigo-500 border-indigo-500 text-white shadow-[0_10px_30px_rgba(99,102,241,0.4)] scale-105"
+                : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-indigo-500/10 hover:border-indigo-400/40 hover:scale-105"
             }`}
         >
-          {/* pulsing ring when active */}
           {allEpisodesMode && (
             <span
-              className="absolute inset-0 rounded-full bg-fuchsia-400/20 animate-ping pointer-events-none"
+              className="absolute inset-0 rounded-full bg-indigo-400/20 animate-ping pointer-events-none"
               style={{ animationDuration: "2s" }}
             />
           )}
@@ -154,10 +148,8 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
             {allEpisodesMode ? "Top Episodes ON" : "Top Episodes"}
           </span>
         </button>
-        {/* ----------------------------- */}
       </div>
 
-      {/* --- content wrapper with fade+slide on mode switch --- */}
       <div
         style={{
           opacity: contentVisible ? 1 : 0,
@@ -165,192 +157,29 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
           transition: "opacity 0.28s ease, transform 0.28s ease",
         }}
       >
-      {/* ----------------------------------------------------- */}
-
-      {allEpisodesMode ? (
-        // ── ALL EPISODES MODE ──────────────────────────────────────────
-       <div className="flex flex-col gap-4">
-  {/* SEARCH BAR */}
-  <div className="px-4 pt-2">
-    <div className="relative">
-      <input
-        type="text"
-        placeholder="Search all episodes..."
-        value={searchQuery}
-        onChange={handleSearch}
-        className="lg:w-[20vw] p-2 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
-      />
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </div>
-
-      {searchQuery && (
-        <button
-          onClick={() => setSearchQuery("")}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      )}
-    </div>
-  </div>
-
-  {/* SCROLLABLE CONTAINER */}
-  <div className="px-4">
-    <div className="max-h-[65vh] overflow-y-auto pr-2 custom-scrollbar">
-      
-      {/* GRID */}
-      <div className="gap-4 p-10 flex flex-wrap justify-center lg:justify-start">
-        {allEpisodesLoading ? (
-          <div className="flex items-center justify-center w-full py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-fuchsia-500"></div>
-          </div>
-        ) : displayedAllEpisodes.length > 0 ? (
-          displayedAllEpisodes.map((e, idx) => (
-            <a
-              key={`${e.season_number}-${e.id}`}
-              href={`/watch/tv/${tv.id}/${e.season_number}/${e.episode_number}`}
-              className={`group relative select ${
-                e.episode_number == episodeNumber &&
-                seasonnumbers == e.season_number
-                  ? "borderpink"
-                  : ""
-              } block h-34 lg:w-75 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
-            >
-              {/* rank */}
-              <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                #{idx + 1}
-              </div>
-
-              {/* image */}
-              <div className="aspect-video bg-gray-800">
-                <img
-                  src={
-                    e.still_path
-                      ? `https://image.tmdb.org/t/p/w500${e.still_path}`
-                      : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
-                  }
-                  alt={e.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* bottom info */}
-              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-sm sm:text-base">
-                      S{e.season_number}-E{e.episode_number}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-200 w-40 truncate">
-                      {e.name}
-                    </p>
-                  </div>
-                  <span className="text-xs sm:text-sm bg-black/50 px-2 py-1 rounded-full">
-                    ⭐ {e.vote_average?.toFixed(1) || "N/A"}
-                  </span>
-                </div>
-              </div>
-
-              {/* hover overlay */}
-              <div className="absolute inset-0 bg-black/80 flex flex-col pt-8 p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
-                <h3 className="font-semibold text-base text-fuchsia-400">
-                  {e.name}
-                </h3>
-
-                <div className="flex justify-between items-center mt-1 mb-2">
-                  <span className="text-xs text-gray-300">
-                    S{e.season_number}-E{e.episode_number} •{" "}
-                    {e.runtime || "?"} min
-                  </span>
-                  <span className="text-xs text-gray-300">
-                    {e.air_date?.split("-").join("/") || "TBA"}
-                  </span>
-                </div>
-
-                <div className="text-xs text-gray-200 overflow-y-auto flex-grow">
-                  {e.overview || "No description available."}
-                </div>
-              </div>
-            </a>
-          ))
-        ) : (
-          <div className="text-center w-full py-8">
-            <p className="text-gray-400">
-              No episodes found matching "{searchQuery}"
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-</div>
-      ) : (
-        // ── NORMAL SEASONS MODE ────────────────────────────────────────
-        <div className="flex lg:flex-row flex-col overflow-hidden">
-          <div className="lg:flex-2/6 flex lg:flex-col max-h-[30rem] overflow-x-auto space-y-2 lg:overflow-y-auto py-2 pl-1 lg:max-h-[40rem]">
-            {season.map((s) => (
-              <div
-                className="group lg:p-4 p-2 relative flex cursor-pointer items-center flex-shrink-0 gap-6 sm:flex-nowrap lg:pr-20"
-                key={s.id}
-              >
-                <img
-                  src={
-                    s.poster_path
-                      ? `https://image.tmdb.org/t/p/w500${s.poster_path}`
-                      : "https://cdn.boldomatic.com/content/post/G-aFXw/temporarily-not-available.jpg"
-                  }
-                  alt={s.name}
-                  className="w-40 select h-60 rounded-2xl object-contain"
-                  onClick={() => {
-                    setSeasonNumber(s.season_number);
-                    setSearchQuery("");
-                  }}
-                />
-                <div className="flex-col lg:flex hidden sname gap-3">
-                  <h3 className="text-2xl font-semibold">{s.name}</h3>
-                  <div className="flex items-center gap-4 text-sm 2xl:text-base">
-                    <div className="flex items-center gap-1.5">
-                      <svg strokeWidth="currentColor" fill="yellow" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path d="M14.43 10 12 2l-2.43 8H2l6.18 4.41L5.83 22 12 17.31 18.18 22l-2.35-7.59L22 10z"></path>
-                      </svg>
-                      <p className="font-semibold">{s.vote_average}</p>
-                    </div>
-                    <div className="h-5 w-[2px] rounded-full bg-white/30"></div>
-                    <p className="m-0 p-0 leading-none">
-                      {s.length > 0 && s.air_date && s.air_date.split("-")[0]}
-                    </p>
-                  </div>
-                  <p className="font-light text-2xl">{s.episode_count} Episodes</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex lg:flex-4/5 max-h-[30rem] flex-col gap-4 max-sm:min-h-[30rem] lg:max-h-[40rem]">
-            <div className="pl-10 pr-4 pt-4">
+        {allEpisodesMode ? (
+          <div className="flex flex-col gap-4">
+            <div className="px-4 pt-2">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search episodes..."
+                  placeholder="Search all episodes..."
                   value={searchQuery}
                   onChange={handleSearch}
-                  className="lg:w-[20vw] p-2 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                  className="lg:w-[20vw] p-2 pl-10 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/40 backdrop-blur-md"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
+
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery("")} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/30 hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -358,75 +187,226 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
               </div>
             </div>
 
-            <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
-              {filteredEpisodes && filteredEpisodes.length > 0 ? (
-                filteredEpisodes
-                  ?.filter((e) => e.name && e.vote_average !== undefined && e.episode_number)
-                  .map((e) => (
-                    <a
-                      key={e.id}
-                      href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
-                      className={`group relative select ${
-                        e.episode_number == episodeNumber && seasonnumbers == SeasonNumber
-                          ? "borderpink"
-                          : ""
-                      } block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
-                    >
-                      <div className="aspect-video bg-gray-800">
-                        <img
-                          src={
-                            e.still_path
-                              ? `https://image.tmdb.org/t/p/w500${e.still_path}`
-                              : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
-                          }
-                          alt={e.name}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-semibold text-sm sm:text-base">
-                              S{SeasonNumber}-E{e.episode_number}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-gray-200 w-40 truncate">{e.name}</p>
+            <div className="px-4">
+              <div className="max-h-[65vh] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="gap-4 p-10 flex flex-wrap justify-center lg:justify-start">
+                  {allEpisodesLoading ? (
+                    <div className="flex items-center justify-center w-full py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+                    </div>
+                  ) : displayedAllEpisodes.length > 0 ? (
+                    displayedAllEpisodes.map((e, idx) => (
+                      <a
+                        key={`${e.season_number}-${e.id}`}
+                        href={`/watch/tv/${tv.id}/${e.season_number}/${e.episode_number}`}
+                        className={`group relative select ${
+                          e.episode_number == episodeNumber &&
+                          seasonnumbers == e.season_number
+                            ? "borderpink"
+                            : "border border-white/10"
+                        } block h-34 lg:w-75 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
+                      >
+                        <div className="absolute top-2 left-2 z-10 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          #{idx + 1}
+                        </div>
+
+                        <div className="aspect-video bg-white/[0.03]">
+                          <img
+                            src={
+                              e.still_path
+                                ? `https://image.tmdb.org/t/p/w500${e.still_path}`
+                                : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
+                            }
+                            alt={e.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+
+                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="font-semibold text-sm sm:text-base text-white/90">
+                                S{e.season_number}-E{e.episode_number}
+                              </h3>
+                              <p className="text-xs sm:text-sm text-white/50 w-40 truncate">
+                                {e.name}
+                              </p>
+                            </div>
+                            <span className="text-xs sm:text-sm bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-white/80">
+                              ⭐ {e.vote_average?.toFixed(1) || "N/A"}
+                            </span>
                           </div>
-                          <span className="text-xs sm:text-sm bg-black/50 px-2 py-1 rounded-full">
-                            ⭐ {e.vote_average?.toFixed(1) || "N/A"}
-                          </span>
                         </div>
-                      </div>
-                      <div className="absolute inset-0 bg-black/80 flex flex-col p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
-                        <h3 className="font-semibold text-base text-fuchsia-400">{e.name}</h3>
-                        <div className="flex justify-between items-center mt-1 mb-2">
-                          <span className="text-xs text-gray-300">
-                            S{SeasonNumber}-E{e.episode_number} • {e.runtime || "?"} min
-                          </span>
-                          <span className="text-xs text-gray-300">
-                            {e.air_date?.split("-").join("/") || "TBA"}
-                          </span>
+
+                        <div className="absolute inset-0 bg-[#0a0e17]/95 backdrop-blur-sm flex flex-col pt-8 p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
+                          <h3 className="font-semibold text-base text-indigo-400">
+                            {e.name}
+                          </h3>
+
+                          <div className="flex justify-between items-center mt-1 mb-2">
+                            <span className="text-xs text-white/40">
+                              S{e.season_number}-E{e.episode_number} •{" "}
+                              {e.runtime || "?"} min
+                            </span>
+                            <span className="text-xs text-white/40">
+                              {e.air_date?.split("-").join("/") || "TBA"}
+                            </span>
+                          </div>
+
+                          <div className="text-xs text-white/60 overflow-y-auto flex-grow leading-relaxed">
+                            {e.overview || "No description available."}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-200 overflow-y-auto flex-grow">
-                          {e.overview || "No description available."}
-                        </div>
-                        <div className="mt-2 flex justify-between items-center"></div>
-                      </div>
-                    </a>
-                  ))
-              ) : loading ? (
-                <div className="flex items-center justify-center w-full py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-fuchsia-500"></div>
+                      </a>
+                    ))
+                  ) : (
+                    <div className="text-center w-full py-8">
+                      <p className="text-white/40">
+                        No episodes found matching "{searchQuery}"
+                      </p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-center w-full py-8">
-                  <p className="text-gray-400">No episodes found matching "{searchQuery}"</p>
-                </div>
-              )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="flex lg:flex-row flex-col overflow-hidden">
+            <div className="lg:flex-2/6 flex lg:flex-col max-h-[30rem] overflow-x-auto space-y-2 lg:overflow-y-auto py-2 pl-1 lg:max-h-[40rem]">
+              {season.map((s) => (
+                <div
+                  className="group lg:p-4 p-2 relative flex cursor-pointer items-center flex-shrink-0 gap-6 sm:flex-nowrap lg:pr-20 rounded-xl hover:bg-white/[0.03] transition-colors duration-200"
+                  key={s.id}
+                >
+                  <img
+                    src={
+                      s.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${s.poster_path}`
+                        : "https://cdn.boldomatic.com/content/post/G-aFXw/temporarily-not-available.jpg"
+                    }
+                    alt={s.name}
+                    className="w-40 select h-60 rounded-2xl object-contain border border-white/10"
+                    onClick={() => {
+                      setSeasonNumber(s.season_number);
+                      setSearchQuery("");
+                    }}
+                  />
+                  <div className="flex-col lg:flex hidden sname gap-3">
+                    <h3 className="text-2xl font-semibold text-white/90">{s.name}</h3>
+                    <div className="flex items-center gap-4 text-sm 2xl:text-base text-white/70">
+                      <div className="flex items-center gap-1.5">
+                        <svg strokeWidth="currentColor" fill="#facc15" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path d="M14.43 10 12 2l-2.43 8H2l6.18 4.41L5.83 22 12 17.31 18.18 22l-2.35-7.59L22 10z"></path>
+                        </svg>
+                        <p className="font-semibold text-white">{s.vote_average}</p>
+                      </div>
+                      <div className="h-5 w-[2px] rounded-full bg-white/20"></div>
+                      <p className="m-0 p-0 leading-none">
+                        {s.length > 0 && s.air_date && s.air_date.split("-")[0]}
+                      </p>
+                    </div>
+                    <p className="font-light text-2xl text-white/60">{s.episode_count} Episodes</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex lg:flex-4/5 max-h-[30rem] flex-col gap-4 max-sm:min-h-[30rem] lg:max-h-[40rem]">
+              <div className="pl-10 pr-4 pt-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search episodes..."
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    className="lg:w-[20vw] p-2 pl-10 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/40 backdrop-blur-md"
+                  />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery("")} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/30 hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="gap-4 overflow-y-auto pl-10 p-4 flex flex-wrap justify-center lg:justify-start">
+                {filteredEpisodes && filteredEpisodes.length > 0 ? (
+                  filteredEpisodes
+                    ?.filter((e) => e.name && e.vote_average !== undefined && e.episode_number)
+                    .map((e) => (
+                      <a
+                        key={e.id}
+                        href={`/watch/tv/${tv.id}/${SeasonNumber}/${e.episode_number}`}
+                        className={`group relative select ${
+                          e.episode_number == episodeNumber && seasonnumbers == SeasonNumber
+                            ? "borderpink"
+                            : "border border-white/10"
+                        } block h-34 lg:w-70 w-70 justify-end overflow-hidden rounded-xl md:h-32 2xl:h-40`}
+                      >
+                        <div className="aspect-video bg-white/[0.03]">
+                          <img
+                            src={
+                              e.still_path
+                                ? `https://image.tmdb.org/t/p/w500${e.still_path}`
+                                : `https://image.tmdb.org/t/p/w500${tv.poster_path}`
+                            }
+                            alt={e.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="font-semibold text-sm sm:text-base text-white/90">
+                                S{SeasonNumber}-E{e.episode_number}
+                              </h3>
+                              <p className="text-xs sm:text-sm text-white/50 w-40 truncate">{e.name}</p>
+                            </div>
+                            <span className="text-xs sm:text-sm bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-white/80">
+                              ⭐ {e.vote_average?.toFixed(1) || "N/A"}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 bg-[#0a0e17]/95 backdrop-blur-sm flex flex-col p-4 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out overflow-y-auto">
+                          <h3 className="font-semibold text-base text-indigo-400">{e.name}</h3>
+                          <div className="flex justify-between items-center mt-1 mb-2">
+                            <span className="text-xs text-white/40">
+                              S{SeasonNumber}-E{e.episode_number} • {e.runtime || "?"} min
+                            </span>
+                            <span className="text-xs text-white/40">
+                              {e.air_date?.split("-").join("/") || "TBA"}
+                            </span>
+                          </div>
+                          <div className="text-xs text-white/60 overflow-y-auto flex-grow leading-relaxed">
+                            {e.overview || "No description available."}
+                          </div>
+                          <div className="mt-2 flex justify-between items-center"></div>
+                        </div>
+                      </a>
+                    ))
+                ) : loading ? (
+                  <div className="flex items-center justify-center w-full py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+                  </div>
+                ) : (
+                  <div className="text-center w-full py-8">
+                    <p className="text-white/40">No episodes found matching "{searchQuery}"</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

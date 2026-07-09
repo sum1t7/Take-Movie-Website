@@ -31,7 +31,7 @@ const FullViewPreview = () => {
 
   return (
     <div className="mt-0">
-      <div className="flex items-center justify-between bg-gray-900 gap-8 lg:pt-15 pt-10 px-4 max-sm:flex-col sm:px-16">
+      <div className="flex items-center justify-between bg-[#0a0e17] gap-8 lg:pt-15 pt-10 px-4 max-sm:flex-col sm:px-16">
         <div
           className={`ml-4 flex gap-10 items-center justify-center max-sm:flex-col`}
         >

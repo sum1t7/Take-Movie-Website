@@ -103,10 +103,10 @@ const PosterMain = ({ trending }) => {
 
   if (!trending || trending.length === 0 || isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-900">
+      <div className="flex items-center justify-center h-screen bg-[#0a0e17]">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-fuchsia-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-fuchsia-400 text-lg">
+          <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="mt-4 text-indigo-400 text-lg">
             Loading amazing content...
           </p>
         </div>
@@ -115,10 +115,10 @@ const PosterMain = ({ trending }) => {
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-[#0a0e17]">
       <button
         type="button"
-        className="absolute top-1/2 -translate-y-1/2 left-4 z-20 bg-black/30 hover:bg-black/60 backdrop-blur-sm w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+        className="absolute top-1/2 -translate-y-1/2 left-4 z-20 bg-white/5 hover:bg-indigo-500/20 border border-white/10 hover:border-indigo-400/40 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
         onClick={handlePrev}
         aria-label="Previous slide"
       >
@@ -135,7 +135,7 @@ const PosterMain = ({ trending }) => {
 
       <button
         type="button"
-        className="absolute top-1/2 -translate-y-1/2 right-4 z-20 bg-black/30 hover:bg-black/60 backdrop-blur-sm w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+        className="absolute top-1/2 -translate-y-1/2 right-4 z-20 bg-white/5 hover:bg-indigo-500/20 border border-white/10 hover:border-indigo-400/40 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
         onClick={handleNext}
         aria-label="Next slide"
       >
@@ -153,10 +153,10 @@ const PosterMain = ({ trending }) => {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          initial={{ opacity: 0, scale: 1.03 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
           className="absolute inset-0"
         >
           {trending[currentIndex] && (
@@ -172,7 +172,8 @@ const PosterMain = ({ trending }) => {
                     className="w-full h-full object-cover"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e17] via-[#0a0e17]/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0e17]/50 via-transparent to-transparent"></div>
               </motion.div>
 
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
@@ -191,37 +192,37 @@ const PosterMain = ({ trending }) => {
                             trending[currentIndex].name
                           }
                           loading="lazy"
-                          className="w-64 md:w-80 h-auto object-contain mb-6"
+                          className="w-80 md:w-[420px] lg:w-[480px] h-auto object-contain mb-6 drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
                           src={`https://image.tmdb.org/t/p/w500${
                             logos[trending[currentIndex].id]
                           }`}
                         />
                       ) : (
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
                           {trending[currentIndex].title ||
                             trending[currentIndex].name}
                         </h2>
                       )}
 
-                      <div className="flex items-center gap-4 text-sm md:text-base text-white my-4 flex-wrap">
-                        <div className="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                      <div className="flex items-center gap-3 text-sm text-white/80 my-3 flex-wrap">
+                        <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 backdrop-blur-md px-3 py-1 rounded-full">
                           <svg
-                            fill="yellow"
+                            fill="#facc15"
                             viewBox="0 0 24 24"
-                            height="20"
-                            width="20"
+                            height="16"
+                            width="16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path fill="none" d="M0 0h24v24H0z"></path>
                             <path d="M14.43 10 12 2l-2.43 8H2l6.18 4.41L5.83 22 12 17.31 18.18 22l-2.35-7.59L22 10z"></path>
                           </svg>
-                          <p className="font-semibold">
+                          <p className="font-semibold text-white">
                             {trending[currentIndex].vote_average?.toFixed(1) ||
                               "N/A"}
                           </p>
                         </div>
 
-                        <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                        <div className="bg-white/5 border border-white/10 backdrop-blur-md px-3 py-1 rounded-full">
                           {trending[currentIndex].release_date
                             ? trending[currentIndex].release_date.split("-")[0]
                             : trending[currentIndex].first_air_date?.split(
@@ -229,11 +230,11 @@ const PosterMain = ({ trending }) => {
                               )[0] || "N/A"}
                         </div>
 
-                        <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full font-semibold uppercase">
+                        <div className="bg-white/5 border border-white/10 backdrop-blur-md px-3 py-1 rounded-full font-semibold uppercase text-indigo-300">
                           {trending[currentIndex].media_type}
                         </div>
 
-                        <div className="bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full font-semibold uppercase">
+                        <div className="bg-white/5 border border-white/10 backdrop-blur-md px-3 py-1 rounded-full font-semibold uppercase">
                           {trending[currentIndex].original_language}
                         </div>
                       </div>
@@ -242,7 +243,7 @@ const PosterMain = ({ trending }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        className="text-white/90 text-sm md:text-base line-clamp-3 md:line-clamp-4 mt-2 mb-6 max-w-xl"
+                        className="text-white/50 text-sm line-clamp-2 mt-2 mb-6 max-w-md leading-relaxed"
                       >
                         {trending[currentIndex].overview}
                       </motion.p>
@@ -254,27 +255,25 @@ const PosterMain = ({ trending }) => {
                       transition={{ duration: 0.5, delay: 0.6 }}
                     >
                       <a
-                        className="play-button"
+                        className="flex items-center gap-3 px-6 py-3 rounded-full bg-indigo-500 hover:bg-fuchsia-700 text-white font-semibold shadow-[0_15px_40px_rgba(99,102,241,0.4)] transition-all duration-200 hover:scale-105 active:scale-95"
                         href={`${
                           trending[currentIndex].media_type === "movie"
                             ? `/watch/movie/${trending[currentIndex].id}`
                             : `/tv/${trending[currentIndex].id}`
                         }`}
                       >
-                        <span className="play-icon">
+                        <span className="flex items-center">
                           <svg
                             strokeWidth="currentColor"
                             fill="currentColor"
                             viewBox="0 0 384 512"
-                            className="h-8 w-8 play-icon-inner"
-                            height="1em"
-                            width="1em"
+                            className="h-5 w-5"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
                           </svg>
                         </span>
-                        <span className="play-text">WATCH NOW!</span>
+                        <span className="tracking-wide">WATCH NOW</span>
                       </a>
                     </motion.div>
                   </div>

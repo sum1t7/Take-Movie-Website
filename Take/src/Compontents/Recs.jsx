@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Markdown from "react-markdown";
 import { motion } from "framer-motion";
 import NavBar from "./NavBar";
@@ -20,23 +20,26 @@ const Recs = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`https://gemma-endpoint.vercel.app/api/prompt`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `https://gemma-endpoint.vercel.app/api/prompt`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            maxTokens: 500,
+          }),
         },
-        body: JSON.stringify({
-          prompt: prompt,
-          maxTokens: 500,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      
+
       setAIResponse(data.response);
       setIsLoading(false);
     } catch (error) {
@@ -95,7 +98,7 @@ const Recs = () => {
               className="w-full h-14 px-6 py-4   rounded-full 
             border-2 border-fuchsia-500/30 focus:border-fuchsia-500 
             focus:ring-2 focus:ring-fuchsia-500/20 
-            bg-gray-900/50 backdrop-blur-sm text-white placeholder-gray-400
+            bg-[#0a0e17]/50 backdrop-blur-sm text-white placeholder-gray-400
             transition-all duration-300 shadow-lg shadow-fuchsia-500/5 "
             />
 
@@ -119,7 +122,7 @@ const Recs = () => {
             className="mb-12"
           >
             <div className="max-w-2xl mx-auto  p-6 bg-gray-800/50 border border-gray-600 rounded-xl shadow-lg">
-                <Markdown>{AIresponse}</Markdown>
+              <Markdown>{AIresponse}</Markdown>
             </div>
           </motion.div>
         )}

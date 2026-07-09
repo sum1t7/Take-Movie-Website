@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 import axios from "axios";
 import NavBar from "../Compontents/NavBar";
@@ -17,17 +19,17 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const SERVERS = [
   {
     key: "srv01",
-    name: "Server 1",
-    desc: "Primary",
+    name: "Decent #1",
+    desc: "Slower",
     color: "gray",
-    envKey: "VITE_SERVER_URL_7",
+    envKey: "VITE_SERVER_URL_7", 
     mode: "default",
     colorParams: "primary",
   },
   {
     key: "srv02",
-    name: "Server 2",
-    desc: "Even better",
+    name: "Quick #1",
+    desc: "",
     color: "pink",
     envKey: "VITE_SERVER_URL_6",
     mode: "moviePathMode",
@@ -35,7 +37,7 @@ const SERVERS = [
   },
   {
     key: "srv03",
-    name: "Server 3",
+    name: "Decent #2",
     desc: "Reliable",
     color: "purple",
     envKey: "VITE_SERVER_URL",
@@ -44,17 +46,17 @@ const SERVERS = [
   },
   {
     key: "srv04",
-    name: "Server 4",
-    desc: "Old but gold",
+    name: "Quick #2",
+    desc: "Ads on click",
     color: "yellow",
     envKey: "VITE_SERVER_URL_2",
-    mode: "tmdbQueryMode",
+    mode: "default",
     colorParams: "none",
   },
   {
     key: "srv05",
-    name: "Server 5",
-    desc: "Spanish subtitles",
+    name: "Flawless",
+    desc: "",
     color: "green",
     envKey: "VITE_SERVER_URL_3",
     mode: "default",
@@ -62,8 +64,8 @@ const SERVERS = [
   },
   {
     key: "srv06",
-    name: "Server 6",
-    desc: "Variaty",
+    name: "Awesome",
+    desc: "NEW",
     color: "blue",
     envKey: "VITE_SERVER_URL_4",
     mode: "tvQueryMode",
@@ -71,22 +73,22 @@ const SERVERS = [
   },
   {
     key: "srv07",
-    name: "Server 7",
-    desc: "Works sometimes",
+    name: "Decent #3",
+    desc: "",
     color: "red",
     envKey: "VITE_SERVER_URL_5",
     mode: "default",
     colorParams: "primary",
   },
-  {
-    key: "srv08",
-    name: "Server 8",
-    desc: "Slower",
-    color: "blue",
-    envKey: "VITE_SERVER_URL_8",
-    mode: "default",
-    colorParams: "primary",
-  },
+  // {
+  //   key: "srv08",
+  //   name: "Server 8",
+  //   desc: "Slower",
+  //   color: "blue",
+  //   envKey: "VITE_SERVER_URL_8",
+  //   mode: "default",
+  //   colorParams: "primary",
+  // },
 ];
 
 const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
@@ -104,7 +106,7 @@ const ServerButton = ({ isActive, onClick, details, isAvailable }) => {
     };
     return baseClasses[colorName] || baseClasses.gray;
   };
-
+ 
   return (
     <button
       onClick={onClick}
@@ -302,6 +304,7 @@ const PlayerPage = ({ type }) => {
         console.error("Error fetching tv data:", error);
       }
     };
+ 
 
     fetchtvData();
   }, [id]);
@@ -318,87 +321,118 @@ const PlayerPage = ({ type }) => {
   }
 
   return (
-    <div className="bg-[#101828]">
-      <NavBar />
+ 
+<div className="bg-[#0a0e17] min-h-screen">
+  <NavBar />
 
-      <div
-        className={`flex flex-col justify-center  items-center bg-black h-[40vh] ${
-          activeServer.mode === "tmdbQueryMode" ? "lg:pt-[70px]" : ""
-        } lg:h-[97vh] md:h-[70vh] `}
-      >
-        <iframe
-          src={playerUrl}
-          key={playerUrl}
-          className=" size-full"
-          frameBorder="0"
-          allowFullScreen
-          title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
-        ></iframe>
-      </div>
-      <p className="text-center text-gray-400 bg-[#101828]">
-        Please have an adblocker enabled for a better experience.
-      </p> 
-      <div className="relative mx-3 bg-cyan-900 md:mx-6 lg:mx-8 mt-4 overflow-hidden rounded-2xl border border-white/15    backdrop-blur-2xl shadow-[0_18px_45px_rgba(0,0,0,0.45)] p-6">
-        <div className="pointer-events-none  " />
-        <h2 className="relative text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 mr-2 text-pink-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"
-            />
-          </svg>
-          Select Server
-        </h2>
-
-        <div className="relative grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-          {SERVERS.map((serverInfo, index) => (
-            <ServerButton
-              key={serverInfo.key}
-              isActive={activeServer?.key === serverInfo.key}
-              isAvailable={Boolean(resolvedServers[index].baseUrl)}
-              onClick={() =>
-                resolvedServers[index].baseUrl &&
-                setActiveServerKey(serverInfo.key)
-              }
-              details={serverInfo}
-            />
-          ))}
-        </div>
-      </div>
-
-      {contentType === "tv" && contentData && (
-        <Seasons
-          tv={contentData}
-          episodenumbers={episode}
-          seasonnumbers={season}
-        />
-      )}
-
-      <Description
-        movie={contentType === "tv" ? movie : tv}
-        video={video}
-        id={id}
+   
+  <div
+    className={`relative flex flex-col justify-center items-center bg-black h-[40vh] ${
+      activeServer.mode === "tmdbQueryMode" ? "lg:pt-[70px]" : ""
+    } lg:h-[95vh] md:h-[70vh]`}
+  >
+    <AnimatePresence mode="wait">
+      <motion.iframe
+        key={playerUrl}
+        src={playerUrl}
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ type: "spring", stiffness: 260, damping: 26 }}
+        className="size-full"
+        frameBorder="0"
+        allowFullScreen
+        title={`${contentType === "movie" ? "Movie" : "Episode"} Player`}
       />
-      <Cast movie={contentType === "tv" ? movie : tv} cast={cast} />
+    </AnimatePresence>
+  </div>
 
-      {recommendations &&
-        recommendations.results &&
-        recommendations.results.length > 0 && (
-          <Recommendation
-            recommendation={recommendations}
-            title="You May Also Like"
-          />
-        )}
-      <Foter />
+  <p className="text-center text-sm text-white/40 py-3 tracking-wide">
+    Get your adblockers ready 🦭
+  </p>
+
+   <motion.div
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ type: "spring", stiffness: 200, damping: 22 }}
+    className="relative mx-3 md:mx-6 lg:mx-8 mt-2 overflow-hidden rounded-2xl
+               border border-white/10 bg-white/[0.03] backdrop-blur-xl
+               shadow-[0_10px_40px_rgba(0,0,0,0.5)] p-6"
+  >
+    <h2 className="relative text-lg font-semibold text-white/90 mb-5 text-center flex items-center justify-center gap-2 tracking-tight">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 text-indigo-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"
+        />
+      </svg>
+      Select Server
+    </h2>
+
+    <div className="relative grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
+      {SERVERS.map((serverInfo, index) => {
+        const isActive = activeServer?.key === serverInfo.key;
+        const isAvailable = Boolean(resolvedServers[index].baseUrl);
+        return (
+          <motion.button
+            key={serverInfo.key}
+            whileHover={isAvailable ? { y: -2, scale: 1.03 } : {}}
+            whileTap={isAvailable ? { scale: 0.96 } : {}}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            disabled={!isAvailable}
+            onClick={() => isAvailable && setActiveServerKey(serverInfo.key)}
+            className={`relative rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
+              ${
+                isActive
+                  ? "text-white"
+                  : isAvailable
+                  ? "text-white/60 hover:text-white/90"
+                  : "text-white/25 cursor-not-allowed"
+              }`}
+          >
+            {isActive && (
+              <motion.div
+                layoutId="activeServerBg"
+                className="absolute inset-0 rounded-xl bg-indigo-500/20 border border-indigo-400/40"
+                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+              />
+            )}
+            <span className="relative">{serverInfo.name}</span>
+          </motion.button>
+        );
+      })}
     </div>
+  </motion.div>
+
+  {contentType === "tv" && contentData && (
+    <Seasons
+      tv={contentData}
+      episodenumbers={episode}
+      seasonnumbers={season}
+    />
+  )}
+
+  <Description
+    movie={contentType === "tv" ? movie : tv}
+    video={video}
+    id={id}
+  />
+  <Cast movie={contentType === "tv" ? movie : tv} cast={cast} />
+
+  {recommendations?.results?.length > 0 && (
+    <Recommendation recommendation={recommendations} title="You May Also Like" />
+  )}
+
+  <Foter />
+</div>
   );
 };
 

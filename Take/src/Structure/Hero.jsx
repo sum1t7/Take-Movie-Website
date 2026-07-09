@@ -43,7 +43,7 @@ const Hero = () => {
     "TV Movie": 10770,
     Thriller: 53,
     War: 10752,
-    Western: 37
+    Western: 37,
   };
 
   const handleGenreChange = (e) => {
@@ -55,7 +55,7 @@ const Hero = () => {
       setLoadingGenre(true);
       try {
         const GenreResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=${Genres[genre]}&sort_by=vote_count.desc`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=${Genres[genre]}&sort_by=vote_count.desc`,
         );
         setGenresLink(GenreResponse.data);
       } catch (error) {
@@ -73,19 +73,19 @@ const Hero = () => {
     const fetchTrending = async () => {
       try {
         const trendingResponse = await axios.get(
-          `https://api.tmdb.org/3/trending/all/day?api_key=${apikey}&sort_by=vote_average.desc`
+          `https://api.tmdb.org/3/trending/all/day?api_key=${apikey}&sort_by=vote_average.desc`,
         );
         setTrending(trendingResponse.data);
         setLoadingTrending(false);
 
         const HindiTrendingResponse = await axios.get(
-          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&language=hi-IN&region=IN&with_original_language=hi`
+          `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&language=hi-IN&region=IN&with_original_language=hi`,
         );
         setHindiTrending(HindiTrendingResponse.data);
         setLoadingHindiTrending(false);
 
         const res = await axios.get(
-          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_count.desc`
+          `https://api.tmdb.org/3/movie/popular?api_key=${apikey}&sort_by=vote_count.desc`,
         );
         setTOP(res.data);
         setLoadingTOP(false);
@@ -113,23 +113,23 @@ const Hero = () => {
       )}
       {loadingTOP ? <PinkLoading /> : <Top title="TOP 10" bit={0} />}
       {loadingTOP ? <PinkLoading /> : <TopList TOP={TOP} />}
-      <div className=" bg-gray-900 ">
+      <div className=" bg-[#0a0e17] ">
         <select
           className="px-4 py-2 mx-20 mt-10  text-base rounded-md border border[#101828] bg-[#ba1c93] min-w-[180px]  text-black"
           name="Genre"
           onClick={handleGenreChange}
-          id="Genre"         
+          id="Genre"
         >
           <option value="" disabled selected>
             Select Genre
           </option>
           {Object.keys(Genres).map((genre) => (
-            <option  key={genre} value={genre}>
+            <option key={genre} value={genre}>
               {genre}
             </option>
           ))}
         </select>
-      
+
         {loadingGenre ? (
           <PinkLoading />
         ) : (
