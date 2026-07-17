@@ -13,14 +13,16 @@ const Watched = () => {
    
   useEffect(() => {
     const fetchLikedData = async () => {
-      const updatedLiked = await Promise.all(
-        likedList.map(async ({ id, type }) => {
-          const ress = await getInfoFromId({ id, type });
-          return ress;
-        })
-      );
-      setLiked(updatedLiked);
-      console.log(updatedLiked);
+  const updatedLiked = await Promise.all(
+    likedList.map(async ({ id, type }) => {
+      const ress = await getInfoFromId({ id, type });
+      return ress;
+    })
+  );
+
+  setLiked(updatedLiked.reverse());
+  console.log(updatedLiked);
+
     };
 
     fetchLikedData();
