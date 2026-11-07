@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./rec.css";
@@ -10,14 +10,15 @@ const PosterMain = ({ trending }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const apikey = import.meta.env.VITE_TMDB_API_KEY;
 
-  trending = trending?.results?.filter((item) => 
+  const items = useMemo(() => trending?.results?.filter((item) => 
   item.backdrop_path &&
   item.vote_average > 3 &&
   (item.title || item.name) &&
   item.id
-) || [];
+) || [], [trending]);
+  trending = items;
 
-  const getlogo = async (id, type) => {
+  const getlogo = useCallback(async (id, type) => {
     try {
       const url =
         type === "movie"
@@ -40,7 +41,7 @@ const PosterMain = ({ trending }) => {
       console.error("Error fetching logo:", error);
       return null;
     }
-  };
+  }, [apikey]);
 
   useEffect(() => {
     if (!trending || trending.length === 0) return;
@@ -57,29 +58,22 @@ const PosterMain = ({ trending }) => {
   }, [trending]);
 
   useEffect(() => {
-    const fetchLogos = async () => {
-      setIsLoading(true);
-      try {
-        const logoPromises = trending.map((trend) =>
-          getlogo(trend.id, trend.media_type),
-        );
-        const logoResults = await Promise.all(logoPromises);
-        const logoMap = trending.reduce((acc, trend, index) => {
-          acc[trend.id] = logoResults[index];
-          return acc;
-        }, {});
-        setLogos(logoMap);
-      } catch (error) {
-        console.error("Error fetching logos:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (trending && trending.length > 0) {
-      fetchLogos();
+    const item = trending[currentIndex];
+    if (!item) return;
+    // A null result is cached too, so titles without a logo are not retried.
+    if (Object.prototype.hasOwnProperty.call(logos, item.id)) {
+      setIsLoading(false);
+      return;
     }
-  }, []);
+    let active = true;
+    setIsLoading(true);
+    getlogo(item.id, item.media_type || (item.title ? "movie" : "tv"))
+      .then((logo) => {
+        if (active) setLogos((previous) => ({ ...previous, [item.id]: logo }));
+      })
+      .finally(() => { if (active) setIsLoading(false); });
+    return () => { active = false; };
+  }, [trending, currentIndex, logos, getlogo]);
 
   const handlePrev = () => {
     if (isTransitioning) return;
