@@ -95,11 +95,7 @@ const Page = ({ type }) => {
           }/week?api_key=${apikey}`,
         );
         setTrending(trendingResponse.data);
-        console.log(
-          `https://api.tmdb.org/3/trending/${
-            type ? "movie" : "tv"
-          }/week?api_key=${apikey}`,
-        );
+
 
         const actionResponse = await axios.get(
           `https://api.tmdb.org/3/discover/movie?api_key=${apikey}&with_genres=28&sort_by=vote_count.desc`,

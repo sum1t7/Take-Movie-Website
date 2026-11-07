@@ -279,7 +279,7 @@ const Seasons = ({ tv, episodenumbers, seasonnumbers }) => {
                   className="group lg:p-4 p-2 relative flex cursor-pointer items-center flex-shrink-0 gap-6 sm:flex-nowrap lg:pr-20 rounded-xl hover:bg-white/[0.03] transition-colors duration-200"
                   key={s.id}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={
                       s.poster_path
                         ? `https://image.tmdb.org/t/p/w500${s.poster_path}`

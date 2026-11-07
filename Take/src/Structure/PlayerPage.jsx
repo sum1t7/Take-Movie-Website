@@ -14,7 +14,6 @@ import PinkLoading from "../Compontents/Loading";
 import Description from "../Compontents/Description";
 import Cast from "../Compontents/Cast";
 
-const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 const SERVERS = [
   {
@@ -253,61 +252,30 @@ const PlayerPage = ({ type }) => {
     return buildDefaultPath(activeServer.baseUrl);
   }, [activeServer, id, season, episode, contentType]);
   useEffect(() => {
+    let active = true;
     const fetchContentData = async () => {
       setIsLoading(true);
       try {
-        if (contentType === "tv") {
-          const tvResponse = await axios.get(
-            `https://api.tmdb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`,
-          );
-          setContentData(tvResponse.data);
-        }
-
-        const recommendationsResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/recommendations?api_key=${apiKey}&language=en-US&page=1`,
+        const response = await axios.get(
+          `https://api.tmdb.org/3/${contentType}/${id}?api_key=${apikey}&language=en-US&append_to_response=images,videos,credits,recommendations&include_image_language=en,null`,
         );
-        setRecommendations(recommendationsResponse.data);
+        if (!active) return;
+        setContentData(response.data);
+        settv(response.data);
+        setMovie(response.data);
+        setImages(response.data.images);
+        setVideo(response.data.videos);
+        setCast(response.data.credits);
+        setRecommendations(response.data.recommendations);
       } catch (error) {
-        console.error(`Error fetching ${contentType} data:`, error);
+        console.error("Error fetching content data:", error);
       } finally {
-        setIsLoading(false);
+        if (active) setIsLoading(false);
       }
     };
-
     fetchContentData();
+    return () => { active = false; };
   }, [id, contentType]);
-
-  useEffect(() => {
-    const fetchtvData = async () => {
-      try {
-        const tvResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}?api_key=${apikey}&language=en-US`,
-        );
-        settv(tvResponse.data);
-        setMovie(tvResponse.data);
-
-        const imagesResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/images?api_key=${apikey}`,
-        );
-        setImages(imagesResponse.data);
-
-        const videoResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/videos?api_key=${apikey}&language=en-US`,
-        );
-        setVideo(videoResponse.data);
-
-        const castResponse = await axios.get(
-          `https://api.tmdb.org/3/${contentType}/${id}/credits?api_key=${apikey}`,
-        );
-        setCast(castResponse.data);
-      } catch (error) {
-        console.error("Error fetching tv data:", error);
-      }
-    };
- 
-
-    fetchtvData();
-  }, [id]);
 
   if (isLoading) {
     return <PinkLoading />;

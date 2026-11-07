@@ -39,30 +39,14 @@ const MovieInfo = () => {
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
-        const movieResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}?api_key=${apikey}&language=en-US`,
+        const response = await axios.get(
+          `https://api.tmdb.org/3/movie/${id}?api_key=${apikey}&language=en-US&append_to_response=images,videos,credits,recommendations&include_image_language=en,null`,
         );
-        setMovie(movieResponse.data);
-
-        const imagesResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/images?api_key=${apikey}`,
-        );
-        setImages(imagesResponse.data);
-
-        const videoResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`,
-        );
-        setVideo(videoResponse.data);
-
-        const castResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/credits?api_key=${apikey}`,
-        );
-        setCast(castResponse.data);
-
-        const recommendationResponse = await axios.get(
-          `https://api.tmdb.org/3/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`,
-        );
-        setRecommendation(recommendationResponse.data);
+        setMovie(response.data);
+        setImages(response.data.images);
+        setVideo(response.data.videos);
+        setCast(response.data.credits);
+        setRecommendation(response.data.recommendations);
       } catch (error) {
         console.error("Error fetching movie data:", error);
       }
